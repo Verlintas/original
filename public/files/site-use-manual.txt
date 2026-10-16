@@ -1,0 +1,34 @@
+ORIGINAL — SITE USE MANUAL
+==========================
+Version 1.0 — 2026-10-16
+License: CC BY 4.0
+
+This is the first edition of the manual. It is a placeholder; the real
+manual will be written when it needs to exist. Until then, everything
+below is true.
+
+SECTIONS
+--------
+  FILES     Documents, tools, media, and archives, ready to download.
+  NOTES     Short pieces of writing about the site and its contents.
+  LINKS     A short list of places worth visiting.
+  ABOUT     What this site is and how to reach it.
+  COLOPHON  Typography, colour, and technical notes.
+
+READING THE MARKS
+-----------------
+  ◯         A hollow circle, cut to the height of an uppercase letter.
+            It marks a title. After the mark: one space, then the title.
+  [ X ]     A text button. It downloads, opens, or goes somewhere.
+  UPPERCASE Titles are shouted on purpose. It is a style, not anger.
+
+VERIFYING A FILE
+----------------
+Where a file has a SHA-256 checksum, it is printed on the file's page.
+On macOS or Linux, run:
+
+  shasum -a 256 <file>
+
+and compare. If the two strings differ, do not open the file.
+
+END OF MANUAL

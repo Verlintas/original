@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+import { links } from '../data/links';
+---
+
+<BaseLayout title="LINKS" description="A short list of places worth visiting.">
+  <h1 class="page-title"><Circle /> LINKS</h1>
+  <p class="lede">Places worth visiting, kept short on purpose.</p>
+
+  <ul class="entry-list">
+    {
+      links.map((link) => (
+        <li class="entry">
+          <h3 class="entry-title">
+            <a href={link.url}><Circle /><span>{link.name}</span></a>
+          </h3>
+          <p class="entry-summary">{link.note}</p>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

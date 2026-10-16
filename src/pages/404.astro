@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout title="NOT FOUND" description="Nothing lives at this address.">
+  <section class="hero">
+    <h1 class="site-title"><Circle /> <span>Not Found</span></h1>
+    <p class="tagline">ERROR 404</p>
+    <p class="lede">
+      Nothing lives at this address. It may have been moved, renamed, or it may never have
+      existed at all.
+    </p>
+    <p class="entry-actions">
+      <a class="action" href="/">[ HOME ]</a>
+      <a class="action" href="/files/">[ FILES ]</a>
+      <a class="action" href="/notes/">[ NOTES ]</a>
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import FileEntry from '../../components/FileEntry.astro';
+
+const files = (await getCollection('files')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const categories = ['DOCUMENTS', 'TOOLS', 'MEDIA', 'ARCHIVE'] as const;
+const grouped = categories
+  .map((category) => ({
+    category,
+    items: files.filter((file) => file.data.category === category),
+  }))
+  .filter((group) => group.items.length > 0);
+---
+
+<BaseLayout
+  title="FILES"
+  description="Everything available for download from Original, grouped by category."
+>
+  <h1 class="page-title"><Circle /> FILES</h1>
+  <p class="lede">
+    {files.length} items in {grouped.length} categories. Small files are served straight from this
+    site; large files are mirrored on GitHub Releases. Newest first within each category.
+  </p>
+
+  {
+    grouped.map((group) => (
+      <section class="section">
+        <h2 class="section-title">
+          {group.category} <span class="section-count">{group.items.length}</span>
+        </h2>
+        <ul class="entry-list">
+          {group.items.map((entry) => (
+            <FileEntry entry={entry} />
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>

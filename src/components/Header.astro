@@ -1,0 +1,81 @@
+---
+import Circle from './Circle.astro';
+
+const navItems = [
+  { href: '/files/', label: 'FILES' },
+  { href: '/notes/', label: 'NOTES' },
+  { href: '/links/', label: 'LINKS' },
+  { href: '/about/', label: 'ABOUT' },
+];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="wordmark" href="/" aria-label="Original — home"><Circle /> <span>Original</span></a>
+    <nav class="site-nav" aria-label="Site">
+      {
+        navItems.map((item) => (
+          <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--red-pale);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    padding-top: 2rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5ch;
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+  }
+
+  .site-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--red);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.15em;
+  }
+
+  .site-nav a:hover {
+    border-bottom-color: var(--red);
+  }
+
+  .site-nav a[aria-current='page'] {
+    border-bottom-color: var(--red);
+    color: var(--red-deep);
+  }
+</style>

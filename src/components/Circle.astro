@@ -1,0 +1,38 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={['circle-mark', className]}
+  viewBox="0 0 10 10"
+  aria-hidden="true"
+  focusable="false"
+  role="presentation"
+>
+  <circle cx="5" cy="5" r="4.4" fill="none" stroke="currentColor" stroke-width="1.1"></circle>
+</svg>
+
+<style>
+  /* The mark: a hollow circle whose diameter equals the cap height of
+     the adjacent uppercase text (1cap), with its bottom edge resting
+     on the text baseline. Fallback: 0.72em where cap units are unknown. */
+  .circle-mark {
+    display: inline-block;
+    width: 1cap;
+    height: 1cap;
+    vertical-align: baseline;
+    flex: none;
+    color: var(--red);
+  }
+
+  @supports not (width: 1cap) {
+    .circle-mark {
+      width: 0.72em;
+      height: 0.72em;
+    }
+  }
+</style>

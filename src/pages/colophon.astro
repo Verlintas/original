@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout
+  title="COLOPHON"
+  description="Typography, colour, and technical notes for Original."
+>
+  <h1 class="page-title"><Circle /> COLOPHON</h1>
+  <p class="lede">
+    The rules this site follows, written down so that it can remain consistent with itself.
+  </p>
+
+  <div class="prose">
+    <h2>THE MARK</h2>
+    <p>
+      The logo is a hollow red circle, written as <strong>◯</strong>. Its diameter is exactly
+      the cap height of the text beside it — the height of an uppercase letter — and its bottom
+      edge sits on the baseline. After the mark, one space, then the title. This holds at every
+      size, from the home page down to the footer.
+    </p>
+
+    <h2>TITLES</h2>
+    <ul>
+      <li>File titles and section titles are set in FULL UPPERCASE.</li>
+      <li>The site name is the one exception: <strong>Original</strong>, first letter capitalised.</li>
+      <li>Labels, dates, sizes, and versions are set in small uppercase monospace with wide tracking.</li>
+    </ul>
+
+    <h2>COLOUR</h2>
+    <p>White and red, and shades of red. Nothing else. The palette in full:</p>
+    <ul>
+      <li><code>#ffffff</code> — background</li>
+      <li><code>#cc0000</code> — primary red: headings, marks, links</li>
+      <li><code>#7d0000</code> — deep red: body text</li>
+      <li><code>#a80000</code> — visited links</li>
+      <li><code>#f0d2d2</code> — hairlines and rules</li>
+      <li><code>#fdf5f5</code> — subtle tinted blocks</li>
+    </ul>
+    <p>There is no dark mode. The site is white by definition, not by preference.</p>
+
+    <h2>TYPE</h2>
+    <p>
+      System fonts only: the reader's own sans-serif for prose, the reader's own monospace for
+      labels and metadata. No web fonts are downloaded, and no page loads external resources.
+    </p>
+
+    <h2>FILES AND FONTS</h2>
+    <p>
+      What the reader sees is what the server sends: everything is plain HTML and one stylesheet,
+      generated at build time. Small files are stored in the repository; large ones on GitHub
+      Releases. Checksums (SHA-256) are printed beside the files that have them.
+    </p>
+
+    <h2>BUILT WITH</h2>
+    <ul>
+      <li>Astro — static site generation</li>
+      <li>GitHub Actions — build and deploy</li>
+      <li>GitHub Pages — hosting at original.wales</li>
+      <li>Plain text — the only format the site depends on</li>
+    </ul>
+  </div>
+</BaseLayout>

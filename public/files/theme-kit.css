@@ -1,0 +1,59 @@
+/* ============================================================
+   ORIGINAL — THEME KIT
+   A minimal white-and-red theme in one stylesheet.
+   Version 1.0 — 2026-10-12 — License: CC BY 4.0
+   Placeholder edition: drop this file into any page
+   and the page becomes red on white.
+   ============================================================ */
+
+:root {
+  --bg: #ffffff;
+  --red: #cc0000;
+  --red-deep: #7d0000;
+  --red-visited: #a80000;
+  --red-pale: #f0d2d2;
+  --red-wash: #fdf5f5;
+}
+
+body {
+  background: var(--bg);
+  color: var(--red-deep);
+  font-family: system-ui, sans-serif;
+  line-height: 1.75;
+}
+
+a {
+  color: var(--red);
+  text-decoration-color: var(--red-pale);
+  text-underline-offset: 0.22em;
+}
+
+a:visited {
+  color: var(--red-visited);
+}
+
+::selection {
+  background: var(--red);
+  color: var(--bg);
+}
+
+h1, h2, h3 {
+  color: var(--red);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--red-pale);
+}
+
+/* The mark: hollow circle, cap-height sized. */
+.circle-mark {
+  display: inline-block;
+  width: 1cap;
+  height: 1cap;
+  border: 0.09em solid var(--red);
+  border-radius: 50%;
+  vertical-align: baseline;
+}

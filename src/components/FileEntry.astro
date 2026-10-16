@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Circle from './Circle.astro';
+import { formatDate } from '../utils/format';
+
+interface Props {
+  entry: CollectionEntry<'files'>;
+}
+
+const { entry } = Astro.props;
+const { title, category, date, format, size, version, summary, file, external } = entry.data;
+const href = `/files/${entry.id}/`;
+---
+
+<li class="entry">
+  <h3 class="entry-title">
+    <a href={href}><Circle /><span>{title}</span></a>
+  </h3>
+  <p class="entry-meta">{formatDate(date)} · {category} · {format} · {size} · V{version}</p>
+  <p class="entry-summary">{summary}</p>
+  <p class="entry-actions">
+    {file && <a class="action" href={file} download>[ DOWNLOAD ]</a>}
+    {external && <a class="action" href={external} rel="noopener">[ MIRROR ]</a>}
+    <a class="action" href={href}>[ DETAILS ]</a>
+  </p>
+</li>

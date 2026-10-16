@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { formatDate } from '../../utils/format';
+
+export async function getStaticPaths() {
+  const files = await getCollection('files');
+  return files.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, category, date, version, format, size, license, sha256, file, external, summary } =
+  entry.data;
+
+const rows: Array<[string, string]> = [
+  ['DATE', formatDate(date)],
+  ['CATEGORY', category],
+  ['VERSION', version],
+  ['FORMAT', format],
+  ['SIZE', size],
+  ['LICENSE', license],
+];
+
+if (sha256) {
+  rows.push(['SHA-256', sha256]);
+}
+---
+
+<BaseLayout title={title} description={summary} type="article">
+  <p class="back"><a href="/files/">← ALL FILES</a></p>
+
+  <h1 class="page-title"><Circle /> {title}</h1>
+  <p class="lede">{summary}</p>
+
+  <p class="entry-actions">
+    {file && <a class="action" href={file} download>[ DOWNLOAD ]</a>}
+    {external && <a class="action" href={external} rel="noopener">[ MIRROR ]</a>}
+  </p>
+
+  <table class="meta-table">
+    <tbody>
+      {
+        rows.map(([label, value]) => (
+          <tr>
+            <th scope="row">{label}</th>
+            <td>{value}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  <p class="back"><a href="/files/">← ALL FILES</a></p>
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+import FileEntry from '../components/FileEntry.astro';
+
+const files = (await getCollection('files')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const latest = files.slice(0, 5);
+
+const sections = [
+  { href: '/files/', label: 'FILES', note: 'Documents, tools, media, and archives, ready to download.' },
+  { href: '/notes/', label: 'NOTES', note: 'Short pieces of writing about the site and its contents.' },
+  { href: '/links/', label: 'LINKS', note: 'A short list of places worth visiting.' },
+  { href: '/about/', label: 'ABOUT', note: 'What this site is and how to reach it.' },
+  { href: '/colophon/', label: 'COLOPHON', note: 'Typography, colour, and technical notes.' },
+];
+---
+
+<BaseLayout title="Original">
+  <section class="hero">
+    <h1 class="site-title"><Circle /> <span>Original</span></h1>
+    <p class="tagline">A PLAIN PLACE FOR FILES, NOTES, AND THINGS WORTH KEEPING.</p>
+    <p class="lede">
+      Original is a quiet, text-first site for storing, showing, and handing out files.
+      Everything here is written in red on white, and nothing else.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">LATEST FILES <span class="section-count">{files.length} TOTAL</span></h2>
+    <ul class="entry-list">
+      {latest.map((entry) => <FileEntry entry={entry} />)}
+    </ul>
+    <p class="more"><a class="action" href="/files/">[ ALL FILES ]</a></p>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">SECTIONS</h2>
+    <ul class="directory">
+      {
+        sections.map((section) => (
+          <li>
+            <a class="dir-link" href={section.href}><Circle /> {section.label}</a>
+            <span class="dir-note">{section.note}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

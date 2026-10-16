@@ -1,0 +1,44 @@
+---
+import Circle from './Circle.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p class="foot-line"><Circle /> ORIGINAL</p>
+    <p class="foot-line">WHITE AND RED, NOTHING ELSE.</p>
+    <p class="foot-line">
+      © {year} ORIGINAL.WALES · <a href="/colophon/">COLOPHON</a> · <a href="/rss.xml">RSS</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--red-pale);
+    margin-top: 4rem;
+  }
+
+  .footer-inner {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .foot-line {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin: 0 0 0.5rem;
+  }
+
+  .foot-line .circle-mark {
+    margin-right: 0.5ch;
+  }
+
+  .foot-line a {
+    color: var(--red);
+  }
+</style>

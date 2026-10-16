@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout
+  title="ABOUT"
+  description="What Original is, what it holds, and how to reach it."
+>
+  <h1 class="page-title"><Circle /> ABOUT</h1>
+  <p class="lede">
+    Original is a personal site for storing, showing, and handing out files — and, in time,
+    whatever else it needs to be.
+  </p>
+
+  <div class="prose">
+    <h2>WHAT THIS IS</h2>
+    <p>
+      A plain place on the web. White background, red text, and no other colours. No trackers,
+      no accounts, no comments. Static pages generated at build time and served as plain files.
+    </p>
+    <p>
+      The site is meant to grow into a general-purpose home: today it holds documents and small
+      tools; later it may hold notes, archives, and anything else worth keeping in one address.
+    </p>
+
+    <h2>WHAT IS HERE</h2>
+    <ul>
+      <li><strong>FILES</strong> — documents, tools, media, and archives, ready to download.</li>
+      <li><strong>NOTES</strong> — short pieces of writing about the site and its contents.</li>
+      <li><strong>LINKS</strong> — a short list of places worth visiting.</li>
+      <li><strong>COLOPHON</strong> — the typographic and technical rules this site obeys.</li>
+    </ul>
+
+    <h2>HOW FILES WORK</h2>
+    <p>
+      Small files are committed to the site's repository and served directly from this address.
+      Large files live on GitHub Releases, and the site only holds a link to them. Every listing
+      states its format, size, version, and — where possible — a checksum, so what you download
+      can be verified.
+    </p>
+
+    <h2>CONTACT</h2>
+    <p>
+      The fastest way to reach the maintainer is
+      <a href="https://github.com/Verlintas" rel="noopener">GitHub — VERLINTAS</a>.
+      An email address on this domain may follow later.
+    </p>
+
+    <h2>SOFTWARE</h2>
+    <p>
+      Built with <a href="https://astro.build" rel="noopener">Astro</a>, deployed by GitHub Actions,
+      hosted on <a href="https://pages.github.com" rel="noopener">GitHub Pages</a>. See the
+      <a href="/colophon/">COLOPHON</a> for details.
+    </p>
+  </div>
+</BaseLayout>
