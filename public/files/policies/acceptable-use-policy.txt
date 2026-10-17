@@ -1,0 +1,74 @@
+ACCEPTABLE USE POLICY — TEMPLATE
+================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. Adapt
+it to the actual service and applicable law, and have it reviewed by a
+qualified lawyer before publishing.
+
+Replace every value in [SQUARE BRACKETS]. Delete sections that do not apply,
+and delete this notice from the published version.
+
+---
+[ORGANISATION NAME] — ACCEPTABLE USE POLICY
+Applies to: [SERVICE/WEBSITE/APP]
+Last updated: [DATE]
+
+1. PURPOSE
+----------
+This policy sets out what you may not do when using [SERVICE]. It applies
+to all users and to all content submitted through the service.
+
+2. PROHIBITED CONTENT
+---------------------
+You must not upload, post or share content that:
+- is unlawful, defamatory, fraudulent or deceptive;
+- infringes copyright, trade marks, privacy or other rights;
+- is harassing, threatening, hateful or discriminatory;
+- is sexually explicit involving minors, or otherwise exploitative;
+- contains malware, spyware or code designed to harm;
+- discloses personal data of others without a lawful basis.
+
+3. PROHIBITED ACTIVITY
+----------------------
+You must not:
+- access systems or data without authorisation;
+- probe, scan or test the vulnerability of the service without permission;
+- bypass rate limits, authentication or access controls;
+- interfere with the service, including denial-of-service attempts;
+- use automated means to scrape or overload the service contrary to
+  [ROBOTS.TXT / TERMS];
+- impersonate others or misrepresent affiliation;
+- use the service to send spam or unlawful communications.
+
+4. SECURITY RESEARCH
+--------------------
+We welcome good-faith security research under [SECURITY POLICY LINK /
+SECURITY.TXT]. Research that follows that policy will not be pursued as a
+violation of this policy.
+
+5. ENFORCEMENT
+--------------
+We may remove content, suspend or terminate access, and report unlawful
+activity to the authorities. We aim to act proportionately and, where
+practicable, to explain the reason. Appeals: [CONTACT EMAIL].
+
+6. REPORTING
+------------
+Report abuse to [ABUSE EMAIL] with the URL, a description and any relevant
+evidence. Reports are handled confidentially to the extent permitted by law.
+
+7. CHANGES
+----------
+We may update this policy. The "last updated" date will change and material
+changes will be announced on [PAGE/URL].
+
+8. CONTACT
+----------
+[ORGANISATION NAME] — [CONTACT EMAIL] — [POSTAL ADDRESS]
+
+---
+REFERENCE MATERIAL
+- Computer Fraud and Abuse Act (US): https://www.justice.gov/criminal-ccips
+- UK Computer Misuse Act: https://www.legislation.gov.uk/ukpga/1990/18
+- securitytxt.org: https://securitytxt.org/

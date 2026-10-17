@@ -3,18 +3,30 @@ import BaseLayout from '../components/BaseLayout.astro';
 import Circle from '../components/Circle.astro';
 ---
 
-<BaseLayout title="NOT FOUND" description="Nothing lives at this address.">
-  <section class="hero">
-    <h1 class="site-title"><Circle /> <span>Not Found</span></h1>
-    <p class="tagline">ERROR 404</p>
-    <p class="lede">
-      Nothing lives at this address. It may have been moved, renamed, or it may never have
-      existed at all.
+<BaseLayout title="NOT FOUND" description="Nothing lives at this address." noindex>
+  <section class="error-wrap">
+    <h1 class="page-title"><Circle /> Error</h1>
+    <p class="error-code">404</p>
+    <p class="error-line" id="error-path">lost: /</p>
+    <p class="error-copy">
+      Nothing lives at this address. It may have been moved, renamed, or it may never have existed.
     </p>
-    <p class="entry-actions">
-      <a class="action" href="/">[ HOME ]</a>
+    <p class="actions" style="margin-top: 1.8rem;">
+      <a class="action" href="/">[ MAIN ]</a>
       <a class="action" href="/files/">[ FILES ]</a>
-      <a class="action" href="/notes/">[ NOTES ]</a>
+      <a class="action" href="/status/">[ STATUS ]</a>
+      <a class="action" href="/cli/">[ CLI ]</a>
     </p>
   </section>
+
+  <script>
+    try {
+      const path = decodeURIComponent(location.pathname);
+      if (path && path !== '/404.html') {
+        document.getElementById('error-path').textContent = 'lost: ' + path;
+      }
+    } catch (error) {
+      /* leave the default path line */
+    }
+  </script>
 </BaseLayout>

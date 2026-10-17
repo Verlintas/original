@@ -1,0 +1,65 @@
+ACCESSIBILITY STATEMENT — TEMPLATE
+==================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice.
+Accessibility obligations vary by jurisdiction and by organisation type.
+Have the final statement reviewed and keep it accurate: an accessibility
+statement is a public commitment.
+
+Replace every value in [SQUARE BRACKETS]. Delete sections that do not apply,
+and delete this notice from the published version.
+
+---
+[ORGANISATION NAME] — ACCESSIBILITY STATEMENT
+Website: [WEBSITE URL]
+Last reviewed: [DATE]
+
+1. OUR COMMITMENT
+-----------------
+[ORGANISATION NAME] wants [WEBSITE/APP] to be usable by as many people as
+possible, including people who use assistive technologies. Accessibility is
+treated as an ongoing process, not a one-time project.
+
+2. CONFORMANCE TARGET
+---------------------
+We aim to conform to the Web Content Accessibility Guidelines (WCAG)
+[2.2] Level [AA] for [SCOPE: ALL PAGES / KEY USER JOURNEYS]. This statement
+describes the current state, not a certification.
+
+3. MEASURES WE TAKE
+-------------------
+- Semantic HTML and logical heading structure.
+- Keyboard operability for interactive features.
+- Sufficient colour contrast and visible focus indicators.
+- Text alternatives for meaningful images.
+- Responsive layout and zoom support.
+- [TESTING: MANUAL TESTING, SCREEN READERS USED, AUTOMATED CHECKS].
+
+4. KNOWN LIMITATIONS
+--------------------
+- [PAGE/FEATURE] — [LIMITATION] — [WORKAROUND OR TIMELINE].
+- [THIRD-PARTY CONTENT] may not meet the same standard.
+We describe limitations honestly and update this list as issues are fixed.
+
+5. FEEDBACK AND CONTACT
+-----------------------
+If you encounter a barrier, contact [ACCESSIBILITY EMAIL] or
+[CONTACT PAGE]. Please include the page address and a short description.
+We aim to respond within [N] business days.
+
+6. ENFORCEMENT AND REMEDIES
+---------------------------
+[IF APPLICABLE: COMPLAINT ROUTE TO A NATIONAL ENFORCEMENT BODY, WITH LINK.]
+[DELETE IF NOT APPLICABLE.]
+
+7. ASSESSMENT AND REVIEW
+------------------------
+This statement is reviewed at least [ANNUALLY]. The most recent assessment
+was carried out by [WHO] using [METHOD].
+
+---
+REFERENCE MATERIAL
+- W3C — Web Content Accessibility Guidelines (WCAG) 2.2: https://www.w3.org/TR/WCAG22/
+- W3C WAI — Developing an accessibility statement: https://www.w3.org/WAI/planning/statements/
+- EU Web Accessibility Directive: https://eur-lex.europa.eu/eli/dir/2016/2102/oj

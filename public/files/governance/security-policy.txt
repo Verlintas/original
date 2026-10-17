@@ -1,0 +1,78 @@
+SECURITY POLICY (SECURITY.MD) — TEMPLATE
+========================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. Adapt it to the project, its release process, and its risk
+profile. Delete this notice from the published version.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+# Security Policy
+
+## SUPPORTED VERSIONS
+
+| Version | Supported |
+|---------|-----------|
+| [X.Y]   | Yes       |
+| [X.Y-1] | Security fixes only |
+| < [X.Y-1] | No      |
+
+## REPORTING A VULNERABILITY
+
+Please report security issues privately:
+
+- Email: [SECURITY EMAIL] (PGP: [KEY FINGERPRINT / LINK])
+- Or use GitHub private vulnerability reporting: [REPO SECURITY TAB LINK]
+
+Do not open a public issue, discussion, or pull request for a vulnerability.
+
+Include, where possible:
+- affected version and platform;
+- a description of the issue and its impact;
+- reproduction steps or a proof of concept;
+- any known mitigations;
+- how you would like to be credited.
+
+## WHAT TO EXPECT
+
+- Acknowledgement within [3] business days.
+- Triage and severity assessment within [7] business days.
+- A fix timeline depends on severity; we aim for [30/90] days for critical
+  issues.
+- We will keep you informed and coordinate disclosure with you.
+
+## COORDINATED DISCLOSURE
+
+We follow coordinated disclosure. We ask that you give us [90] days before
+public disclosure, or less if a fix ships sooner. We will credit reporters
+in the advisory unless you prefer to remain anonymous.
+
+## SAFE HARBOUR
+
+We consider good-faith security research authorised when it:
+- stays within [SCOPE: PRODUCTION SYSTEMS, TEST ACCOUNTS];
+- avoids privacy violations, data destruction, and service disruption;
+- uses only the minimum access needed to demonstrate the issue;
+- is reported promptly and kept confidential until coordinated disclosure.
+
+We will not pursue legal action for research that follows this policy.
+
+## OUT OF SCOPE
+
+- [SOCIAL ENGINEERING, PHYSICAL ATTACKS, DENIAL OF SERVICE]
+- Issues in third-party dependencies that are already publicly known and
+  fixed upstream; report those upstream first.
+- [OTHER EXCLUSIONS]
+
+## SECURITY.TXT
+
+A machine-readable contact file is published at
+`https://[DOMAIN]/.well-known/security.txt` (see the SECURITY.TXT TEMPLATE
+under FILES → POLICIES).
+
+## REFERENCES
+
+- GitHub — Adding a security policy: https://docs.github.com/code-security
+- disclose.io — safe harbour: https://disclose.io/
+- ISO/IEC 29147 — vulnerability disclosure: https://www.iso.org/standard/72311.html

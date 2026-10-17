@@ -1,0 +1,66 @@
+OPEN SOURCE NOTICES — TEMPLATE
+==============================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. The
+notices you must include depend on the licences of the components you
+distribute. Verify the obligations of each licence and have the final
+notices reviewed if distribution is significant.
+
+Replace every value in [SQUARE BRACKETS]. Delete this notice from the
+published version.
+
+---
+[PRODUCT NAME] — THIRD-PARTY NOTICES
+Version [X.Y] — [DATE]
+
+1. HOW TO READ THIS FILE
+------------------------
+[PRODUCT] includes third-party open source components. Each component is
+listed with its version, licence and, where required, the licence text.
+Nothing in this file changes the terms of those licences.
+
+2. COMPONENT INDEX
+------------------
+| COMPONENT | VERSION | LICENCE | COPYRIGHT HOLDER | LINK |
+|-----------|---------|---------|------------------|------|
+| [NAME]    | [X.Y]   | [SPDX]  | [HOLDER]         | [URL]|
+| [NAME]    | [X.Y]   | [SPDX]  | [HOLDER]         | [URL]|
+
+3. LICENCE TEXTS
+----------------
+Full texts are reproduced below (or in [LICENSES DIRECTORY]):
+
+- [LICENCE NAME] — applies to [COMPONENTS]
+  [FULL TEXT OR POINTER]
+
+4. NOTICES REQUIRED BY SPECIFIC LICENCES
+----------------------------------------
+- Apache-2.0: components with a NOTICE file require that NOTICE to be
+  included. Reproduce the contents of [NOTICE FILE] here.
+- MIT / BSD / ISC: copyright notices and licence text must accompany
+  distributions.
+- MPL-2.0: source code of MPL-covered files must be made available when
+  distributed in object form; include the licence text and source location.
+- LGPL / GPL / AGPL: provide the licence texts and the corresponding source
+  as required; see [SOURCE OFFER URL].
+
+5. GENERATING THIS FILE
+-----------------------
+Generate a component inventory with a licence scanner, for example
+[SCANCODE / ORT / REUSE / OTHER], and review the output manually. Keep the
+file versioned with each release.
+- SPDX: https://spdx.dev/
+- REUSE: https://reuse.software/
+- CycloneDX SBOM: https://cyclonedx.org/
+- ScanCode: https://github.com/nexB/scancode-toolkit
+
+6. CONTACT
+----------
+Questions: [CONTACT EMAIL]
+
+---
+REFERENCE MATERIAL
+- SPDX License List: https://spdx.org/licenses/
+- Apache NOTICE requirements: https://www.apache.org/licenses/LICENSE-2.0
+- OpenChain — compliance: https://openchainproject.org/

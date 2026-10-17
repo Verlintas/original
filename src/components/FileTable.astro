@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Circle from './Circle.astro';
+import { formatDate } from '../utils/format';
+
+interface Props {
+  entries: CollectionEntry<'files'>[];
+  showTags?: boolean;
+}
+
+const { entries, showTags = false } = Astro.props;
+---
+
+<table class="file-table">
+  <thead>
+    <tr>
+      <th scope="col">File</th>
+      <th scope="col" class="col-cat">Category</th>
+      <th scope="col" class="col-date">Updated</th>
+      <th scope="col" class="col-fmt">Format</th>
+      <th scope="col" class="col-size">Size</th>
+      <th scope="col" class="col-actions"><span class="visually-hidden">Actions</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      entries.map((entry) => {
+        const tags = entry.data.tags ?? [];
+        const search = [entry.data.title, entry.data.summary, entry.data.category, entry.data.format, ...tags]
+          .join(' ')
+          .toLowerCase();
+        return (
+          <tr
+            data-file-row
+            data-title={entry.data.title.toLowerCase()}
+            data-category={entry.data.category}
+            data-tags={tags.map((tag) => tag.toLowerCase()).join('|')}
+            data-search={search}
+          >
+            <td class="file-name">
+              <a href={`/files/${entry.id}/`}><Circle /><span>{entry.data.title}</span></a>
+              {showTags && tags.length > 0 && <span class="file-tags">{tags.join(' · ')}</span>}
+            </td>
+            <td class="col-cat">{entry.data.category}</td>
+            <td class="col-date">{formatDate(entry.data.date)}</td>
+            <td class="col-fmt">{entry.data.format}</td>
+            <td class="col-size">{entry.data.size}</td>
+            <td class="col-actions">
+              {entry.data.file ? (
+                <a class="action" href={entry.data.file} download>[ DOWNLOAD ]</a>
+              ) : entry.data.external ? (
+                <a class="action" href={entry.data.external} rel="noopener">[ MIRROR ]</a>
+              ) : (
+                <a class="action" href={`/files/${entry.id}/`}>[ DETAILS ]</a>
+              )}
+            </td>
+          </tr>
+        );
+      })
+    }
+  </tbody>
+</table>

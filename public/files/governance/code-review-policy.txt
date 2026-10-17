@@ -1,0 +1,78 @@
+CODE REVIEW POLICY — TEMPLATE
+=============================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. Adapt the thresholds and timelines to the size of the
+project and its maintainers. Delete this notice from the published
+version.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+# Code Review Policy — [PROJECT NAME]
+
+## GOALS
+
+Review exists to keep the code correct, secure, maintainable, and
+understandable — not to enforce personal style preferences. Reviews are
+technical, specific, and respectful.
+
+## WHO REVIEWS
+
+- Any maintainer or reviewer may review.
+- Pull requests require [ONE/TWO] approving review(s).
+- Changes touching [SECURITY, RELEASES, DATA MIGRATIONS] require an
+  additional maintainer approval.
+- Authors do not approve their own changes.
+
+## AUTHOR RESPONSIBILITIES
+
+- Keep pull requests small and focused.
+- Describe the problem, the approach, and how it was tested.
+- Ensure CI passes before requesting review.
+- Respond to comments; resolve conversations only after the reviewer agrees.
+- Do not force-push during review unless requested; add commits instead.
+
+## REVIEWER RESPONSIBILITIES
+
+- Respond within [TWO] business days when possible; if you cannot review,
+  say so and suggest someone else.
+- Review the change, not the author.
+- Distinguish blocking issues from suggestions: prefix optional comments
+  with "nit:" or "optional:".
+- Ask questions rather than assuming intent.
+- Approve when the change improves the codebase, even if it is not perfect.
+
+## REVIEW CHECKLIST
+
+- Correctness: does it do what it claims, with edge cases handled?
+- Tests: do they cover the change and fail without it?
+- Security: input validation, authentication, secrets, dependencies.
+- Performance: any obvious regressions or unbounded work?
+- Compatibility: API, behaviour, data formats, migration path.
+- Documentation: code comments where needed, user docs, changelog.
+- Accessibility and i18n where relevant.
+- Licensing: new files carry the required headers and compatible licences.
+- AI-generated content disclosed and understood by the author.
+
+## MERGING
+
+- All conversations must be resolved.
+- CI must pass on the latest commit.
+- Merge method: [SQUASH / REBASE / MERGE COMMIT].
+- Delete the branch after merge unless it is a long-lived release branch.
+
+## STALE PULL REQUESTS
+
+Pull requests with no activity for [60] days may be closed after a
+check-in comment. They can be reopened when work resumes.
+
+## ESCALATION
+
+Disagreements are resolved by discussion, then by [MAINTAINERS / GOVERNANCE
+PROCESS]. Conduct issues follow the [CODE OF CONDUCT].
+
+## REFERENCES
+
+- Google — Code Review Developer Guide: https://google.github.io/eng-practices/review/
+- GitHub — About pull request reviews: https://docs.github.com/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests

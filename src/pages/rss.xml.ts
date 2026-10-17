@@ -3,27 +3,20 @@ import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
-  const files = await getCollection('files');
-  const notes = await getCollection('notes');
+  const files = (await getCollection('files')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
+  );
 
-  const items = [
-    ...notes.map((entry) => ({
-      title: entry.data.title,
-      description: entry.data.summary,
-      pubDate: entry.data.date,
-      link: `/notes/${entry.id}/`,
-    })),
-    ...files.map((entry) => ({
-      title: entry.data.title,
-      description: entry.data.summary,
-      pubDate: entry.data.date,
-      link: `/files/${entry.id}/`,
-    })),
-  ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+  const items = files.map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.summary,
+    pubDate: entry.data.date,
+    link: `/files/${entry.id}/`,
+  }));
 
   return rss({
     title: 'Original',
-    description: 'A plain place for files, notes, and things worth keeping.',
+    description: 'Files, status, tools, and other useful things.',
     site: context.site!,
     items,
     customData: '<language>en</language>',

@@ -1,0 +1,78 @@
+RELEASE POLICY — TEMPLATE
+=========================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. Adapt the cadence, versioning, and support windows to the
+project. Delete this notice from the published version.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+# Release Policy — [PROJECT NAME]
+
+## VERSIONING
+
+Releases follow [Semantic Versioning 2.0.0](https://semver.org/):
+
+- MAJOR: incompatible API changes.
+- MINOR: backwards-compatible functionality.
+- PATCH: backwards-compatible fixes.
+
+Pre-releases use `-alpha.N`, `-beta.N`, or `-rc.N` suffixes.
+
+## CADENCE
+
+- Regular releases: [MONTHLY / AS NEEDED].
+- Patch releases for critical bugs: within [7] days.
+- Security releases: see [SECURITY POLICY]; target [72 hours] for critical
+  vulnerabilities after a fix is ready.
+
+## CHANGELOG
+
+Every release updates [CHANGELOG.md] following
+[Keep a Changelog](https://keepachangelog.com/): Added, Changed, Deprecated,
+Removed, Fixed, Security.
+
+## RELEASE CHECKLIST
+
+- [ ] All tests and CI checks pass on the release commit.
+- [ ] Version bumped in [VERSION FILES].
+- [ ] Changelog updated and reviewed.
+- [ ] Documentation and migration notes updated.
+- [ ] Third-party notices and SBOM regenerated (see OPEN SOURCE NOTICES).
+- [ ] Release artifacts built reproducibly; checksums recorded.
+- [ ] Artifacts signed where applicable ([SIGNING METHOD]).
+- [ ] Published on [GITHUB RELEASES / PACKAGE REGISTRY].
+- [ ] Announcement posted to [CHANNELS].
+
+## ARTIFACTS AND VERIFICATION
+
+- Publish checksums (SHA-256) beside every artifact.
+- Sign releases with [GPG / SIGSTORE / MINISIGN]; publish the public key
+  and verify instructions.
+- Provide an SBOM in [CycloneDX / SPDX] format.
+- Keep previous release artifacts available; do not delete tags.
+
+## SUPPORT WINDOW
+
+- The latest MAJOR receives features and fixes.
+- The previous MAJOR receives security fixes for [6/12] months after a new
+  MAJOR.
+- Older versions: no support, but the code and releases remain available.
+
+## DEPRECATION
+
+Deprecations are announced at least [ONE] MINOR release before removal, with
+a migration path in the changelog and documentation.
+
+## HOTFIXES
+
+Critical fixes may be released from a maintenance branch. The fix is merged
+back to the main branch and included in the next regular release.
+
+## REFERENCES
+
+- Semantic Versioning: https://semver.org/
+- Keep a Changelog: https://keepachangelog.com/
+- SLSA — supply chain levels: https://slsa.dev/
+- OpenSSF — best practices: https://best.openssf.org/

@@ -5,53 +5,87 @@ import Circle from '../components/Circle.astro';
 
 <BaseLayout
   title="ABOUT"
-  description="What Original is, what it holds, and how to reach it."
+  description="What Original is, who maintains it, and how its files are kept."
 >
-  <h1 class="page-title"><Circle /> ABOUT</h1>
-  <p class="lede">
-    Original is a personal site for storing, showing, and handing out files — and, in time,
-    whatever else it needs to be.
-  </p>
-
-  <div class="prose">
-    <h2>WHAT THIS IS</h2>
-    <p>
-      A plain place on the web. White background, red text, and no other colours. No trackers,
-      no accounts, no comments. Static pages generated at build time and served as plain files.
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> ABOUT</h1>
+    <p class="lede">
+      A personal working site: files with stable addresses, live status, and small tools.
     </p>
-    <p>
-      The site is meant to grow into a general-purpose home: today it holds documents and small
-      tools; later it may hold notes, archives, and anything else worth keeping in one address.
-    </p>
+  </header>
 
-    <h2>WHAT IS HERE</h2>
-    <ul>
-      <li><strong>FILES</strong> — documents, tools, media, and archives, ready to download.</li>
-      <li><strong>NOTES</strong> — short pieces of writing about the site and its contents.</li>
-      <li><strong>LINKS</strong> — a short list of places worth visiting.</li>
-      <li><strong>COLOPHON</strong> — the typographic and technical rules this site obeys.</li>
-    </ul>
+  <div class="about-grid">
+    <div class="prose">
+      <h2>THE SITE</h2>
+      <p>
+        Original is where I keep things that need an address on the web: reference files I reuse,
+        links worth preserving, and small tools I want available from any device. It also reports
+        the state of my projects and of the services they run on.
+      </p>
+      <p>
+        There are no accounts, no comments, and no tracking scripts. The site is generated as
+        static files and served from GitHub Pages.
+      </p>
 
-    <h2>HOW FILES WORK</h2>
-    <p>
-      Small files are committed to the site's repository and served directly from this address.
-      Large files live on GitHub Releases, and the site only holds a link to them. Every listing
-      states its format, size, version, and — where possible — a checksum, so what you download
-      can be verified.
-    </p>
+      <h2>WHAT IS HERE</h2>
+      <ul>
+        <li><strong>STATUS</strong> — live checks of this site, my other sites, my GitHub projects, and GitHub itself.</li>
+        <li><strong>FILES</strong> — licenses, copyright headers, and policy/governance templates, kept as canonical plain text.</li>
+        <li><strong>UNIVERSE</strong> — small browser tools; currently checksums and JSON formatting.</li>
+        <li><strong>CLI</strong> — a terminal interface to the same content, reachable from the footer or at <code>/cli/</code>.</li>
+        <li><strong>Machine index</strong> — <a href="/index.json">/index.json</a> and <a href="/llms.txt">/llms.txt</a> describe the site for scripts and AI agents.</li>
+      </ul>
 
-    <h2>CONTACT</h2>
-    <p>
-      The fastest way to reach the maintainer is
-      <a href="https://github.com/Verlintas" rel="noopener">GitHub — VERLINTAS</a>.
-      An email address on this domain may follow later.
-    </p>
+      <h2>WHO RUNS IT</h2>
+      <p>
+        The site is maintained by <strong>Verlintas</strong>, a developer working mostly on
+        Android and local-first software. Recent public projects include{' '}
+        <a href="https://github.com/Verlintas/NovaBAIC">NovaBAIC</a>,{' '}
+        <a href="https://github.com/Verlintas/OpenVisum">OpenVisum</a>, and{' '}
+        <a href="https://github.com/Verlintas/OpenTraduko">OpenTraduko</a>{' '}
+        — the <a href="/status/">STATUS</a> page lists them with their latest activity.
+      </p>
 
-    <h2>SOFTWARE</h2>
-    <p>
-      Built with <a href="https://astro.build" rel="noopener">Astro</a>, deployed by GitHub Actions,
-      hosted on <a href="https://pages.github.com" rel="noopener">GitHub Pages</a>. See the
-      <a href="/colophon/">COLOPHON</a> for details.
-    </p>
+      <h2>HOW FILES ARE KEPT</h2>
+      <p>
+        Every file carries a date, version, format, size and — where possible — a SHA-256
+        checksum. Canonical third-party texts name their source. Templates written here are
+        released under CC0-1.0 unless the file itself says otherwise. Files are versioned in git;
+        replacing a file means adding a new version, not overwriting history.
+      </p>
+
+      <h2>QUESTIONS</h2>
+      <h3>Why is there no account system?</h3>
+      <p>Nothing on the site needs one. Files are public and tools run locally in the browser.</p>
+      <h3>Can I reuse the templates?</h3>
+      <p>
+        Yes. Headers and templates marked CC0-1.0 are free to copy and adapt. The privacy
+        templates are starting points, not legal advice — have them reviewed before use.
+      </p>
+      <h3>How do I report a problem?</h3>
+      <p>
+        Open an issue on <a href="https://github.com/Verlintas/original">the repository</a> or
+        send a message through <a href="https://x.com/Verlintas">X</a>.
+      </p>
+
+      <h2>CONTACT</h2>
+      <p>
+        <a href="https://github.com/Verlintas">GitHub — Verlintas</a><br />
+        <a href="https://x.com/Verlintas">X — @Verlintas</a>
+      </p>
+    </div>
+
+    <aside class="about-aside" aria-label="Site facts">
+      <h2>Facts</h2>
+      <ul class="facts">
+        <li><span class="fact-key">Domain</span><span>original.wales</span></li>
+        <li><span class="fact-key">Launched</span><span>2026</span></li>
+        <li><span class="fact-key">Generator</span><span>Astro</span></li>
+        <li><span class="fact-key">Hosting</span><span>GitHub Pages</span></li>
+        <li><span class="fact-key">Source</span><span><a href="https://github.com/Verlintas/original">Verlintas/original</a></span></li>
+        <li><span class="fact-key">CLI</span><span><a href="/cli/">/cli/</a></span></li>
+        <li><span class="fact-key">Feed</span><span><a href="/rss.xml">/rss.xml</a></span></li>
+      </ul>
+    </aside>
   </div>
 </BaseLayout>

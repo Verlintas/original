@@ -1,0 +1,39 @@
+SPDX FILE HEADERS
+=================
+Version 1.0 — 2026-10-17
+
+Machine-readable copyright and licence statements, maintained by the SPDX
+project and used by the REUSE initiative. These two lines replace informal
+per-file notices and are understood by scanners and package tooling.
+
+COPY-PASTE
+----------
+SPDX-FileCopyrightText: <year> <name>
+SPDX-License-Identifier: <license expression>
+
+EXAMPLES
+--------
+SPDX-FileCopyrightText: 2026 Verlintas
+SPDX-License-Identifier: MIT
+
+SPDX-FileCopyrightText: 2026 Verlintas
+SPDX-License-Identifier: Apache-2.0
+
+SPDX-FileCopyrightText: 2026 Verlintas
+SPDX-License-Identifier: GPL-3.0-or-later
+
+NOTES
+-----
+- Place the two lines at the top of every file, in the language's comment
+  syntax: # for shell and Python, // for C-family languages, <!-- --> for
+  HTML and XML.
+- Use exact identifiers from the SPDX License List. Expressions may combine
+  them, for example: MIT OR Apache-2.0.
+- If every file carries these lines, a licence scanner can describe the
+  whole project without reading a LICENSE file.
+
+SOURCES
+-------
+SPDX license identifiers: https://spdx.dev/learn/handling-license-info/
+SPDX License List: https://spdx.org/licenses/
+REUSE specification: https://reuse.software/spec/

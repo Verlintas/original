@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout
+  title="UNIVERSE"
+  description="Small tools and experiments that run in the browser."
+>
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> UNIVERSE</h1>
+    <p class="lede">
+      Small tools and experiments. Everything runs in the browser; nothing is uploaded.
+    </p>
+  </header>
+
+  <section aria-labelledby="checksum-heading">
+    <div class="section-head">
+      <h2 id="checksum-heading" class="label">Checksum</h2>
+      <span class="section-count">SHA-256</span>
+    </div>
+
+    <div class="tool" style="margin-top: 1.4rem;">
+      <div class="tool-pane">
+        <h2>Choose a file</h2>
+        <label class="drop-zone" id="drop-zone">
+          <input type="file" id="file-input" />
+          <p>Drop a file here, or click to choose one.</p>
+          <span class="label">Any type · computed locally</span>
+        </label>
+      </div>
+      <div class="tool-pane">
+        <h2>Result</h2>
+        <p class="hash-file" id="hash-file">No file selected</p>
+        <pre class="hash-output" id="hash-output">—</pre>
+        <div class="tool-actions">
+          <button type="button" class="action" id="copy-hash" disabled>[ COPY ]</button>
+          <button type="button" class="action" id="clear-hash" disabled>[ CLEAR ]</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="json-heading" style="margin-top: 3rem;">
+    <div class="section-head">
+      <h2 id="json-heading" class="label">JSON</h2>
+      <span class="section-count">Validate &amp; format</span>
+    </div>
+
+    <div class="tool-single" style="margin-top: 1.4rem;">
+      <div class="tool-pane">
+        <textarea
+          class="tool-textarea"
+          id="json-input"
+          spellcheck="false"
+          placeholder='Paste JSON here, for example: {"original": true}'
+        ></textarea>
+        <div class="tool-actions">
+          <button type="button" class="action" id="json-format">[ FORMAT ]</button>
+          <button type="button" class="action" id="json-minify">[ MINIFY ]</button>
+          <button type="button" class="action" id="json-clear">[ CLEAR ]</button>
+        </div>
+        <p class="tool-error" id="json-error" hidden></p>
+        <pre class="hash-output" id="json-output" style="margin-top: 1rem;">—</pre>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const hashFile = document.getElementById('hash-file');
+    const hashOutput = document.getElementById('hash-output');
+    const copyButton = document.getElementById('copy-hash');
+    const clearButton = document.getElementById('clear-hash');
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function toHex(buffer) {
+      return Array.from(new Uint8Array(buffer))
+        .map((byte) => byte.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    async function hashFileObject(file) {
+      hashFile.textContent = file.name + ' · ' + formatSize(file.size);
+      hashOutput.textContent = 'Computing…';
+      copyButton.disabled = true;
+      clearButton.disabled = true;
+      try {
+        const buffer = await file.arrayBuffer();
+        const digest = await crypto.subtle.digest('SHA-256', buffer);
+        hashOutput.textContent = toHex(digest);
+        copyButton.disabled = false;
+      } catch (error) {
+        hashOutput.textContent = 'Could not read this file.';
+      }
+      clearButton.disabled = false;
+    }
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files[0]) hashFileObject(fileInput.files[0]);
+    });
+
+    ['dragenter', 'dragover'].forEach((event) => {
+      dropZone.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach((event) => {
+      dropZone.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) hashFileObject(file);
+    });
+
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(hashOutput.textContent);
+        copyButton.textContent = '[ COPIED ]';
+        setTimeout(() => (copyButton.textContent = '[ COPY ]'), 1500);
+      } catch (error) {
+        copyButton.textContent = '[ COPY FAILED ]';
+        setTimeout(() => (copyButton.textContent = '[ COPY ]'), 1500);
+      }
+    });
+
+    clearButton.addEventListener('click', () => {
+      fileInput.value = '';
+      hashFile.textContent = 'No file selected';
+      hashOutput.textContent = '—';
+      copyButton.disabled = true;
+      clearButton.disabled = true;
+    });
+
+    const jsonInput = document.getElementById('json-input');
+    const jsonOutput = document.getElementById('json-output');
+    const jsonError = document.getElementById('json-error');
+
+    function runJson(mode) {
+      jsonError.hidden = true;
+      try {
+        const value = JSON.parse(jsonInput.value);
+        jsonOutput.textContent =
+          mode === 'minify' ? JSON.stringify(value) : JSON.stringify(value, null, 2);
+      } catch (error) {
+        jsonOutput.textContent = '—';
+        jsonError.textContent = 'Invalid JSON: ' + error.message;
+        jsonError.hidden = false;
+      }
+    }
+
+    document.getElementById('json-format').addEventListener('click', () => runJson('format'));
+    document.getElementById('json-minify').addEventListener('click', () => runJson('minify'));
+    document.getElementById('json-clear').addEventListener('click', () => {
+      jsonInput.value = '';
+      jsonOutput.textContent = '—';
+      jsonError.hidden = true;
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,713 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout
+  title="CLI"
+  description="A terminal interface to Original, for humans and scripts."
+  noindex
+>
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> CLI</h1>
+    <p class="lede">
+      A terminal interface to the same content. Human-friendly, and predictable enough for scripts.
+    </p>
+  </header>
+
+  <div class="cli-wrap">
+    <div class="cli-output" id="cli-output" role="log" aria-live="polite"></div>
+    <form class="cli-line" id="cli-form">
+      <label class="cli-prompt" id="cli-prompt" for="cli-input">original / $</label>
+      <input
+        class="cli-input"
+        id="cli-input"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-label="Command"
+      />
+    </form>
+  </div>
+
+  <p class="cli-hint">
+    Type <code>help</code>. Direct commands: <code>/cli/?cmd=search%20license</code> ·
+    <code>--json</code> for machine output · <code>/index.json</code> ·
+    <code>/search.json</code> · <code>/llms.txt</code>
+  </p>
+
+  <noscript>
+    <p class="status-note">
+      The terminal needs JavaScript. The same content is available at
+      <a href="/files/">/files/</a>, <a href="/status/">/status/</a>, and
+      <a href="/index.json">/index.json</a>.
+    </p>
+  </noscript>
+
+  <script>
+    const output = document.getElementById('cli-output');
+    const form = document.getElementById('cli-form');
+    const input = document.getElementById('cli-input');
+    const promptEl = document.getElementById('cli-prompt');
+
+    const COMMANDS = [
+      'help', 'ls', 'cd', 'pwd', 'tree', 'files', 'cat', 'read', 'head', 'tail',
+      'search', 'verify', 'download', 'open', 'status', 'links', 'stats', 'about',
+      'date', 'whoami', 'source', 'history', 'clear', 'exit', 'echo',
+    ];
+
+    const HELP = {
+      help: 'help [command] — list commands or explain one.',
+      ls: 'ls [-l] [path] — list the current directory, a section, or a files category. -l adds size and date.',
+      cd: 'cd <path> — change directory: /, /files, /files/licenses, /files/headers, /files/policies, /status, /universe, /about.',
+      pwd: 'pwd — print the current path.',
+      tree: 'tree — show the whole site tree.',
+      files: 'files [category|tag] — list files, filtered by category or tag (for example COPYLEFT).',
+      cat: 'cat <file> — metadata and summary for a file. Accepts a slug or path.',
+      read: 'read <file> — print the complete text of a file.',
+      head: 'head <file> [n] — print the first n lines (default 20).',
+      tail: 'tail <file> [n] — print the last n lines (default 20).',
+      search: 'search <term> — full-text search across every text file on the site.',
+      verify: 'verify <file> — download a file and check its SHA-256 against the published value.',
+      download: 'download <file> — start a download.',
+      open: 'open <section|file|url> — open a page, file, or external URL.',
+      status: 'status — GitHub platform status and site reachability.',
+      links: 'links — list the site links.',
+      stats: 'stats — counts, total size, and index generation time.',
+      about: 'about — one paragraph about the site.',
+      date: 'date — current date and time.',
+      whoami: 'whoami — identify the current visitor.',
+      source: 'source — source repository URL.',
+      history: 'history — command history.',
+      clear: 'clear — clear the screen (Ctrl+L also works).',
+      exit: 'exit — there is no exit.',
+      echo: 'echo <text> — print text.',
+    };
+
+    let index = null;
+    let searchData = null;
+    let cwd = '/';
+    const history = [];
+    let historyPos = 0;
+    let busy = false;
+
+    function print(text) {
+      output.appendChild(document.createTextNode(text + '\n'));
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function printMuted(text) {
+      const span = document.createElement('span');
+      span.className = 'muted';
+      span.textContent = text + '\n';
+      output.appendChild(span);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function jsonOut(value) {
+      print(JSON.stringify(value, null, 2));
+    }
+
+    function setPrompt() {
+      promptEl.textContent = 'original ' + cwd + ' $';
+    }
+
+    function normalizePath(raw) {
+      const value = (raw || '').trim();
+      const parts = (value.startsWith('/') ? value : cwd + '/' + (value || '.')).split('/');
+      const out = [];
+      for (const part of parts) {
+        if (!part || part === '.') continue;
+        if (part === '..') out.pop();
+        else out.push(part);
+      }
+      return '/' + out.join('/');
+    }
+
+    function basename(p) {
+      return p.split('/').filter(Boolean).pop() || p;
+    }
+
+    function categories() {
+      return [...new Set(index.files.map((f) => f.category.toLowerCase()))];
+    }
+
+    function entriesInCategory(cat) {
+      return index.files.filter((f) => f.category.toLowerCase() === cat);
+    }
+
+    function resolveEntry(target) {
+      if (!index || !target) return null;
+      const t = target.trim().toLowerCase();
+      const direct = index.files.find(
+        (f) => f.id === t || f.title.toLowerCase() === t || basename(f.download || '').toLowerCase() === t,
+      );
+      if (direct) return direct;
+      const abs = normalizePath(target).toLowerCase();
+      return (
+        index.files.find((f) => f.download && normalizePath(f.download).toLowerCase() === abs) || null
+      );
+    }
+
+    function sectionForPath(pathname) {
+      if (!index) return null;
+      return index.sections.find((s) => normalizePath(s.path) === pathname) || null;
+    }
+
+    function listDir(pathname) {
+      if (!index) return null;
+      if (pathname === '/') {
+        const items = [];
+        for (const section of index.sections) {
+          if (section.path === '/') continue;
+          items.push({
+            kind: 'dir',
+            name: section.name.toLowerCase(),
+            description: section.description,
+            path: section.path,
+          });
+        }
+        items.push({ kind: 'file', name: 'index.json', description: 'Machine index (JSON).' });
+        items.push({ kind: 'file', name: 'search.json', description: 'Full-text search data.' });
+        items.push({ kind: 'file', name: 'llms.txt', description: 'Site description for AI agents.' });
+        items.push({ kind: 'file', name: 'rss.xml', description: 'Feed of published files.' });
+        return items;
+      }
+      if (pathname === '/files') {
+        return categories().map((cat) => ({
+          kind: 'dir',
+          name: cat,
+          description: entriesInCategory(cat).length + ' files',
+          path: '/files/' + cat,
+        }));
+      }
+      const cat = pathname.startsWith('/files/') ? pathname.slice('/files/'.length) : null;
+      if (cat && categories().includes(cat)) {
+        return entriesInCategory(cat).map((entry) => ({
+          kind: 'file',
+          name: entry.download ? basename(entry.download) : entry.id,
+          description: entry.title,
+          size: entry.size,
+          date: entry.date,
+          entry,
+        }));
+      }
+      if (sectionForPath(pathname)) return [];
+      return null;
+    }
+
+    function dirsOnly(pathname) {
+      const items = listDir(pathname) || [];
+      return items.filter((item) => item.kind === 'dir').map((item) => item.name + '/');
+    }
+
+    function printEntries(pathname, long) {
+      const items = listDir(pathname);
+      if (!items) return printMuted('Not a directory: ' + pathname);
+      if (!items.length) return printMuted('(empty)');
+      for (const item of items) {
+        if (item.kind === 'dir') {
+          print('  ' + (item.name + '/').padEnd(18) + item.description);
+        } else if (item.entry) {
+          const meta = long ? item.size + ' · ' + item.date + ' · ' + item.description : item.description;
+          print('  ' + item.name.padEnd(34) + meta);
+        } else {
+          print('  ' + item.name.padEnd(18) + item.description);
+        }
+      }
+    }
+
+    function listFiles(filter, json) {
+      const needle = (filter || '').toLowerCase();
+      const items = needle
+        ? index.files.filter(
+            (f) =>
+              f.category.toLowerCase() === needle ||
+              (f.tags || []).some((tag) => tag.toLowerCase() === needle),
+          )
+        : index.files;
+      if (!items.length) {
+        return json
+          ? jsonOut({ filter: filter || null, files: [] })
+          : printMuted('No files for category or tag: ' + filter);
+      }
+      if (json) {
+        return jsonOut({ filter: filter || null, files: items });
+      }
+      print('  ' + 'FILE'.padEnd(36) + 'CATEGORY'.padEnd(12) + 'SIZE');
+      for (const file of items) {
+        print('  ◯ ' + file.title.padEnd(34) + file.category.padEnd(12) + file.size);
+      }
+      print('');
+      printMuted(items.length + ' file(s). Use "cat <file>", "read <file>", or "open <file>".');
+    }
+
+    function tree() {
+      if (!index) return printMuted('Still loading the index.');
+      print('/');
+      for (const section of index.sections) {
+        if (section.path === '/' || section.name === 'FILES') continue;
+        print('  ' + section.name.toLowerCase() + '/');
+      }
+      print('  files/');
+      for (const cat of categories()) {
+        print('    ' + cat + '/');
+        for (const entry of entriesInCategory(cat)) {
+          print('      ' + (entry.download ? basename(entry.download) : entry.id));
+        }
+      }
+      print('  index.json');
+      print('  search.json');
+      print('  llms.txt');
+      print('  rss.xml');
+    }
+
+    function showMeta(entry, json) {
+      if (json) return jsonOut(entry);
+      print('  ◯ ' + entry.title);
+      print('  id:        ' + entry.id);
+      print('  category:  ' + entry.category);
+      print('  updated:   ' + entry.date);
+      print('  version:   ' + entry.version);
+      print('  format:    ' + entry.format + ' · ' + entry.size + (entry.bytes ? ' (' + entry.bytes + ' bytes)' : ''));
+      print('  license:   ' + entry.license);
+      if (entry.tags && entry.tags.length) print('  tags:      ' + entry.tags.join(' · '));
+      if (entry.sha256) print('  sha256:    ' + entry.sha256);
+      if (entry.source) print('  source:    ' + entry.source);
+      if (entry.download) print('  download:  ' + entry.download);
+      print('  page:      ' + entry.url);
+      print('');
+      print(entry.summary);
+      print('');
+      printMuted('read ' + entry.id + ' · verify ' + entry.id + ' · open ' + entry.id);
+    }
+
+    async function fileText(entry) {
+      if (!entry.download) throw new Error('File is not mirrored on this site.');
+      const res = await fetch(entry.download, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.text();
+    }
+
+    async function readEntry(entry, json) {
+      try {
+        const text = await fileText(entry);
+        if (json) return jsonOut({ ...entry, text });
+        print(text);
+      } catch (error) {
+        printMuted('Could not read file: ' + error.message);
+      }
+    }
+
+    async function headTail(entry, count, fromEnd) {
+      try {
+        const text = await fileText(entry);
+        const lines = text.split('\n');
+        const n = Number.isFinite(count) && count > 0 ? count : 20;
+        const slice = fromEnd ? lines.slice(-n) : lines.slice(0, n);
+        print(slice.join('\n'));
+        printMuted('— ' + slice.length + ' of ' + lines.length + ' lines');
+      } catch (error) {
+        printMuted('Could not read file: ' + error.message);
+      }
+    }
+
+    function hex(buffer) {
+      return Array.from(new Uint8Array(buffer))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    async function verify(entry, json) {
+      if (!entry.download) return printMuted('No downloadable file for ' + entry.title + '.');
+      if (!entry.sha256) return printMuted('No published checksum for ' + entry.title + '.');
+      printMuted('Downloading ' + basename(entry.download) + ' …');
+      try {
+        const res = await fetch(entry.download, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const buffer = await res.arrayBuffer();
+        const actual = hex(await crypto.subtle.digest('SHA-256', buffer));
+        const ok = actual === entry.sha256;
+        if (json) return jsonOut({ id: entry.id, expected: entry.sha256, actual, ok });
+        print('  file:      ' + entry.download);
+        print('  expected:  ' + entry.sha256);
+        print('  actual:    ' + actual);
+        print('');
+        print(ok ? '  OK — checksum matches.' : '  MISMATCH — do not use this file.');
+      } catch (error) {
+        printMuted('Verification failed: ' + error.message);
+      }
+    }
+
+    async function search(term, json) {
+      if (!term) return printMuted('Usage: search <term>');
+      if (!searchData) {
+        printMuted('Loading search index …');
+        try {
+          const res = await fetch('/search.json', { cache: 'no-store' });
+          searchData = await res.json();
+        } catch (error) {
+          return printMuted('Could not load /search.json.');
+        }
+      }
+      const needle = term.toLowerCase();
+      const results = [];
+      for (const doc of searchData.docs) {
+        const lines = doc.text.split('\n');
+        const contexts = [];
+        let matches = 0;
+
+        const meta = [];
+        if (doc.title.toLowerCase().includes(needle)) meta.push('title: ' + doc.title);
+        if ((doc.tags || []).some((tag) => tag.toLowerCase().includes(needle))) {
+          meta.push('tags: ' + doc.tags.join(', '));
+        }
+        if ((doc.summary || '').toLowerCase().includes(needle)) {
+          meta.push('summary: ' + doc.summary);
+        }
+        matches += meta.length;
+        contexts.push(...meta);
+
+        for (const line of lines) {
+          if (line.toLowerCase().includes(needle)) {
+            matches += 1;
+            if (contexts.length < 2) contexts.push(line.trim().slice(0, 180));
+          }
+        }
+        if (matches) {
+          results.push({ id: doc.id, title: doc.title, url: doc.url, matches, contexts });
+        }
+      }
+      if (json) return jsonOut({ term, results });
+      if (!results.length) return printMuted('No matches for "' + term + '".');
+      const total = results.reduce((sum, r) => sum + r.matches, 0);
+      print(total + ' match(es) in ' + results.length + ' file(s):');
+      for (const result of results) {
+        print('');
+        print('  ◯ ' + result.title + '  (' + result.matches + ')');
+        for (const line of result.contexts) print('      ' + line);
+      }
+      print('');
+      printMuted('Open the file: cat <file> · read <file>');
+    }
+
+    async function status(json) {
+      const state = { github: null, sites: [] };
+      try {
+        const res = await fetch('https://www.githubstatus.com/api/v2/status.json', { cache: 'no-store' });
+        const data = await res.json();
+        state.github = { indicator: data.status.indicator, description: data.status.description };
+      } catch (error) {
+        state.github = { indicator: 'unknown', description: 'Unavailable' };
+      }
+      for (const site of (index ? index.sites : [])) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000);
+        const start = performance.now();
+        try {
+          await fetch(site.url, { mode: 'no-cors', cache: 'no-store', signal: controller.signal });
+          state.sites.push({ name: site.name, url: site.url, reachable: true, ms: Math.round(performance.now() - start) });
+        } catch (error) {
+          state.sites.push({ name: site.name, url: site.url, reachable: false, ms: null });
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+      if (json) return jsonOut(state);
+      if (state.github) {
+        print('  GitHub: ' + state.github.description + ' (' + state.github.indicator + ')');
+      }
+      for (const site of state.sites) {
+        print('  ' + site.name + ': ' + (site.reachable ? 'reachable (' + site.ms + ' ms)' : 'unreachable'));
+      }
+      printMuted('Full dashboard: /status/');
+    }
+
+    function stats(json) {
+      const counts = {};
+      let bytes = 0;
+      for (const file of index.files) {
+        counts[file.category] = (counts[file.category] || 0) + 1;
+        bytes += file.bytes || 0;
+      }
+      const payload = {
+        files: index.files.length,
+        byCategory: counts,
+        links: index.links.length,
+        totalBytes: bytes,
+        generated: index.generated,
+      };
+      if (json) return jsonOut(payload);
+      print('  files:      ' + payload.files + ' (' + Object.entries(counts).map(([k, v]) => k.toLowerCase() + ' ' + v).join(', ') + ')');
+      print('  links:      ' + payload.links);
+      print('  total size: ' + (bytes / 1024).toFixed(1) + ' KB');
+      print('  generated:  ' + payload.generated);
+    }
+
+    function simpleHelp(command) {
+      if (command && HELP[command]) {
+        print(HELP[command]);
+        return;
+      }
+      if (command) return printMuted('No help for "' + command + '".');
+      print('Commands:');
+      for (const [name, text] of Object.entries(HELP)) {
+        const [usage, description] = text.split(' — ');
+        print('  ' + usage.padEnd(30) + description);
+      }
+      print('');
+      printMuted('Flags: --json  ·  Paths: /, /files, /files/licenses  ·  Slugs also work.');
+      printMuted('Direct links: /cli/?cmd=search%20license · /index.json · /search.json · /llms.txt');
+    }
+
+    function resolveOrWarn(target) {
+      const entry = resolveEntry(target);
+      if (!entry) printMuted('No such file: ' + (target || '(none)'));
+      return entry;
+    }
+
+    async function run(raw) {
+      const line = raw.trim();
+      if (!line) return;
+      print('original ' + cwd + ' $ ' + line);
+
+      const wantsJson = /(^|\s)--json(\s|$)/.test(line);
+      const cleaned = line.replace(/(^|\s)--json(\s|$)/g, ' ').trim();
+      const tokens = (cleaned.match(/(?:[^\s"]+|"[^"]*")+/g) || []).map((t) =>
+        t.replace(/^"|"$/g, ''),
+      );
+      const command = (tokens[0] || '').toLowerCase();
+      const args = tokens.slice(1);
+
+      const offlineSafe = ['help', 'man', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
+      if (!index && !offlineSafe.includes(command)) {
+        return printMuted('The index is not loaded. Try refreshing the page.');
+      }
+
+      if (command === 'help' || command === 'man') simpleHelp(args[0]);
+      else if (command === 'ls') {
+        const long = args.includes('-l');
+        const pathArg = args.filter((a) => !a.startsWith('-'))[0];
+        const target = normalizePath(pathArg);
+        if (wantsJson) {
+          const items = listDir(target);
+          return jsonOut(items ? { path: target, items } : { path: target, error: 'not a directory' });
+        }
+        printEntries(target, long);
+      } else if (command === 'cd') {
+        const target = normalizePath(args[0] || '/');
+        if (target === '/' || target === '/files' || /^\/files\/(licenses|headers|policies)$/.test(target) || sectionForPath(target)) {
+          cwd = target;
+          setPrompt();
+        } else {
+          printMuted('Not a directory: ' + target);
+        }
+      } else if (command === 'pwd') {
+        print(cwd);
+      } else if (command === 'tree') {
+        tree();
+      } else if (command === 'files' || command === 'list') {
+        listFiles(args[0] || null, wantsJson);
+      } else if (command === 'cat' || command === 'meta') {
+        const entry = resolveOrWarn(args[0]);
+        if (entry) showMeta(entry, wantsJson);
+      } else if (command === 'read' || command === 'get') {
+        const entry = resolveOrWarn(args[0]);
+        if (entry) await readEntry(entry, wantsJson);
+      } else if (command === 'head' || command === 'tail') {
+        const entry = resolveOrWarn(args[0]);
+        if (entry) await headTail(entry, args[1] ? parseInt(args[1], 10) : 20, command === 'tail');
+      } else if (command === 'search' || command === 'grep' || command === 'find') {
+        await search(args.join(' ').trim(), wantsJson);
+      } else if (command === 'verify' || command === 'sha256') {
+        const entry = resolveOrWarn(args[0]);
+        if (entry) await verify(entry, wantsJson);
+      } else if (command === 'download') {
+        const entry = resolveOrWarn(args[0]);
+        if (!entry) return;
+        if (!entry.download) return printMuted('No downloadable file for ' + entry.title + '.');
+        const anchor = document.createElement('a');
+        anchor.href = entry.download;
+        anchor.download = basename(entry.download);
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        print('Download started: ' + basename(entry.download));
+      } else if (command === 'open') {
+        const target = args[0];
+        if (!target) return printMuted('Usage: open <section|file|url>');
+        if (/^https?:\/\//.test(target)) {
+          window.open(target, '_blank', 'noopener');
+          return;
+        }
+        const entry = resolveEntry(target);
+        if (entry) {
+          window.location.href = entry.url;
+          return;
+        }
+        const section = sectionForPath(normalizePath(target));
+        if (section) {
+          window.location.href = section.path;
+          return;
+        }
+        if (target.startsWith('/')) {
+          window.location.href = target;
+          return;
+        }
+        printMuted('Nothing called "' + target + '". Try ls.');
+      } else if (command === 'status') {
+        await status(wantsJson);
+      } else if (command === 'links') {
+        if (wantsJson) return jsonOut(index.links);
+        for (const link of index.links) print('  ' + link.name + '\n      ' + link.url);
+      } else if (command === 'stats') {
+        stats(wantsJson);
+      } else if (command === 'about') {
+        print('Original — files with stable addresses, live status, and small tools.');
+        print('Maintained by Verlintas. See /about/ for details.');
+      } else if (command === 'date') {
+        print(new Date().toString());
+      } else if (command === 'whoami') {
+        print('guest — human or agent');
+      } else if (command === 'source') {
+        print('https://github.com/Verlintas/original');
+      } else if (command === 'history') {
+        history.forEach((item, i) => print('  ' + (i + 1) + '  ' + item));
+      } else if (command === 'clear' || command === 'cls') {
+        output.replaceChildren();
+      } else if (command === 'exit' || command === 'quit') {
+        printMuted('There is no exit. This is a website.');
+      } else if (command === 'echo') {
+        print(args.join(' '));
+      } else {
+        printMuted('command not found: ' + command + ' — type help');
+      }
+    }
+
+    function currentToken() {
+      const pos = input.selectionStart ?? input.value.length;
+      const before = input.value.slice(0, pos);
+      const parts = before.split(/\s+/);
+      const token = parts[parts.length - 1] || '';
+      return { token, start: pos - token.length, firstWord: parts.filter(Boolean).length <= 1 };
+    }
+
+    function getCompletions(command, token) {
+      if (!index) return [];
+      const prefix = token.toLowerCase();
+      if (!command) return COMMANDS.filter((c) => c.startsWith(prefix));
+
+      if (command === 'files') {
+        return categories().filter((c) => c.startsWith(prefix));
+      }
+      if (command === 'open') {
+        const sectionPaths = index.sections.map((s) => s.name.toLowerCase());
+        const slugs = index.files.map((f) => f.id);
+        return [...sectionPaths, ...slugs].filter((v) => v.startsWith(prefix));
+      }
+      if (command === 'cd') {
+        const dirs = dirsOnly(cwd);
+        return dirs.filter((v) => v.startsWith(prefix));
+      }
+      if (['cat', 'read', 'head', 'tail', 'verify', 'download', 'ls'].includes(command)) {
+        const items = listDir(cwd) || [];
+        const names = items.map((item) => (item.kind === 'dir' ? item.name + '/' : item.name));
+        const slugs = index.files.map((f) => f.id);
+        return [...new Set([...names, ...slugs])].filter((v) => v.startsWith(prefix));
+      }
+      return [];
+    }
+
+    function complete() {
+      const { token, start, firstWord } = currentToken();
+      const before = input.value.slice(0, start);
+      const command = firstWord ? '' : (before.trim().split(/\s+/)[0] || '').toLowerCase();
+      const options = getCompletions(command, token);
+      if (!options.length) return;
+      if (options.length === 1) {
+        const value = before + options[0] + (firstWord ? ' ' : ' ');
+        input.value = value;
+        input.setSelectionRange(value.length, value.length);
+      } else {
+        printMuted('  ' + options.join('   '));
+      }
+    }
+
+    async function boot() {
+      printMuted('ORIGINAL — shell · type help · --json for machine output');
+      print('');
+      try {
+        const res = await fetch('/index.json', { cache: 'no-store' });
+        index = await res.json();
+        printMuted(
+          'Index loaded: ' + index.files.length + ' files · ' + index.links.length + ' links · ' +
+            new Date(index.generated).toISOString().slice(0, 10),
+        );
+      } catch (error) {
+        printMuted('Could not load /index.json. Commands that need content will not work.');
+      }
+      print('');
+
+      const requested = new URLSearchParams(window.location.search).get('cmd');
+      if (requested) {
+        for (const part of requested.replace(/&&/g, ';').split(';')) {
+          await run(part);
+        }
+        print('');
+      }
+
+      input.focus();
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (busy) return;
+      const value = input.value;
+      input.value = '';
+      if (!value.trim()) return;
+      busy = true;
+      history.push(value);
+      historyPos = history.length;
+      try {
+        await run(value);
+      } catch (error) {
+        printMuted('error: ' + error.message);
+      }
+      busy = false;
+      setPrompt();
+      input.focus();
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        if (historyPos > 0) {
+          historyPos -= 1;
+          input.value = history[historyPos] || '';
+        }
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        if (historyPos < history.length - 1) {
+          historyPos += 1;
+          input.value = history[historyPos] || '';
+        } else {
+          historyPos = history.length;
+          input.value = '';
+        }
+      } else if (event.key === 'Tab') {
+        event.preventDefault();
+        complete();
+      } else if (event.key === 'l' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        output.replaceChildren();
+      } else if (event.key === 'c' && event.ctrlKey) {
+        event.preventDefault();
+        input.value = '';
+      }
+    });
+
+    document.querySelector('.cli-wrap').addEventListener('click', () => input.focus());
+
+    boot();
+  </script>
+</BaseLayout>

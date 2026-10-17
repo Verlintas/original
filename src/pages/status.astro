@@ -1,0 +1,284 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+import { links } from '../data/links';
+import { sites } from '../data/sites';
+---
+
+<BaseLayout
+  title="STATUS"
+  description="Live checks for this site, its maintainer's projects, and the services they depend on."
+>
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> STATUS</h1>
+    <p class="lede">
+      Live checks for this site, its maintainer's projects, and the services they depend on.
+      Checks run in the browser when this page loads.
+    </p>
+  </header>
+
+  <div class="status-grid">
+    <section class="panel" aria-labelledby="services-heading">
+      <div class="section-head">
+        <h2 id="services-heading" class="label">Services</h2>
+        <span class="section-count" id="github-summary">Checking</span>
+      </div>
+      <div class="status-rows" id="github-status-rows">
+        <div class="status-row">
+          <span class="status-name">GitHub</span>
+          <span class="status-state wait"><span class="glyph">◌</span> Checking</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="sites-heading">
+      <div class="section-head">
+        <h2 id="sites-heading" class="label">Sites</h2>
+        <span class="section-count">Reachability</span>
+      </div>
+      <div class="status-rows">
+        {
+          sites.map((site) => (
+            <div class="status-row" data-site-row data-url={site.url}>
+              <span class="status-name">
+                <a href={site.url} rel="noopener">{site.name}</a>{' '}
+                <span class="status-sub">— {site.note}</span>
+              </span>
+              <span class="status-state wait" data-site-state>
+                <span class="glyph">◌</span> Checking
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="panel panel-wide" aria-labelledby="projects-heading">
+      <div class="section-head">
+        <h2 id="projects-heading" class="label">Projects</h2>
+        <span class="section-count" id="project-count">GitHub</span>
+      </div>
+      <div class="status-rows" id="project-rows">
+        <div class="status-row">
+          <span class="status-name">Fetching repositories…</span>
+          <span class="status-state wait"><span class="glyph">◌</span> Checking</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel-narrow" aria-labelledby="links-heading">
+      <div class="section-head">
+        <h2 id="links-heading" class="label">Links</h2>
+        <span class="section-count">{links.length}</span>
+      </div>
+      <div class="status-rows links-list">
+        {
+          links.map((link) => (
+            <div class="status-row">
+              <span class="status-name">
+                <a href={link.url} rel="noopener">{link.name}</a>
+              </span>
+              <span class="status-sub">{link.note}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <p class="status-meta">
+    <button type="button" id="status-refresh">[ REFRESH ]</button>
+    <span id="status-checked">Not checked yet</span>
+  </p>
+
+  <noscript>
+    <p class="status-note">
+      Live checks need JavaScript. Static references:
+      <a href="https://www.githubstatus.com">githubstatus.com</a>,
+      <a href="https://github.com/Verlintas">github.com/Verlintas</a>.
+    </p>
+  </noscript>
+
+  <script>
+    const GH_STATUS = 'https://www.githubstatus.com/api/v2/status.json';
+    const GH_COMPONENTS = 'https://www.githubstatus.com/api/v2/components.json';
+    const GH_REPOS = 'https://api.github.com/users/Verlintas/repos?per_page=100&sort=pushed';
+    const WANTED_COMPONENTS = ['API Requests', 'Actions', 'Pages', 'Git Operations'];
+
+    const githubRows = document.getElementById('github-status-rows');
+    const githubSummary = document.getElementById('github-summary');
+    const projectRows = document.getElementById('project-rows');
+    const projectCount = document.getElementById('project-count');
+    const checkedAt = document.getElementById('status-checked');
+    const refreshButton = document.getElementById('status-refresh');
+
+    function stateSpan(kind, text) {
+      const span = document.createElement('span');
+      span.className = 'status-state ' + kind;
+      const glyph = document.createElement('span');
+      glyph.className = 'glyph';
+      glyph.textContent = kind === 'up' ? '●' : kind === 'down' ? '○' : '◌';
+      span.appendChild(glyph);
+      span.appendChild(document.createTextNode(' ' + text));
+      return span;
+    }
+
+    function makeRow(nameNode, stateNode) {
+      const row = document.createElement('div');
+      row.className = 'status-row';
+      const name = document.createElement('span');
+      name.className = 'status-name';
+      name.appendChild(nameNode);
+      row.appendChild(name);
+      row.appendChild(stateNode);
+      return row;
+    }
+
+    function replaceRows(container, rows) {
+      container.replaceChildren(...rows);
+    }
+
+    function failureRow(label, message) {
+      const name = document.createElement('span');
+      name.textContent = label;
+      const row = makeRow(name, stateSpan('down', message));
+      return row;
+    }
+
+    async function checkGitHubStatus() {
+      try {
+        const res = await fetch(GH_STATUS, { cache: 'no-store' });
+        if (!res.ok) throw new Error('status ' + res.status);
+        const data = await res.json();
+        const indicator = data.status.indicator;
+        const kind = indicator === 'none' ? 'up' : indicator === 'minor' ? 'wait' : 'down';
+        const label =
+          indicator === 'none'
+            ? 'Operational'
+            : indicator === 'minor'
+              ? 'Degraded'
+              : indicator === 'major'
+                ? 'Major outage'
+                : 'Critical outage';
+        githubSummary.textContent = label;
+        const rows = [
+          makeRow(document.createTextNode('GitHub platform'), stateSpan(kind, label)),
+        ];
+        replaceRows(githubRows, rows);
+
+        try {
+          const cres = await fetch(GH_COMPONENTS, { cache: 'no-store' });
+          if (!cres.ok) throw new Error('components ' + cres.status);
+          const cdata = await cres.json();
+          const wanted = (cdata.components || []).filter((c) => WANTED_COMPONENTS.includes(c.name));
+          const componentRows = wanted.map((component) => {
+            const name = document.createElement('span');
+            name.textContent = component.name;
+            const ok = component.status === 'operational';
+            const stateText = ok ? 'Up' : component.status.replace(/_/g, ' ');
+            return makeRow(name, stateSpan(ok ? 'up' : 'down', stateText));
+          });
+          replaceRows(githubRows, rows.concat(componentRows));
+        } catch (error) {
+          githubRows.appendChild(failureRow('Components', 'Unavailable'));
+        }
+      } catch (error) {
+        githubSummary.textContent = 'Unavailable';
+        replaceRows(githubRows, [failureRow('GitHub', 'Unavailable')]);
+      }
+    }
+
+    async function ping(url) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 8000);
+      const start = performance.now();
+      try {
+        await fetch(url, {
+          mode: 'no-cors',
+          cache: 'no-store',
+          redirect: 'follow',
+          signal: controller.signal,
+        });
+        return { ok: true, ms: Math.round(performance.now() - start) };
+      } catch (error) {
+        return { ok: false, ms: Math.round(performance.now() - start) };
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function checkSites() {
+      const rows = Array.from(document.querySelectorAll('[data-site-row]'));
+      await Promise.all(
+        rows.map(async (row) => {
+          const state = row.querySelector('[data-site-state]');
+          const result = await ping(row.dataset.url);
+          state.replaceWith(
+            stateSpan(result.ok ? 'up' : 'down', result.ok ? 'Reachable · ' + result.ms + ' ms' : 'Unreachable'),
+          );
+        }),
+      );
+    }
+
+    async function checkProjects() {
+      try {
+        const res = await fetch(GH_REPOS, {
+          cache: 'no-store',
+          headers: { Accept: 'application/vnd.github+json' },
+        });
+        if (!res.ok) throw new Error('repos ' + res.status);
+        const repos = await res.json();
+        projectCount.textContent = repos.length + ' public repos';
+        const recent = repos
+          .slice()
+          .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
+          .slice(0, 8);
+
+        const rows = recent.map((repo) => {
+          const name = document.createElement('span');
+          const link = document.createElement('a');
+          link.href = repo.html_url;
+          link.rel = 'noopener';
+          link.textContent = repo.name;
+          name.appendChild(link);
+          const sub = document.createElement('span');
+          sub.className = 'status-sub';
+          const pushed = new Date(repo.pushed_at);
+          const days = (Date.now() - pushed.getTime()) / 86400000;
+          const activity = days <= 90 ? 'Active' : 'Idle';
+          sub.textContent =
+            ' — ' + (repo.language || '—') + ' · pushed ' + pushed.toISOString().slice(0, 10);
+          name.appendChild(sub);
+          return makeRow(name, stateSpan(days <= 90 ? 'up' : 'wait', activity));
+        });
+
+        replaceRows(projectRows, rows);
+      } catch (error) {
+        projectCount.textContent = 'Unavailable';
+        replaceRows(projectRows, [
+          failureRow('Repositories', 'Unavailable (network or API rate limit)'),
+        ]);
+      }
+    }
+
+    let running = false;
+
+    async function refresh() {
+      if (running) return;
+      running = true;
+      refreshButton.disabled = true;
+      checkedAt.textContent = 'Checking…';
+      githubSummary.textContent = 'Checking';
+      projectCount.textContent = 'Checking';
+
+      await Promise.allSettled([checkGitHubStatus(), checkSites(), checkProjects()]);
+
+      checkedAt.textContent = 'Last checked ' + new Date().toLocaleTimeString([], { hour12: false });
+      refreshButton.disabled = false;
+      running = false;
+    }
+
+    refreshButton.addEventListener('click', refresh);
+    refresh();
+  </script>
+</BaseLayout>

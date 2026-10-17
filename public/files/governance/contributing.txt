@@ -1,0 +1,108 @@
+CONTRIBUTING GUIDELINES — TEMPLATE
+==================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. Adapt it to the project, its workflow, and its community.
+Delete this notice from the published version.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+# Contributing to [PROJECT]
+
+Thanks for taking the time to contribute. This file explains how to report
+problems, propose changes, and get a pull request merged.
+
+## WAYS TO CONTRIBUTE
+
+- Report bugs and usability problems.
+- Propose features and discuss designs.
+- Improve documentation and examples.
+- Review pull requests.
+- Answer questions from other users.
+- Translate or improve accessibility.
+
+## BEFORE YOU START
+
+- Read the [CODE OF CONDUCT](CODE_OF_CONDUCT.md).
+- Check existing issues and pull requests to avoid duplicates.
+- For large changes, open an issue first so the design can be discussed.
+- For security issues, do not open a public issue: see [SECURITY.md](SECURITY.md).
+
+## ISSUES
+
+A useful issue includes:
+- what you expected and what happened instead;
+- exact steps to reproduce;
+- version, platform, and relevant logs;
+- a minimal example where possible.
+
+## PULL REQUESTS
+
+1. Fork the repository and create a branch from [main/develop].
+2. Keep the change focused; unrelated refactors belong in separate PRs.
+3. Add or update tests for behaviour changes.
+4. Update documentation and the changelog where relevant.
+5. Sign off every commit (see below) and open the pull request.
+
+A pull request should state:
+- what problem it solves;
+- how it solves it;
+- how it was tested;
+- any breaking changes or migration notes.
+
+## COMMIT MESSAGES
+
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+type(scope): short summary
+
+Optional body explaining why, not what.
+
+Refs: #123
+Signed-off-by: Your Name <you@example.com>
+```
+
+Common types: `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `build`,
+`ci`, `chore`.
+
+## SIGN-OFF (DCO)
+
+Commits must include a `Signed-off-by` line certifying the
+[Developer Certificate of Origin](https://developercertificate.org/):
+
+```
+git commit -s
+```
+
+If the project requires a CLA instead, follow [CLA.md](CLA.md).
+
+## CODING STYLE
+
+- Follow the existing style; do not reformat unrelated code.
+- Run [FORMATTER] and [LINTER] before pushing.
+- Prefer small, readable changes over clever ones.
+- Add comments only where the code cannot explain itself.
+
+## TESTS
+
+- Run the test suite locally: `[TEST COMMAND]`.
+- New features need tests; bug fixes need a regression test.
+- CI must pass before review.
+
+## REVIEW PROCESS
+
+- A maintainer reviews each pull request; see [CODE_REVIEW.md](CODE_REVIEW.md).
+- Address review comments with new commits; do not force-push during review
+  unless asked.
+- Two approvals are required for [SENSITIVE AREAS: SECURITY, RELEASES].
+
+## LICENSING
+
+By contributing, you agree that your contribution is licensed under the
+project's licence: [LICENSE]. Do not submit code you cannot license.
+
+## QUESTIONS
+
+Open a discussion or contact [MAINTAINER CONTACT].

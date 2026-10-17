@@ -14,50 +14,63 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, category, date, version, format, size, license, sha256, file, external, summary } =
+const { title, category, date, version, format, size, license, sha256, file, external, source, summary, tags } =
   entry.data;
-
-const rows: Array<[string, string]> = [
-  ['DATE', formatDate(date)],
-  ['CATEGORY', category],
-  ['VERSION', version],
-  ['FORMAT', format],
-  ['SIZE', size],
-  ['LICENSE', license],
-];
-
-if (sha256) {
-  rows.push(['SHA-256', sha256]);
-}
 ---
 
 <BaseLayout title={title} description={summary} type="article">
-  <p class="back"><a href="/files/">← ALL FILES</a></p>
+  <p class="back"><a href="/files/">← All files</a></p>
 
-  <h1 class="page-title"><Circle /> {title}</h1>
-  <p class="lede">{summary}</p>
+  <header class="file-head">
+    <h1 class="page-title"><Circle /> {title}</h1>
+    <p class="lede">{summary}</p>
+    <p class="actions">
+      {file && <a class="action" href={file} download>[ DOWNLOAD ]</a>}
+      {external && <a class="action" href={external} rel="noopener">[ MIRROR ]</a>}
+      {source && <a class="action" href={source} rel="noopener">[ SOURCE ]</a>}
+    </p>
+  </header>
 
-  <p class="entry-actions">
-    {file && <a class="action" href={file} download>[ DOWNLOAD ]</a>}
-    {external && <a class="action" href={external} rel="noopener">[ MIRROR ]</a>}
-  </p>
+  <div class="detail-grid">
+    <div class="prose">
+      <Content />
+    </div>
 
-  <table class="meta-table">
-    <tbody>
-      {
-        rows.map(([label, value]) => (
-          <tr>
-            <th scope="row">{label}</th>
-            <td>{value}</td>
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
-
-  <div class="prose">
-    <Content />
+    <aside class="meta-aside" aria-label="File metadata">
+      <h2>Metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Date</dt><dd>{formatDate(date)}</dd></div>
+        <div>
+          <dt>Category</dt>
+          <dd><a href={`/files/?category=${encodeURIComponent(category)}`}>{category}</a></dd>
+        </div>
+        <div><dt>Version</dt><dd>{version}</dd></div>
+        <div><dt>Format</dt><dd>{format}</dd></div>
+        <div><dt>Size</dt><dd>{size}</dd></div>
+        <div><dt>License</dt><dd>{license}</dd></div>
+        {tags.length > 0 && (
+          <div>
+            <dt>Tags</dt>
+            <dd>
+              {tags.map((tag, index) => (
+                <Fragment>
+                  {index > 0 && ' · '}
+                  <a href={`/files/?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+                </Fragment>
+              ))}
+            </dd>
+          </div>
+        )}
+        {sha256 && <div><dt>SHA-256</dt><dd>{sha256}</dd></div>}
+        {source && (
+          <div>
+            <dt>Source</dt>
+            <dd><a href={source} rel="noopener">{source.replace(/^https?:\/\//, '')}</a></dd>
+          </div>
+        )}
+      </dl>
+    </aside>
   </div>
 
-  <p class="back"><a href="/files/">← ALL FILES</a></p>
+  <p class="back" style="margin-top: 3rem;"><a href="/files/">← All files</a></p>
 </BaseLayout>

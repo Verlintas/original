@@ -1,0 +1,24 @@
+MOZILLA PUBLIC LICENSE 2.0 HEADER
+=================================
+Version 1.0 — 2026-10-17
+
+Use this notice in source files released under the Mozilla Public License,
+Version 2.0. It is the "Exhibit A" notice included in the licence text.
+
+COPY-PASTE NOTICE
+-----------------
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+NOTES
+-----
+- Keep the full licence text in a LICENSE file at the project root.
+- MPL 2.0 is file-level copyleft: modified MPL-covered files must remain
+  under MPL, while larger works may combine it with other licences.
+- Machine-readable form: SPDX-License-Identifier: MPL-2.0
+
+SOURCES
+-------
+MPL 2.0 text and Exhibit A: https://www.mozilla.org/MPL/2.0/
+SPDX License List — MPL-2.0: https://spdx.org/licenses/MPL-2.0.html

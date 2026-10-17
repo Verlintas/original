@@ -1,0 +1,70 @@
+COOKIE POLICY — TEMPLATE
+========================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice.
+Cookie rules differ by jurisdiction. Have a qualified lawyer review the
+final policy and its consent mechanism before publishing.
+
+Replace every value in [SQUARE BRACKETS]. Delete sections that do not apply,
+and delete this notice from the published version.
+
+---
+[ORGANISATION NAME] — COOKIE POLICY
+Last updated: [DATE]
+
+1. WHAT COOKIES ARE
+-------------------
+Cookies are small text files stored by your browser when you visit a
+website. Similar technologies include local storage, pixels and tags.
+This policy explains which of them [WEBSITE URL] uses, why, and how you
+can refuse them.
+
+2. WHAT WE USE
+--------------
+Strictly necessary — required for the site to work:
+- [COOKIE NAME] — [PURPOSE] — [DURATION].
+
+Preferences — remember your choices:
+- [COOKIE NAME] — [PURPOSE] — [DURATION].
+
+Analytics — help us understand how the site is used:
+- [COOKIE NAME] — [PROVIDER] — [PURPOSE] — [DURATION].
+
+Marketing — used to measure or personalise advertising:
+- [COOKIE NAME] — [PROVIDER] — [PURPOSE] — [DURATION].
+
+Delete rows for categories you do not use, and state that clearly.
+
+3. CONSENT
+----------
+Where required by law (for example under the EU ePrivacy Directive and the
+GDPR), non-essential cookies are set only after you give consent through
+[CONSENT TOOL]. You can withdraw consent at any time via [LINK/INSTRUCTIONS].
+
+4. MANAGING COOKIES
+-------------------
+You can block or delete cookies in your browser settings. Blocking strictly
+necessary cookies may break parts of the site.
+Links: [BROWSER LINKS / ALLABOUTCOOKIES.ORG]
+
+5. THIRD PARTIES
+----------------
+Third-party providers may set cookies when you use embedded content such as
+[VIDEOS, MAPS, EMBEDS]. Their processing is governed by their own policies:
+[LIST PROVIDERS AND LINKS].
+
+6. CHANGES
+----------
+We may update this policy. The "last updated" date will change and material
+changes will be announced on [PAGE/URL].
+
+7. CONTACT
+----------
+[ORGANISATION NAME] — [CONTACT EMAIL] — [POSTAL ADDRESS]
+
+---
+REFERENCE MATERIAL
+- ICO — Cookies and similar technologies: https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/
+- EU ePrivacy Directive: https://eur-lex.europa.eu/eli/dir/2002/58/oj
+- Your Online Choices (EU): https://www.youronlinechoices.eu/

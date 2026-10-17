@@ -1,0 +1,38 @@
+GNU AGPL 3.0 HEADER
+===================
+Version 1.0 — 2026-10-17
+
+Use this notice in source files released under the GNU Affero General
+Public License, version 3. The AGPL adds a network-use condition to the
+GPL: users interacting with the software over a network must be offered
+the corresponding source.
+
+COPY-PASTE NOTICE
+-----------------
+<one line to give the program's name and a brief idea of what it does.>
+Copyright (C) <year> <name of author>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+NOTES
+-----
+- Keep the full licence text in a COPYING file at the project root.
+- Section 13 is the network condition; read it before deploying a
+  modified version as a service.
+- Machine-readable form: SPDX-License-Identifier: AGPL-3.0-or-later
+
+SOURCES
+-------
+GNU AGPLv3: https://www.gnu.org/licenses/agpl-3.0.txt
+How to use GNU licenses for your own software: https://www.gnu.org/licenses/gpl-howto.html

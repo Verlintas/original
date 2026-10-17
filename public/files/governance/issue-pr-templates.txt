@@ -1,0 +1,138 @@
+ISSUE AND PULL REQUEST TEMPLATES
+================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. These are starting points for GitHub's issue and pull
+request templates. Delete this notice from the published version and
+adjust the fields to the project.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+FILE: .github/ISSUE_TEMPLATE/bug_report.yml
+-------------------------------------------
+name: Bug report
+description: Report something that does not work as expected.
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please search existing issues first.
+        For security issues, follow SECURITY.md instead.
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+      description: Include exact steps to reproduce and any error output.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version and platform
+      placeholder: "[VERSION] on [OS]"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: This is not a security issue.
+          required: true
+
+FILE: .github/ISSUE_TEMPLATE/feature_request.yml
+------------------------------------------------
+name: Feature request
+description: Propose a change or new capability.
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+
+FILE: .github/PULL_REQUEST_TEMPLATE.md
+--------------------------------------
+## What does this change?
+
+[Describe the change and the problem it solves.]
+
+## Linked issue
+
+Closes #[ISSUE]
+
+## Type of change
+
+- [ ] Bug fix
+- [ ] Feature
+- [ ] Documentation
+- [ ] Refactor
+- [ ] Tests
+- [ ] Build / CI
+
+## How was it tested?
+
+[Commands, platforms, and results.]
+
+## Checklist
+
+- [ ] Tests added or updated
+- [ ] Documentation updated
+- [ ] Changelog updated (if user-facing)
+- [ ] Commits signed off (DCO) or CLA on file
+- [ ] No secrets or credentials included
+- [ ] AI assistance disclosed (if substantial)
+
+## Screenshots or recordings
+
+[If applicable.]
+
+FILE: .github/ISSUE_TEMPLATE/config.yml
+---------------------------------------
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://[REPOSITORY]/blob/main/SECURITY.md
+    about: Please report vulnerabilities privately.
+  - name: Code of conduct
+    url: https://[REPOSITORY]/blob/main/CODE_OF_CONDUCT.md
+    about: Community standards and enforcement.
+  - name: Questions and discussions
+    url: https://[REPOSITORY]/discussions
+    about: Ask questions here.
+
+---
+REFERENCE MATERIAL
+- GitHub — About issue and pull request templates: https://docs.github.com/communities/using-templates-to-encourage-useful-issues-and-pull-requests
+- GitHub — Configuring issue templates: https://docs.github.com/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository

@@ -1,0 +1,86 @@
+INDIVIDUAL CONTRIBUTOR LICENSE AGREEMENT — TEMPLATE
+===================================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. A CLA
+is a legal contract; it must be reviewed and adapted by a qualified lawyer
+before use, and it must be consistent with the project's licence. Many
+projects use the DCO instead of a CLA; consider that option first.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+[PROJECT NAME] — INDIVIDUAL CONTRIBUTOR LICENSE AGREEMENT
+
+Thank you for contributing to [PROJECT NAME] ("the Project"). This
+Agreement is between you ("You") and [PROJECT OWNER / ENTITY] ("We"). It
+applies to all contributions You submit to the Project.
+
+1. DEFINITIONS
+--------------
+"Contribution" means any original work of authorship, including
+modifications or additions to existing work, that You intentionally submit
+to the Project for inclusion.
+
+2. COPYRIGHT LICENCE
+--------------------
+You grant Us a perpetual, worldwide, non-exclusive, royalty-free,
+irrevocable copyright licence to reproduce, prepare derivative works of,
+publicly display, publicly perform, sublicense, and distribute Your
+Contributions and such derivative works under the Project's licence
+([LICENSE IDENTIFIER]) or any later version of it.
+
+3. PATENT LICENCE
+-----------------
+You grant Us a perpetual, worldwide, non-exclusive, royalty-free,
+irrevocable patent licence to make, have made, use, offer to sell, sell,
+import, and otherwise transfer the Project, where such licence applies only
+to patent claims licensable by You that are necessarily infringed by Your
+Contribution alone or in combination with the Project. If any entity
+brings a patent claim against the Project alleging that Your Contribution
+or the Project infringes, this patent licence terminates as of the filing
+date of that claim.
+
+4. RETENTION OF RIGHTS
+----------------------
+You retain ownership of the copyright in Your Contributions. Nothing in
+this Agreement transfers ownership; it grants the licences described above.
+
+5. REPRESENTATIONS
+------------------
+You represent that:
+- You are legally entitled to grant the licences in this Agreement;
+- each Contribution is Your original creation, or You have received the
+  necessary rights to submit it under this Agreement;
+- Your Contribution does not, to the best of Your knowledge, infringe the
+  rights of any third party;
+- if Your employer has rights in the work You create, You have received
+  permission to submit it or Your employer has waived those rights.
+
+6. NO WARRANTY
+--------------
+Unless required by applicable law or agreed in writing, You provide Your
+Contributions "as is", without warranties or conditions of any kind.
+
+7. NOTICE
+---------
+You agree to notify Us of any facts or circumstances that would make these
+representations inaccurate.
+
+8. GOVERNING LAW
+----------------
+This Agreement is governed by the laws of [JURISDICTION].
+
+9. SIGNATURE
+------------
+Full name: ______________________________________
+Email: __________________________________________
+GitHub username: ________________________________
+Signature: ______________________________________
+Date: ___________________________________________
+
+---
+REFERENCE MATERIAL
+- Apache Individual Contributor License Agreement: https://www.apache.org/licenses/icla.pdf
+- Harmony Agreements (CLA templates): https://harmonyagreements.org/
+- Developer Certificate of Origin: https://developercertificate.org/

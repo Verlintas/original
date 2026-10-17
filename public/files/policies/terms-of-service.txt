@@ -1,0 +1,113 @@
+TERMS OF SERVICE — TEMPLATE
+===========================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. Terms
+of service must match the actual product, the applicable law, and the
+jurisdiction. Have a qualified lawyer review the final document.
+
+Replace every value in [SQUARE BRACKETS]. Delete sections that do not apply,
+and delete this notice from the published version.
+
+---
+[ORGANISATION NAME] — TERMS OF SERVICE
+Website: [WEBSITE URL]
+Last updated: [DATE]
+
+1. ACCEPTANCE
+-------------
+By accessing or using [SERVICE], you agree to these terms. If you do not
+agree, do not use the service. If you use the service on behalf of an
+organisation, you confirm that you may bind it to these terms.
+
+2. WHO WE ARE
+-------------
+[ORGANISATION NAME], [LEGAL FORM], [REGISTERED ADDRESS], [REGISTRATION
+NUMBER]. Contact: [CONTACT EMAIL].
+
+3. THE SERVICE
+--------------
+We provide [DESCRIPTION OF SERVICE]. The service is provided [free of
+charge / for the fees listed at [PRICING URL]]. We may change, suspend or
+discontinue features with reasonable notice where practicable.
+
+4. ACCOUNTS
+-----------
+[IF APPLICABLE] You are responsible for the accuracy of account details,
+for keeping credentials confidential, and for activity under your account.
+Notify us promptly of unauthorised use.
+
+5. YOUR CONTENT
+---------------
+You retain ownership of content you submit. You grant us a limited licence
+to host and display it as necessary to operate the service. You confirm you
+have the rights needed to grant that licence.
+
+6. ACCEPTABLE USE
+-----------------
+You must not:
+- break the law or infringe the rights of others;
+- attempt to gain unauthorised access to the service or other systems;
+- interfere with the service, including by automated overload;
+- upload malware or deceptive content;
+- use the service to harass or harm others.
+Full rules: [ACCEPTABLE USE POLICY LINK].
+
+7. INTELLECTUAL PROPERTY
+------------------------
+The service, its design and its software are owned by [ORGANISATION NAME]
+or its licensors and are protected by intellectual property laws. Open
+source components are governed by their respective licences; see
+[OPEN SOURCE NOTICES LINK].
+
+8. THIRD-PARTY LINKS AND SERVICES
+---------------------------------
+The service may link to third-party sites or use third-party services. We
+do not control them and are not responsible for their content or terms.
+
+9. DISCLAIMERS
+--------------
+To the maximum extent permitted by law, the service is provided "as is"
+and "as available", without warranties of any kind, express or implied.
+Nothing in these terms excludes warranties that cannot be excluded by law.
+
+10. LIMITATION OF LIABILITY
+---------------------------
+To the maximum extent permitted by law, [ORGANISATION NAME] is not liable
+for indirect, incidental, special or consequential damages, or for lost
+profits or data, arising from the use of the service. Our total liability
+is limited to [AMOUNT / FEES PAID IN THE LAST 12 MONTHS]. Nothing limits
+liability that cannot be limited by law.
+
+11. INDEMNITY
+-------------
+You agree to indemnify [ORGANISATION NAME] against claims arising from your
+misuse of the service or breach of these terms, to the extent permitted by
+law. [DELETE IF NOT APPLICABLE.]
+
+12. TERMINATION
+---------------
+We may suspend or terminate access for material breach of these terms.
+You may stop using the service at any time. Provisions that by their nature
+survive termination will do so.
+
+13. GOVERNING LAW
+-----------------
+These terms are governed by the laws of [JURISDICTION], and disputes will
+be heard by [COURT/ARBITRATION BODY], without affecting mandatory consumer
+protections.
+
+14. CHANGES
+-----------
+We may update these terms. The "last updated" date will change, and material
+changes will be announced on [PAGE/URL] before they take effect.
+
+15. CONTACT
+-----------
+[ORGANISATION NAME] — [CONTACT EMAIL] — [POSTAL ADDRESS]
+
+---
+REFERENCE MATERIAL
+- EU Consumer Rights Directive: https://eur-lex.europa.eu/eli/dir/2011/83/oj
+- UK ICO — contracts and consents: https://ico.org.uk/for-organisations/
+- W3C — open source notice practices: https://www.w3.org/

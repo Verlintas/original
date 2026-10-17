@@ -1,0 +1,123 @@
+WEBSITE PRIVACY POLICY — TEMPLATE
+=================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. Privacy
+law differs by jurisdiction and changes over time. Have a qualified lawyer
+review the final policy before publishing it.
+
+Replace every value in [SQUARE BRACKETS]. Delete sections that do not apply,
+and delete this notice from the published version.
+
+---
+[ORGANISATION NAME] — PRIVACY POLICY
+Last updated: [DATE]
+
+1. WHO WE ARE
+-------------
+[ORGANISATION NAME] ("we", "us") operates [WEBSITE URL]. We are the data
+controller for personal data collected through this website. Contact:
+[CONTACT EMAIL] / [POSTAL ADDRESS].
+
+2. WHAT WE COLLECT
+------------------
+We collect only what is needed to run the website:
+
+- Information you give us: [e.g. name and email when you write to us].
+- Information collected automatically: [e.g. IP address, browser type,
+  pages visited, timestamps, and referral source].
+- Information from cookies and similar technologies: [describe each cookie,
+  its purpose and lifetime, or state that none are used].
+
+We do not collect [LIST ANY SENSITIVE CATEGORIES YOU DO NOT COLLECT].
+
+3. HOW WE USE YOUR INFORMATION
+------------------------------
+We use personal data to:
+- operate, maintain and secure the website;
+- respond to messages and requests;
+- understand how the website is used and improve it;
+- comply with legal obligations.
+
+4. LEGAL BASES (EU/UK GDPR)
+---------------------------
+Where the GDPR applies, we rely on:
+- performance of a contract — [purpose];
+- legitimate interests — [purpose], balanced against your rights;
+- consent — [purpose]; you may withdraw consent at any time;
+- legal obligation — [purpose].
+
+5. SHARING
+----------
+We share personal data only with:
+- service providers acting on our instructions: [HOSTING, EMAIL, ANALYTICS
+  PROVIDERS, WITH LOCATIONS];
+- authorities where required by law;
+- a buyer or successor in the event of a merger or acquisition.
+
+We do not sell personal data.
+
+6. INTERNATIONAL TRANSFERS
+--------------------------
+Some providers may process data outside [COUNTRY]. Where required, transfers
+are protected by [STANDARD CONTRACTUAL CLAUSES / ADEQUACY DECISION /
+OTHER SAFEGUARD].
+
+7. RETENTION
+------------
+We keep personal data only as long as necessary:
+- server logs: [N] days;
+- correspondence: [N] months;
+- [OTHER CATEGORY]: [PERIOD].
+After that, data is deleted or anonymised.
+
+8. YOUR RIGHTS
+--------------
+Subject to applicable law, you may have the right to:
+- access the personal data we hold about you;
+- correct inaccurate data;
+- delete data ("right to be forgotten");
+- restrict or object to processing;
+- data portability;
+- withdraw consent;
+- lodge a complaint with a supervisory authority.
+
+California residents may have additional rights under the CCPA/CPRA,
+including the right to know, delete, correct, and opt out of the sale or
+sharing of personal information. We do not sell personal information.
+
+To exercise a right, contact [CONTACT EMAIL]. We will respond within the
+period required by law.
+
+9. SECURITY
+-----------
+We use [ENCRYPTION IN TRANSIT, ACCESS CONTROLS, BACKUPS, ETC.] to protect
+personal data. No method of transmission or storage is completely secure.
+
+10. CHILDREN
+------------
+The website is not directed at children under [16/13], and we do not
+knowingly collect their personal data. Contact us if you believe a child
+has provided data.
+
+11. COOKIES
+-----------
+[DESCRIBE COOKIE TYPES, PURPOSES, DURATIONS AND HOW TO REFUSE THEM, OR
+STATE THAT THE SITE SETS NO COOKIES.]
+
+12. CHANGES
+-----------
+We may update this policy. The "last updated" date above will change, and
+material changes will be announced on [PAGE/URL].
+
+13. CONTACT
+-----------
+[ORGANISATION NAME]
+[POSTAL ADDRESS]
+[CONTACT EMAIL]
+
+---
+REFERENCE MATERIAL
+- GDPR Articles 13–14 (information to be provided): https://gdpr-info.eu/art-13-gdpr/
+- ICO guidance on privacy notices: https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/
+- California Attorney General — CCPA: https://oag.ca.gov/privacy/ccpa

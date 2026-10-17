@@ -1,0 +1,37 @@
+SECURITY.TXT TEMPLATE
+=====================
+Version 1.0 — 2026-10-17
+
+A machine-readable security contact file, defined by RFC 9116. Publish it at
+/.well-known/security.txt on your domain so researchers can find the right
+contact without guessing.
+
+TEMPLATE
+--------
+# Security policy for [DOMAIN]
+# Canonical: https://[DOMAIN]/.well-known/security.txt
+# Policy: https://[DOMAIN]/security-policy
+
+Contact: mailto:security@[DOMAIN]
+Contact: https://[DOMAIN]/security-contact
+Expires: [YYYY-MM-DD]T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://[DOMAIN]/.well-known/security.txt
+
+NOTES
+-----
+- Contact may appear multiple times. Use mailto: or https: URLs only.
+- Expires is required. Set a date no more than one year ahead and refresh
+  the file before it expires.
+- Preferred-Languages lists language tags such as en, zh-CN.
+- Serve the file over HTTPS with Content-Type: text/plain.
+- Where to publish: https://[DOMAIN]/.well-known/security.txt
+  The file may also be served from /security.txt as a fallback.
+- Do not publish this template unchanged: replace every placeholder and
+  delete the comments if you prefer.
+
+SOURCES
+-------
+RFC 9116 — A File Format to Aid in Security Vulnerability Disclosure:
+https://www.rfc-editor.org/rfc/rfc9116
+securitytxt.org: https://securitytxt.org/

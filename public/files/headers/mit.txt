@@ -1,0 +1,25 @@
+MIT LICENSE HEADER
+==================
+Version 1.0 — 2026-10-17
+
+Use this notice at the top of source files released under the MIT License.
+Replace every value in angle brackets.
+
+COPY-PASTE NOTICE
+-----------------
+Copyright (c) <year> <copyright holders>
+SPDX-License-Identifier: MIT
+
+NOTES
+-----
+- Keep the full MIT license text in a LICENSE file at the project root.
+- "SPDX-License-Identifier: MIT" is the machine-readable form of the same
+  statement, understood by licence scanners and package managers.
+- Comment syntax: prefix with // in C, C++, Java, JavaScript and Go;
+  # in shell, Python and Ruby; <!-- --> in HTML and XML; -- in SQL.
+- Do not remove the copyright line. It is the notice the licence requires.
+
+SOURCES
+-------
+SPDX License List — MIT: https://spdx.org/licenses/MIT.html
+SPDX license identifiers: https://spdx.dev/learn/handling-license-info/

@@ -1,0 +1,96 @@
+END USER LICENSE AGREEMENT (EULA) — TEMPLATE
+============================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. An EULA
+must match the software, the distribution channel and the applicable law.
+Have a qualified lawyer review the final document. If the software is open
+source, a EULA is usually unnecessary and may conflict with the licence.
+
+Replace every value in [SQUARE BRACKETS]. Delete sections that do not apply,
+and delete this notice from the published version.
+
+---
+[APP NAME] — END USER LICENSE AGREEMENT
+Licensor: [LICENSOR NAME]
+Last updated: [DATE]
+
+1. LICENCE GRANT
+----------------
+Subject to this agreement, [LICENSOR NAME] grants you a personal,
+non-exclusive, non-transferable, revocable licence to install and use
+[APP NAME] on [NUMBER OF DEVICES / AS PER STORE TERMS] for personal,
+non-commercial use. [ADJUST FOR BUSINESS USE.]
+
+2. RESTRICTIONS
+---------------
+You must not:
+- copy, modify or distribute the app except as permitted by law;
+- reverse engineer or decompile the app except where permitted by law;
+- rent, lease, sublicense or sell access to the app;
+- remove proprietary notices;
+- use the app to break the law or infringe the rights of others.
+
+3. STORE TERMS
+--------------
+If you obtained the app through [APP STORE], the store's terms also apply.
+The store is not a party to this agreement beyond its own terms, and is not
+responsible for support or warranty obligations. [REQUIRED BY APPLE: INCLUDE
+APPLE'S STANDARD EULA TERMS OR LINK.]
+
+4. OWNERSHIP
+------------
+The app is licensed, not sold. [LICENSOR NAME] and its licensors retain all
+rights, title and interest in the app, including intellectual property
+rights. Open source components remain under their own licences.
+
+5. UPDATES AND SUPPORT
+----------------------
+We may provide updates at our discretion. Updates are governed by this
+agreement unless accompanied by new terms. Support: [SUPPORT URL/EMAIL].
+[DESCRIBE MINIMUM SUPPORT PERIOD IF REQUIRED BY LAW.]
+
+6. DATA AND PRIVACY
+-------------------
+The app processes data as described in the privacy policy: [PRIVACY POLICY
+URL]. Deleting the app removes local data; [DESCRIBE CLOUD DATA DELETION].
+
+7. WARRANTY DISCLAIMER
+----------------------
+To the maximum extent permitted by law, the app is provided "as is" and
+"as available", without warranties of any kind. Nothing excludes warranties
+that cannot be excluded by law, including statutory consumer rights.
+
+8. LIMITATION OF LIABILITY
+--------------------------
+To the maximum extent permitted by law, [LICENSOR NAME] is not liable for
+indirect or consequential damages, lost data or lost profits. Total
+liability is limited to [AMOUNT / PURCHASE PRICE]. Nothing limits liability
+for death, personal injury, fraud, or other liability that cannot be limited
+by law.
+
+9. TERMINATION
+--------------
+This licence ends automatically if you breach it. On termination you must
+stop using the app and delete copies. Sections that by their nature survive
+termination will do so.
+
+10. EXPORT AND SANCTIONS
+------------------------
+You must comply with applicable export control and sanctions laws and must
+not use the app in prohibited countries or for prohibited purposes.
+
+11. GOVERNING LAW
+-----------------
+This agreement is governed by the laws of [JURISDICTION], without affecting
+mandatory consumer protections in your country of residence.
+
+12. CONTACT
+-----------
+[LICENSOR NAME] — [CONTACT EMAIL] — [POSTAL ADDRESS]
+
+---
+REFERENCE MATERIAL
+- Apple — Licensing and standard EULA: https://developer.apple.com/support/terms/
+- Google Play — Developer terms: https://play.google.com/about/developer-distribution-agreement.html
+- EU Consumer Rights Directive: https://eur-lex.europa.eu/eli/dir/2011/83/oj

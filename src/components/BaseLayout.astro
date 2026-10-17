@@ -7,12 +7,14 @@ interface Props {
   title: string;
   description?: string;
   type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
 const {
   title,
-  description = 'Original — a plain place for files, notes, and things worth keeping.',
+  description = 'Files, status, tools, and other useful things.',
   type = 'website',
+  noindex = false,
 } = Astro.props;
 
 const siteName = 'Original';
@@ -27,6 +29,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="Original" href="/rss.xml" />
@@ -39,13 +42,32 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:card" content="summary" />
   </head>
   <body>
-    <a class="skip-link" href="#main">SKIP TO CONTENT</a>
+    <a class="skip-link visually-hidden" href="#main">Skip to content</a>
     <Header />
     <main id="main">
-      <div class="wrap">
+      <div class="shell">
         <slot />
       </div>
     </main>
     <Footer />
+    <style>
+      .skip-link:focus {
+        position: fixed;
+        left: 1rem;
+        top: 1rem;
+        width: auto;
+        height: auto;
+        clip: auto;
+        background: var(--bg);
+        color: var(--red);
+        border: 1px solid var(--red);
+        padding: 0.4rem 0.8rem;
+        font-family: var(--font-sans);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        z-index: 10;
+      }
+    </style>
   </body>
 </html>

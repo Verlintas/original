@@ -1,0 +1,88 @@
+AI CONTRIBUTION POLICY — TEMPLATE
+=================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. This document is a starting point, not legal advice. AI
+tooling and its legal treatment change quickly; review the policy
+regularly and adapt it to your jurisdiction and project.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+# AI Contribution Policy — [PROJECT NAME]
+
+## PURPOSE
+
+This policy explains how AI-assisted contributions are handled in
+[PROJECT NAME]. The goal is to keep the project's licensing clear, its
+quality high, and responsibility with humans.
+
+## SCOPE
+
+This policy covers code, documentation, tests, translations, designs, and
+issue or pull request text produced in whole or in part with generative AI
+tools (assistants, code generators, chat models, agents).
+
+## DISCLOSURE
+
+- Disclose substantial AI assistance in the pull request description:
+  which tool was used and for what (for example, drafting tests or
+  refactoring).
+- Routine assistance (autocomplete, formatting) does not need disclosure.
+- Do not include AI-generated content that you cannot license under the
+  project's licence ([LICENSE IDENTIFIER]).
+
+## HUMAN RESPONSIBILITY
+
+- A human contributor is responsible for every line of a contribution,
+  including AI-generated code.
+- Contributors must understand the change, be able to explain it in review,
+  and maintain it afterwards.
+- "The model wrote it" is not an acceptable answer to a review question.
+
+## LICENSING AND PROVENANCE
+
+- Verify that AI output does not reproduce substantial portions of
+  third-party code with incompatible terms.
+- Do not paste confidential, proprietary, or personal data into external AI
+  services.
+- Sign off commits under the DCO, or follow the CLA where applicable.
+- Keep prompt-and-output records where required by [POLICY / REGULATION].
+
+## QUALITY REQUIREMENTS
+
+AI-assisted contributions follow the same rules as any other change:
+- tests for behaviour changes;
+- documentation updates;
+- no unreviewed generated code in security-sensitive areas;
+- code style and licensing checks pass.
+
+## PROHIBITED USES
+
+- Generating malicious code, obfuscation, or evasion techniques.
+- Submitting generated vulnerability reports without validation.
+- Impersonating a human reviewer or fabricating test results.
+- Using AI to mass-produce low-quality issues or pull requests.
+
+## AGENTS AND AUTOMATION
+
+Automated agents may interact with the repository only through
+[APPROVED CHANNELS] and must identify themselves as automated. Agents do
+not have merge rights; a maintainer reviews and merges.
+
+## ENFORCEMENT
+
+Maintainers may request changes, close contributions, or restrict
+participation for violations. Repeated or deliberate violations may lead
+to a ban under the [CODE OF CONDUCT].
+
+## POLICY CHANGES
+
+The policy is reviewed every [6/12] months. Changes follow the project's
+governance process: [GOVERNANCE LINK].
+
+## REFERENCES
+
+- Linux Foundation — AI policy resources: https://www.linuxfoundation.org/
+- Open Source Guides: https://opensource.guide/
+- Developer Certificate of Origin: https://developercertificate.org/

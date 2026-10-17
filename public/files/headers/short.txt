@@ -1,0 +1,48 @@
+SHORT LICENSE HEADERS
+=====================
+Version 1.0 — 2026-10-17
+
+One-line SPDX headers for licences that do not publish their own per-file
+notice. Use the identifier with a copyright line; keep the full licence
+text in the project root.
+
+HEADERS
+-------
+ISC:
+  Copyright (c) <year> <copyright holders>
+  SPDX-License-Identifier: ISC
+
+0BSD:
+  Copyright (c) <year> <copyright holders>
+  SPDX-License-Identifier: 0BSD
+
+Zlib:
+  Copyright (c) <year> <copyright holders>
+  SPDX-License-Identifier: Zlib
+
+BSL-1.0:
+  Copyright (c) <year> <copyright holders>
+  SPDX-License-Identifier: BSL-1.0
+
+BSD-3-Clause:
+  Copyright (c) <year> <copyright holders>
+  SPDX-License-Identifier: BSD-3-Clause
+
+CC0-1.0 (content, no copyright line required):
+  SPDX-License-Identifier: CC0-1.0
+
+Unlicense (public domain dedication):
+  SPDX-License-Identifier: Unlicense
+
+NOTES
+-----
+- These licences do not mandate a specific per-file wording; the SPDX
+  identifier plus a copyright line is enough for scanners.
+- For CC0 and Unlicense, attribution is optional but welcome.
+- Keep the corresponding full text: ISC, 0BSD, Zlib, BSL-1.0,
+  BSD-3-Clause, CC0-1.0, Unlicense (all available under FILES → LICENSES).
+
+SOURCES
+-------
+SPDX license identifiers: https://spdx.dev/learn/handling-license-info/
+SPDX License List: https://spdx.org/licenses/

@@ -2,43 +2,159 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../components/BaseLayout.astro';
 import Circle from '../../components/Circle.astro';
-import FileEntry from '../../components/FileEntry.astro';
+import FileTable from '../../components/FileTable.astro';
 
 const files = (await getCollection('files')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
 );
 
-const categories = ['DOCUMENTS', 'TOOLS', 'MEDIA', 'ARCHIVE'] as const;
+const categories = ['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE'] as const;
 const grouped = categories
   .map((category) => ({
     category,
     items: files.filter((file) => file.data.category === category),
   }))
   .filter((group) => group.items.length > 0);
+
+const tags = [...new Set(files.flatMap((file) => file.data.tags ?? []))].sort();
 ---
 
 <BaseLayout
   title="FILES"
-  description="Everything available for download from Original, grouped by category."
+  description="Licenses, copyright headers, and policy/governance templates, ready to copy or download."
 >
-  <h1 class="page-title"><Circle /> FILES</h1>
-  <p class="lede">
-    {files.length} items in {grouped.length} categories. Small files are served straight from this
-    site; large files are mirrored on GitHub Releases. Newest first within each category.
-  </p>
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> FILES</h1>
+    <p class="lede">
+      Licenses, copyright headers, and policy and governance templates. Every entry is a plain
+      text file with a checksum; copy it, or download it and verify.
+    </p>
+  </header>
+
+  <div class="file-controls">
+    <div class="filter-block">
+      <label class="label" for="file-search">Search</label>
+      <input id="file-search" type="search" placeholder="Title, summary, or tag" autocomplete="off" />
+    </div>
+
+    <div class="filter-block">
+      <span class="label" id="category-label">Category</span>
+      <div class="filter-chips" role="group" aria-labelledby="category-label">
+        <button type="button" class="chip is-active" data-category-filter="">All ({files.length})</button>
+        {
+          grouped.map((group) => (
+            <button type="button" class="chip" data-category-filter={group.category}>
+              {group.category} ({group.items.length})
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="filter-block">
+      <label class="label" for="file-tag">Tag</label>
+      <select id="file-tag">
+        <option value="">All tags</option>
+        {tags.map((tag) => <option value={tag}>{tag}</option>)}
+      </select>
+    </div>
+
+    <span class="filter-count" id="file-count">{files.length} files</span>
+  </div>
 
   {
     grouped.map((group) => (
-      <section class="section">
-        <h2 class="section-title">
-          {group.category} <span class="section-count">{group.items.length}</span>
-        </h2>
-        <ul class="entry-list">
-          {group.items.map((entry) => (
-            <FileEntry entry={entry} />
-          ))}
-        </ul>
+      <section class="file-group" data-file-group data-category={group.category}>
+        <div class="section-head">
+          <h2 class="label">{group.category}</h2>
+          <span class="section-count" data-group-count>{group.items.length} files</span>
+        </div>
+        <FileTable entries={group.items} showTags />
       </section>
     ))
   }
+
+  <p class="empty-state" id="file-empty" hidden>No files match these filters.</p>
+
+  <script>
+    const searchInput = document.getElementById('file-search');
+    const tagSelect = document.getElementById('file-tag');
+    const countEl = document.getElementById('file-count');
+    const emptyEl = document.getElementById('file-empty');
+    const rows = Array.from(document.querySelectorAll('[data-file-row]'));
+    const groups = Array.from(document.querySelectorAll('[data-file-group]'));
+    const chips = Array.from(document.querySelectorAll('[data-category-filter]'));
+
+    let activeCategory = '';
+
+    function applyFilters(updateUrl = true) {
+      const query = searchInput.value.trim().toLowerCase();
+      const tag = tagSelect.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of rows) {
+        const matchesQuery = !query || row.dataset.search.includes(query);
+        const matchesCategory = !activeCategory || row.dataset.category === activeCategory;
+        const matchesTag = !tag || row.dataset.tags.split('|').includes(tag);
+        const show = matchesQuery && matchesCategory && matchesTag;
+        row.hidden = !show;
+        if (show) visible += 1;
+      }
+
+      for (const group of groups) {
+        const groupRows = Array.from(group.querySelectorAll('[data-file-row]'));
+        const visibleRows = groupRows.filter((row) => !row.hidden);
+        group.hidden = visibleRows.length === 0;
+        const groupCount = group.querySelector('[data-group-count]');
+        if (groupCount) {
+          groupCount.textContent = visibleRows.length + (visibleRows.length === 1 ? ' file' : ' files');
+        }
+      }
+
+      countEl.textContent = visible + (visible === 1 ? ' file' : ' files');
+      emptyEl.hidden = visible !== 0;
+
+      if (updateUrl) {
+        const params = new URLSearchParams();
+        if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+        if (activeCategory) params.set('category', activeCategory);
+        if (tagSelect.value) params.set('tag', tagSelect.value);
+        const qs = params.toString();
+        history.replaceState(null, '', qs ? '?' + qs : window.location.pathname);
+      }
+    }
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        activeCategory = chip.dataset.categoryFilter || '';
+        for (const other of chips) other.classList.toggle('is-active', other === chip);
+        applyFilters();
+      });
+    }
+
+    searchInput.addEventListener('input', () => applyFilters());
+    tagSelect.addEventListener('change', () => applyFilters());
+
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q') || '';
+    const initialCategory = params.get('category') || '';
+    const initialTag = params.get('tag') || '';
+
+    if (initialQuery) searchInput.value = initialQuery;
+    if (initialCategory) {
+      const chip = chips.find((c) => c.dataset.categoryFilter === initialCategory);
+      if (chip) {
+        activeCategory = initialCategory;
+        for (const other of chips) other.classList.toggle('is-active', other === chip);
+      }
+    }
+    if (initialTag) {
+      const option = Array.from(tagSelect.options).find(
+        (o) => o.value.toLowerCase() === initialTag.toLowerCase(),
+      );
+      if (option) tagSelect.value = option.value;
+    }
+
+    applyFilters(false);
+  </script>
 </BaseLayout>

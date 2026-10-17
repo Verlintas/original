@@ -1,0 +1,81 @@
+PROJECT GOVERNANCE — TEMPLATE
+=============================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. Governance should describe how the project actually works,
+not how you wish it worked. Delete this notice from the published version.
+
+Replace every value in [SQUARE BRACKETS].
+
+---
+# [PROJECT NAME] — Governance
+
+## SCOPE
+
+This document explains who makes decisions in the project, how those
+decisions are made, and how roles change. It applies to the repository, its
+releases, and the community spaces listed in [COMMUNITY SPACES].
+
+## ROLES
+
+**Users** — use the software and report problems.
+
+**Contributors** — submit issues, documentation, code, translations, or
+design. Any contributor who has had [N] substantial changes merged in the
+last [12] months is listed in [CONTRIBUTORS FILE].
+
+**Reviewers** — trusted contributors who review and approve pull requests.
+Nominated by a maintainer and confirmed by lazy consensus of maintainers.
+
+**Maintainers** — responsible for direction, releases, access control, and
+the health of the community. Current list: [MAINTAINERS FILE].
+
+## DECISIONS
+
+- **Lazy consensus** is the default: a proposal is accepted if no maintainer
+  objects within [7] days.
+- **Discussion first** for large changes: open an issue or RFC in
+  [RFC LOCATION] and allow [14] days for comment.
+- **Voting** is reserved for exceptional cases: a simple majority of
+  maintainers, with ties broken by [TIE-BREAK RULE].
+- Decisions and their rationale are recorded in [DECISION LOG].
+
+## CHANGING MAINTAINERS
+
+- Adding a maintainer requires nomination by an existing maintainer and
+  confirmation by [TWO-THIRDS] of maintainers.
+- A maintainer may step down at any time.
+- Inactive maintainers (no reviews or commits for [6] months, after a
+  check-in) may be moved to emeritus status by maintainer consensus.
+
+## RELEASES
+
+Release authority and cadence are defined in [RELEASE POLICY]. Only
+maintainers may publish releases.
+
+## CONFLICTS OF INTEREST
+
+Maintainers must disclose relevant commercial or personal interests before
+decisions that could benefit them materially. Affected maintainers
+[RECUSE THEMSELVES / DISCLOSE AND PARTICIPATE].
+
+## CODE OF CONDUCT
+
+Participation is governed by the [CODE OF CONDUCT]. Enforcement is handled
+by [ENFORCEMENT TEAM] as described there.
+
+## FORKS AND DERIVATIVES
+
+The licence permits forks; the project asks that forks use a distinct name
+and not imply endorsement. Trademark rules: [TRADEMARK POLICY].
+
+## AMENDMENTS
+
+Changes to this document require a pull request, a [14]-day comment period,
+and approval by [TWO-THIRDS] of maintainers.
+
+## REFERENCES
+
+- Contributor Covenant: https://www.contributor-covenant.org/
+- Open Source Guides — Governance: https://opensource.guide/leadership-and-governance/
+- Apache Software Foundation — Governance: https://www.apache.org/foundation/governance/

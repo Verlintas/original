@@ -1,87 +1,132 @@
 # Original
 
-`https://original.wales` — 白底红字、以文字为主的资料存放 / 展示 / 分发站点。
+`https://original.wales` — 个人工作站点：文件、状态、工具。
 
-- 技术：Astro（纯静态输出，无客户端 JavaScript），无外部字体、无追踪
-- 部署：GitHub Actions 构建 → GitHub Pages 托管
-- 设计规则（详见站内 COLOPHON 页）：
-  - 只允许白色与红系颜色（`#cc0000` / `#7d0000` / `#a80000` / `#f0d2d2` / `#fdf5f5`）
-  - 标志为红色空心圆 ◯，直径等于相邻大写字母的帽高（`1cap`），圆底对齐基线
-  - 格式：`◯ TITLE`（◯ 后一个空格）；文件标题、小节标题全大写；站名 `Original` 保持首字母大写
+- 技术：Astro（静态输出），零客户端框架；STATUS/UNIVERSE/CLI 使用原生 JS
+- 部署：GitHub Actions 构建 → GitHub Pages 托管（自定义域名，强制 HTTPS）
+
+## 页面
+
+| 路径 | 说明 |
+|---|---|
+| `/` | MAIN：概览 + 最近文件 + 索引 |
+| `/status/` | STATUS：GitHub 平台状态、站点可达性、GitHub 项目动态、外链 |
+| `/files/` | FILES：许可证原文、版权头、政策/治理模板（44 份；类别 chips + 标签 + 全文检索） |
+| `/files/<slug>/` | 文件详情：摘要、元数据、标签、SHA-256、下载 |
+| `/universe/` | UNIVERSE：浏览器工具（SHA-256 校验、JSON 格式化） |
+| `/about/` | ABOUT：站点、维护者、文件维护方式、FAQ |
+| `/cli/` | CLI：终端界面（隐藏页，不在导航中；页脚与 ABOUT 有人类入口） |
+| `/404.html` | 自定义报错页（显示请求路径；`noindex`） |
+| `/index.json` | 全站机器可读索引（文件、链接、区块） |
+| `/llms.txt` | llms.txt 标准描述，供 AI Agent 读取 |
+| `/rss.xml` | 文件更新订阅 |
+
+隐藏页：`/cli/` 与 404 页不进入导航，且被排除在 sitemap 之外；CLI 页额外标记 `noindex`。
+
+## FILES 内容库
+
+当前 44 份，全部为 TXT，带真实大小与 SHA-256：
+
+- **LICENSES（16）**：MIT、Apache-2.0、GPL-2.0、GPL-3.0、LGPL-3.0、AGPL-3.0、MPL-2.0、EPL-2.0、EUPL-1.2、ISC、0BSD、Zlib、BSL-1.0、BSD-3-Clause、Unlicense、CC0-1.0
+- **HEADERS（8）**：MIT、Apache、GPL、LGPL、AGPL、MPL、SPDX、短标识符合集
+- **POLICIES（10）**：网站/App 隐私政策、Cookie 政策、服务条款、EULA、可接受使用政策、无障碍声明、DMCA 通知、开源声明、security.txt
+- **GOVERNANCE（10）**：Contributor Covenant 行为准则、DCO 1.1、贡献指南、安全政策、个人 CLA、项目治理、AI 贡献政策、Issue/PR 模板、代码评审政策、发布政策
+
+检索与分类：
+
+- 搜索框：匹配标题、摘要、标签
+- 类别 chips：All / Licenses / Headers / Policies / Governance（数量实时更新）
+- 标签下拉：PERMISSIVE、COPYLEFT、WEAK COPYLEFT、PUBLIC DOMAIN、PRIVACY、TERMS、SECURITY、ACCESSIBILITY 等
+- URL 可分享：`/files/?q=privacy`、`/files/?category=LICENSES&tag=COPYLEFT`
+- 详情页的类别与标签都可点击回到筛选结果
 
 ## 本地开发
 
 ```sh
 npm install          # 国内网络慢可加 --registry=https://registry.npmmirror.com
-npm run dev          # 本地预览 http://localhost:4321
+npm run dev          # http://localhost:4321
 npm run build        # 构建到 dist/
 npm run preview      # 预览构建产物
 ```
 
-## 目录结构
+## 新增一个文件
 
-```
-src/
-  content.config.ts        内容集合定义（files / notes 的字段结构）
-  content/files/*.md       每个资料 = 一个 md（frontmatter 存元数据）
-  content/notes/*.md       每篇随笔 = 一个 md
-  data/links.ts            LINKS 页的外链清单
-  components/              Circle(◯) / BaseLayout / Header / Footer / FileEntry
-  pages/                   所有页面（index、files、notes、links、about、colophon、404、rss）
-  styles/global.css        全部样式与色板（改颜色只需改这里的 CSS 变量）
-public/
-  CNAME                    自定义域名（original.wales）
-  files/                   随仓库分发的小文件
-  favicon.svg / robots.txt
-.github/workflows/deploy.yml  推送到 main 自动构建并部署
-```
-
-## 新增一份资料
-
-1. 在 `src/content/files/` 新建 `my-file.md`，frontmatter 示例：
+1. 把文件本体放进 `public/files/<category>/<name>.<ext>`（建议单文件 < 20 MB；大文件放 GitHub Releases 并填 `external`）。
+2. 在 `src/content/files/` 新建同名条目的 Markdown（slug 即文件名，不要带点号）：
 
 ```yaml
 ---
-title: MY FILE TITLE        # 全大写
-category: DOCUMENTS         # DOCUMENTS / TOOLS / MEDIA / ARCHIVE
-date: 2026-10-16
+title: MY TEMPLATE              # 站点上全大写显示
+category: POLICIES              # LICENSES / HEADERS / POLICIES
+date: 2026-10-17
 version: '1.0'
-format: PDF
-size: 1.2 MB
-license: CC BY 4.0
-sha256: <可选，文件校验值>
-file: /files/my-file.pdf    # 小文件：把文件放进 public/files/ 并填这里
-external: https://...       # 大文件：传到 GitHub Releases 后填下载链接（可与 file 二选一或都填）
-summary: 一句话摘要，会显示在列表和 RSS 里。
+format: TXT
+size: 3.5 KB                    # 写实际大小
+license: CC0-1.0                # 许可证原文可写 CANONICAL TEXT
+sha256: <shasum -a 256 文件>
+file: /files/policies/my-template.txt
+source: https://example.com/original-source   # 可选：来源
+tags: [PRIVACY, GDPR]                         # 用于 FILES 筛选与 CLI files <tag>
+summary: 一句话摘要，用于列表、RSS、CLI、llms.txt。
 ---
-正文写 Markdown，会渲染到详情页。
+
+正文：使用说明、注意事项、来源链接。
 ```
 
-2. 小文件：把文件本体放进 `public/files/`（单文件建议 < 20 MB）。
-3. 大文件：在 GitHub 仓库 Releases 里上传，把下载地址填进 `external`。
-4. 提交并推送到 `main`，Actions 自动构建部署，列表 / 首页 / RSS 全部自动更新。
+3. 提交并推送 `main`，Actions 自动构建部署；首页、FILES、RSS、CLI、`index.json`、`llms.txt` 全部自动更新。
 
-校验值获取：`shasum -a 256 文件名`。
+校验值：`shasum -a 256 文件名`；大小：`wc -c 文件名`。
 
-## 部署与 DNS
+## STATUS 页
 
-仓库推送到 GitHub 后：
+- 每次打开页面在浏览器端实时检查：
+  - GitHub 平台状态（`githubstatus.com` API，含 API/Actions/Pages/Git Operations 组件）
+  - 站点可达性（`src/data/sites.ts` 中配置，试运行 `no-cors` 请求，显示延迟）
+  - GitHub 项目动态（`api.github.com`，未认证请求限 60 次/小时/IP；展示最近 8 个仓库）
+  - 外链列表（`src/data/links.ts`）
+- 无需构建期任务；点 `[ REFRESH ]` 重新检查。无 JS 时降级为静态链接。
 
-1. 仓库 Settings → Pages → Source 选 **GitHub Actions**。
-2. Custom domain 填 `original.wales`（仓库里已有 `public/CNAME`，二者保持一致）。
-3. 到域名商（Spaceship）DNS 设置：
-   - 根域名 `original.wales` 的 A 记录改为 GitHub Pages 的四个地址（删掉现有停放记录）：
-     - `185.199.108.153`
-     - `185.199.109.153`
-     - `185.199.110.153`
-     - `185.199.111.153`
-   - （可选）`www` 的 CNAME 指向 `verlintas.github.io`
-4. DNS 生效后（几分钟到 24 小时），回 Pages 设置勾选 **Enforce HTTPS**。
+## CLI 与 AI Agent
 
-## 现有占位内容
+终端界面：虚拟文件系统（`cd` / `ls` / `pwd` / `tree`）、全文搜索、校验、JSON 输出、Tab 补全、历史记录（↑/↓）、Ctrl+L 清屏。
 
-第一版刻意填满了占位结构，方便查看版式；后续按需增删：
+```
+help [command]           ls [-l] [path]        cd <path>           pwd
+tree                     files [category]      cat <file>          read <file>
+head <file> [n]          tail <file> [n]       search <term>       verify <file>
+download <file>          open <section|file|url>                   status
+links                    stats                 about               date
+whoami                   source                history             clear
+exit                     echo <text>
+```
 
-- 10 份占位资料（4 份带真实小文件可实际下载，6 份指向 Releases 的占位外链）
-- 3 篇占位随笔、6 条外链收藏
-- 所有标注 *Placeholder* 的下载链接在发布真实文件前都可以删除或替换
+- 任意命令加 `--json` 输出机器可读结果，例如 `/cli/?cmd=cat%20mit-license%20--json`
+- 直接执行：`/cli/?cmd=ls`；多条命令用 `%3B` 分隔，如 `?cmd=cd%20files%3Bls%20-l`
+- `files <category|tag>` 可按类别或标签筛选（如 `files COPYLEFT`）；`cat` 显示标签
+- `search` 使用 `/search.json`（构建时生成的全文索引，同时匹配标题/摘要/标签）；`verify` 在浏览器端下载文件并比对 SHA-256
+- 机器索引：`/index.json`（相对路径 + `site` + `generated` + 每文件 `bytes`）
+- 站点描述与命令列表：`/llms.txt`
+
+## 内容来源
+
+- **16 份许可证原文**均取自 SPDX License List（`spdx/license-list-data`），未改写正文
+- **Contributor Covenant 2.1** 取自 contributor-covenant.org（CC BY 4.0）；**DCO 1.1** 取自 developercertificate.org（逐字复制）
+- **版权头**依据 Apache License 附录、MPL Exhibit A、GNU How-To、SPDX/REUSE 规范整理
+- **政策/合规模板**参考：
+  - 隐私：GDPR Art.13–14、ICO、CCPA/CPRA、Google Play 隐私政策与数据安全要求
+  - Cookie：ICO cookies 指南、ePrivacy Directive
+  - 条款/EULA：EU Consumer Rights Directive、Apple/Google 商店条款
+  - 可接受使用：UK Computer Misuse Act、CFAA
+  - 无障碍：W3C WCAG 2.2 / WAI 声明指南、EU Web Accessibility Directive
+  - DMCA：17 U.S.C. §512、U.S. Copyright Office
+  - 开源声明：SPDX、REUSE、Apache NOTICE、CycloneDX
+  - security.txt：RFC 9116
+  - 贡献/治理：Open Source Guides、GitHub Docs、Google Code Review、Semantic Versioning、Keep a Changelog
+- 所有模板均标注 “not legal advice”；使用前请自行审查
+
+## 部署（已完成）
+
+- 仓库：`Verlintas/original`（公开）
+- Pages：Source = GitHub Actions；Custom domain = `original.wales`；Enforce HTTPS 已开启
+- DNS（Spaceship）：`@` 的 4 条 A 记录指向 GitHub Pages IP；`verlintas.dev` 不受影响
+- 推送到 `main` 即自动部署；首次及之后证书由 GitHub 自动签发/续期
