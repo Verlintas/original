@@ -234,9 +234,9 @@ import Circle from '../components/Circle.astro';
       if (json) {
         return jsonOut({ filter: filter || null, files: items });
       }
-      print('  ' + 'FILE'.padEnd(36) + 'CATEGORY'.padEnd(12) + 'SIZE');
+      print('  ' + 'FILE'.padEnd(42) + 'CATEGORY'.padEnd(12) + 'SIZE');
       for (const file of items) {
-        print('  ◯ ' + file.title.padEnd(34) + file.category.padEnd(12) + file.size);
+        print('  ◯ ' + file.title.padEnd(40) + file.category.padEnd(12) + file.size);
       }
       print('');
       printMuted(items.length + ' file(s). Use "cat <file>", "read <file>", or "open <file>".');
