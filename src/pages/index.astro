@@ -3,55 +3,114 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../components/BaseLayout.astro';
 import Circle from '../components/Circle.astro';
 import FileTable from '../components/FileTable.astro';
+import { links } from '../data/links';
+import { tools } from '../data/tools';
 
 const files = (await getCollection('files')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
 );
-const latest = files.slice(0, 4);
-
-const index = [
-  { href: '/status/', label: 'STATUS', note: 'Live checks and projects' },
-  { href: '/files/', label: 'FILES', note: 'Licenses, headers, policies, governance' },
-  { href: '/universe/', label: 'UNIVERSE', note: 'Tools and experiments' },
-  { href: '/about/', label: 'ABOUT', note: 'The site and its maintainer' },
-];
+const latest = files.slice(0, 5);
+const categoryCount = new Set(files.map((file) => file.data.category)).size;
 ---
 
-<BaseLayout title="Original">
-  <section class="masthead">
-    <h1 class="site-title"><Circle /> <span>Original</span></h1>
+<BaseLayout title="Original" description="A cornerstone for files, references, and tools.">
+  <section class="hero">
     <div>
-      <p class="intro">Files, status, tools, and other useful things.</p>
-      <nav class="quick-nav" aria-label="Sections">
-        {index.map((item) => <a href={item.href}>{item.label}</a>)}
-      </nav>
+      <h1 class="site-title"><Circle /> <span>Original</span></h1>
+      <p class="hero-copy">A cornerstone for files, references, and tools.</p>
+      <div class="hero-actions">
+        <a class="action" href="/files/">[ FILES ]</a>
+        <a class="action" href="/status/">[ STATUS ]</a>
+        <a class="action" href="/universe/">[ UNIVERSE ]</a>
+        <a class="action" href="/about/">[ ABOUT ]</a>
+      </div>
     </div>
+
+    <dl class="hero-stats">
+      <div><dt>Files</dt><dd>{files.length}</dd></div>
+      <div><dt>Categories</dt><dd>{categoryCount}</dd></div>
+      <div><dt>Tools</dt><dd>{tools.length}</dd></div>
+      <div><dt>Links</dt><dd>{links.length}</dd></div>
+    </dl>
   </section>
 
-  <div class="home-grid">
-    <section aria-labelledby="recent-files">
-      <div class="section-head">
-        <h2 id="recent-files" class="label">Files</h2>
-        <span class="section-count">{files.length} total</span>
-      </div>
-      <FileTable entries={latest} />
-      <p class="more"><a class="action" href="/files/">[ ALL FILES ]</a></p>
-    </section>
+  <section class="home-block" aria-labelledby="home-files">
+    <div class="section-head">
+      <h2 id="home-files" class="label">Files</h2>
+      <a class="more-link" href="/files/">All files →</a>
+    </div>
+    <FileTable entries={latest} />
+  </section>
 
-    <section aria-labelledby="index-heading">
+  <div class="home-columns">
+    <section class="home-block" aria-labelledby="home-tools">
       <div class="section-head">
-        <h2 id="index-heading" class="label">Index</h2>
+        <h2 id="home-tools" class="label">Tools</h2>
+        <a class="more-link" href="/universe/">Universe →</a>
       </div>
-      <ul class="index-list">
+      <div class="tool-grid" style="margin-top: 1rem;">
         {
-          index.map((item) => (
-            <li>
-              <a class="index-name" href={item.href}><Circle /> {item.label}</a>
-              <span class="index-note">{item.note}</span>
-            </li>
+          tools.map((tool) => (
+            <a class="tool-card" href={tool.url}>
+              <span class="tool-index">{tool.index}</span>
+              <h3>{tool.name}</h3>
+              <p>{tool.description}</p>
+              <span class="tool-arrow">[ OPEN ]</span>
+            </a>
           ))
         }
-      </ul>
+      </div>
+    </section>
+
+    <section class="home-block" aria-labelledby="home-status">
+      <div class="section-head">
+        <h2 id="home-status" class="label">Status</h2>
+        <a class="more-link" href="/status/">Live checks →</a>
+      </div>
+      <div class="status-teaser" style="margin-top: 1rem;">
+        <div class="status-teaser-row">
+          <span>GitHub platform</span>
+          <span class="state" data-home-github>Checking…</span>
+        </div>
+        <div class="status-teaser-row">
+          <span>Monitored sites</span>
+          <span class="state">2</span>
+        </div>
+        <div class="status-teaser-row">
+          <span>Projects</span>
+          <span class="state">GitHub</span>
+        </div>
+        <div class="status-teaser-row">
+          <span>Links</span>
+          <span class="state">{links.length}</span>
+        </div>
+      </div>
     </section>
   </div>
+
+  <section class="about-teaser">
+    <p>
+      Original is the foundation I build from: a stable address for reference files, licenses,
+      policies, live project status, and small tools.
+    </p>
+    <a class="more-link" href="/about/">About →</a>
+  </section>
+
+  <script>
+    const mini = document.querySelector('[data-home-github]');
+    fetch('https://www.githubstatus.com/api/v2/status.json', { cache: 'no-store' })
+      .then((response) => response.json())
+      .then((data) => {
+        const labels = {
+          none: 'Operational',
+          minor: 'Degraded',
+          major: 'Major outage',
+          critical: 'Critical outage',
+        };
+        mini.textContent = labels[data.status.indicator] || data.status.description;
+      })
+      .catch(() => {
+        mini.textContent = 'Unavailable';
+      });
+  </script>
 </BaseLayout>

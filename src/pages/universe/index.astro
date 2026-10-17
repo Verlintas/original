@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { tools } from '../../data/tools';
+---
+
+<BaseLayout
+  title="UNIVERSE"
+  description="Small tools and experiments, each with its own room."
+>
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> UNIVERSE</h1>
+    <p class="lede">
+      Small tools and experiments. Each tool has its own room; everything runs in the browser and
+      nothing is uploaded.
+    </p>
+  </header>
+
+  <div class="tool-grid" style="margin-top: 2rem;">
+    {
+      tools.map((tool) => (
+        <a class="tool-card" href={tool.url}>
+          <span class="tool-index">{tool.index}</span>
+          <h3>{tool.name}</h3>
+          <p>{tool.description}</p>
+          <span class="tool-arrow">[ OPEN ]</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    More tools will be added over time. Suggestions: <a href="mailto:contact@original.wales">contact@original.wales</a>.
+  </p>
+</BaseLayout>

@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { licenseFeatures, featureRows, featureValue } from '../../data/license-features';
+
+const defaults = ['mit', 'apache-2.0', 'gpl-3.0', 'agpl-3.0', 'mpl-2.0'];
+const groups = ['PERMISSIONS', 'CONDITIONS', 'LIMITATIONS'] as const;
+
+const tableRows = groups.flatMap((group) => [
+  { type: 'group' as const, label: group },
+  ...featureRows
+    .filter((row) => row.group === group)
+    .map((row) => ({ type: 'row' as const, row })),
+]);
+---
+
+<BaseLayout
+  title="LICENSE COMPARE"
+  description="Compare permissions, conditions, and limitations across sixteen open-source licenses."
+>
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> LICENSE COMPARE</h1>
+    <p class="lede">
+      Permissions, conditions, and limitations across sixteen licenses. Select any combination;
+      hide identical rows to see the real differences.
+    </p>
+  </header>
+
+  <div class="license-picker" id="license-picker" role="group" aria-label="Licenses">
+    {
+      licenseFeatures.map((license) => (
+        <label class="license-toggle">
+          <input
+            type="checkbox"
+            value={license.id}
+            checked={defaults.includes(license.id)}
+            data-license-toggle
+          />
+          {license.name}
+        </label>
+      ))
+    }
+  </div>
+
+  <div class="compare-toolbar">
+    <span id="compare-count">{defaults.length} of {licenseFeatures.length} selected</span>
+    <div class="compare-actions">
+      <button type="button" class="action" data-select-all>[ ALL ]</button>
+      <button type="button" class="action" data-select-none>[ NONE ]</button>
+      <label><input type="checkbox" id="only-differences" /> Only differences</label>
+    </div>
+  </div>
+
+  <div class="compare-table-wrap">
+    <table class="compare-table" id="compare-table">
+      <thead>
+        <tr>
+          <th class="feature">Feature</th>
+          {
+            licenseFeatures.map((license) => (
+              <th data-col={license.id}>
+                <a href={`/files/${license.slug}/`}>{license.name}</a>
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          tableRows.map((item) =>
+            item.type === 'group' ? (
+              <tr class="group-row">
+                <th colspan={licenseFeatures.length + 1}>{item.label}</th>
+              </tr>
+            ) : (
+              <tr data-row>
+                <th class="feature">{item.row.label}</th>
+                {licenseFeatures.map((license) => {
+                  const value = featureValue(license, item.row);
+                  return (
+                    <td data-col={license.id} data-value={value}>
+                      {value === 'yes' ? (
+                        <span class="yes" aria-label="Yes">✓</span>
+                      ) : value === 'source' ? (
+                        <span class="source">SOURCE</span>
+                      ) : (
+                        <span class="no" aria-label="No">—</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ),
+          )
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="compare-legend">
+    ✓ = granted / required / applies · SOURCE = notice required in source distributions only ·
+    — = not granted / not required / does not apply. Data from
+    <a href="https://choosealicense.com/appendix/">Choose a License</a>; read the full texts under
+    <a href="/files/">FILES</a>. Not legal advice.
+  </p>
+
+  <noscript>
+    <p class="compare-legend">Selecting licenses needs JavaScript; all sixteen are shown.</p>
+  </noscript>
+
+  <script>
+    const picker = document.getElementById('license-picker');
+    const toggles = Array.from(picker.querySelectorAll('input[data-license-toggle]'));
+    const countEl = document.getElementById('compare-count');
+    const onlyDifferences = document.getElementById('only-differences');
+    const table = document.getElementById('compare-table');
+    const allIds = toggles.map((toggle) => toggle.value);
+
+    function selectedIds() {
+      return toggles.filter((toggle) => toggle.checked).map((toggle) => toggle.value);
+    }
+
+    function apply(updateUrl = true) {
+      const selected = selectedIds();
+
+      for (const cell of table.querySelectorAll('[data-col]')) {
+        cell.classList.toggle('is-hidden', !selected.includes(cell.dataset.col));
+      }
+
+      const rows = Array.from(table.querySelectorAll('tbody tr[data-row]'));
+      for (const row of rows) {
+        const values = selected.map(
+          (id) => row.querySelector(`td[data-col="${id}"]`)?.dataset.value,
+        );
+        const identical = values.length > 0 && values.every((value) => value === values[0]);
+        row.classList.toggle('is-hidden', onlyDifferences.checked && identical);
+      }
+
+      for (const groupRow of table.querySelectorAll('tr.group-row')) {
+        let sibling = groupRow.nextElementSibling;
+        let anyVisible = false;
+        while (sibling && !sibling.classList.contains('group-row')) {
+          if (!sibling.classList.contains('is-hidden')) anyVisible = true;
+          sibling = sibling.nextElementSibling;
+        }
+        groupRow.classList.toggle('is-hidden', !anyVisible);
+      }
+
+      countEl.textContent = selected.length + ' of ' + allIds.length + ' selected';
+
+      if (updateUrl) {
+        const params = new URLSearchParams(window.location.search);
+        if (selected.length > 0 && selected.length < allIds.length) {
+          params.set('licenses', selected.join(','));
+        } else {
+          params.delete('licenses');
+        }
+        const qs = params.toString();
+        history.replaceState(null, '', qs ? '?' + qs : window.location.pathname);
+      }
+    }
+
+    for (const toggle of toggles) {
+      toggle.addEventListener('change', () => apply());
+    }
+
+    onlyDifferences.addEventListener('change', () => apply());
+
+    document.querySelector('[data-select-all]').addEventListener('click', () => {
+      for (const toggle of toggles) toggle.checked = true;
+      apply();
+    });
+
+    document.querySelector('[data-select-none]').addEventListener('click', () => {
+      for (const toggle of toggles) toggle.checked = false;
+      apply();
+    });
+
+    const initial = new URLSearchParams(window.location.search).get('licenses');
+    if (initial) {
+      const wanted = initial.split(',');
+      for (const toggle of toggles) toggle.checked = wanted.includes(toggle.value);
+    }
+
+    apply(false);
+  </script>
+</BaseLayout>

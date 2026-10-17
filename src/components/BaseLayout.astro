@@ -8,13 +8,17 @@ interface Props {
   description?: string;
   type?: 'website' | 'article';
   noindex?: boolean;
+  bare?: boolean;
+  theme?: 'default' | 'cli';
 }
 
 const {
   title,
-  description = 'Files, status, tools, and other useful things.',
+  description = 'A cornerstone for files, references, and tools.',
   type = 'website',
   noindex = false,
+  bare = false,
+  theme = 'default',
 } = Astro.props;
 
 const siteName = 'Original';
@@ -23,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class:list={[theme === 'cli' && 'theme-cli']}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -41,15 +45,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
   </head>
-  <body>
-    <a class="skip-link visually-hidden" href="#main">Skip to content</a>
-    <Header />
-    <main id="main">
-      <div class="shell">
+  <body class:list={[`theme-${theme}`]}>
+    {
+      bare ? (
         <slot />
-      </div>
-    </main>
-    <Footer />
+      ) : (
+        <>
+          <a class="skip-link visually-hidden" href="#main">Skip to content</a>
+          <Header />
+          <main id="main">
+            <div class="shell">
+              <slot />
+            </div>
+          </main>
+          <Footer />
+        </>
+      )
+    }
     <style>
       .skip-link:focus {
         position: fixed;

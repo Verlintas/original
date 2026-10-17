@@ -4,6 +4,7 @@ import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { links } from '../data/links';
 import { sites } from '../data/sites';
+import { tools } from '../data/tools';
 import { formatDate } from '../utils/format';
 
 export async function GET(context: APIContext) {
@@ -46,8 +47,9 @@ export async function GET(context: APIContext) {
 
   const body = {
     name: 'Original',
+    contact: 'contact@original.wales',
     site: site.href,
-    description: 'Files, status, tools, and other useful things.',
+    description: 'A cornerstone for files, references, and tools.',
     generated: new Date().toISOString(),
     sections: [
       { name: 'MAIN', path: '/', description: 'Home.' },
@@ -58,12 +60,19 @@ export async function GET(context: APIContext) {
       { name: 'CLI', path: '/cli/', description: 'Terminal interface; supports ?cmd=.' },
     ],
     sites: sites.map((entry) => ({ name: entry.name, url: entry.url, note: entry.note })),
+    tools: tools.map((tool) => ({
+      id: tool.id,
+      name: tool.name,
+      url: tool.url,
+      description: tool.description,
+    })),
     files: filesWithBytes,
     links: links.map((link) => ({ name: link.name, url: link.url, note: link.note })),
     machine: {
       cli: '/cli/',
       index: '/index.json',
       search: '/search.json',
+      compare: '/universe/license-compare/',
       llms: '/llms.txt',
       rss: '/rss.xml',
     },

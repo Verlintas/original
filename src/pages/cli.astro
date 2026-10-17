@@ -1,23 +1,26 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import Circle from '../components/Circle.astro';
 ---
 
 <BaseLayout
   title="CLI"
-  description="A terminal interface to Original, for humans and scripts."
+  description="A full-screen terminal interface to Original, for humans and scripts."
   noindex
+  bare
+  theme="cli"
 >
-  <header class="page-head">
-    <h1 class="page-title"><Circle /> CLI</h1>
-    <p class="lede">
-      A terminal interface to the same content. Human-friendly, and predictable enough for scripts.
-    </p>
-  </header>
+  <div class="cli-screen">
+    <div class="cli-topbar">
+      <a class="cli-brand" href="/">◯ ORIGINAL — SHELL</a>
+      <span class="cli-hintline">
+        help · /index.json · /search.json · /llms.txt
+      </span>
+      <a class="cli-back" href="/">[ BACK TO SITE ]</a>
+    </div>
 
-  <div class="cli-wrap">
     <div class="cli-output" id="cli-output" role="log" aria-live="polite"></div>
-    <form class="cli-line" id="cli-form">
+
+    <form class="cli-inputbar" id="cli-form">
       <label class="cli-prompt" id="cli-prompt" for="cli-input">original / $</label>
       <input
         class="cli-input"
@@ -28,21 +31,15 @@ import Circle from '../components/Circle.astro';
         aria-label="Command"
       />
     </form>
+
+    <noscript>
+      <p class="cli-noscript">
+        The terminal needs JavaScript. The same content is available at
+        <a href="/files/">/files/</a>, <a href="/status/">/status/</a>, and
+        <a href="/index.json">/index.json</a>.
+      </p>
+    </noscript>
   </div>
-
-  <p class="cli-hint">
-    Type <code>help</code>. Direct commands: <code>/cli/?cmd=search%20license</code> ·
-    <code>--json</code> for machine output · <code>/index.json</code> ·
-    <code>/search.json</code> · <code>/llms.txt</code>
-  </p>
-
-  <noscript>
-    <p class="status-note">
-      The terminal needs JavaScript. The same content is available at
-      <a href="/files/">/files/</a>, <a href="/status/">/status/</a>, and
-      <a href="/index.json">/index.json</a>.
-    </p>
-  </noscript>
 
   <script>
     const output = document.getElementById('cli-output');
@@ -52,7 +49,7 @@ import Circle from '../components/Circle.astro';
 
     const COMMANDS = [
       'help', 'ls', 'cd', 'pwd', 'tree', 'files', 'cat', 'read', 'head', 'tail',
-      'search', 'verify', 'download', 'open', 'status', 'links', 'stats', 'about',
+      'search', 'verify', 'download', 'open', 'status', 'links', 'tools', 'contact', 'stats', 'about',
       'date', 'whoami', 'source', 'history', 'clear', 'exit', 'echo',
     ];
 
@@ -73,6 +70,8 @@ import Circle from '../components/Circle.astro';
       open: 'open <section|file|url> — open a page, file, or external URL.',
       status: 'status — GitHub platform status and site reachability.',
       links: 'links — list the site links.',
+      tools: 'tools — list the browser tools in Universe.',
+      contact: 'contact — email and GitHub contact details.',
       stats: 'stats — counts, total size, and index generation time.',
       about: 'about — one paragraph about the site.',
       date: 'date — current date and time.',
@@ -80,7 +79,7 @@ import Circle from '../components/Circle.astro';
       source: 'source — source repository URL.',
       history: 'history — command history.',
       clear: 'clear — clear the screen (Ctrl+L also works).',
-      exit: 'exit — there is no exit.',
+      exit: 'exit — leave the shell and return to the site.',
       echo: 'echo <text> — print text.',
     };
 
@@ -217,6 +216,10 @@ import Circle from '../components/Circle.astro';
       }
     }
 
+    function isWide() {
+      return window.innerWidth >= 720;
+    }
+
     function listFiles(filter, json) {
       const needle = (filter || '').toLowerCase();
       const items = needle
@@ -234,9 +237,16 @@ import Circle from '../components/Circle.astro';
       if (json) {
         return jsonOut({ filter: filter || null, files: items });
       }
-      print('  ' + 'FILE'.padEnd(42) + 'CATEGORY'.padEnd(12) + 'SIZE');
-      for (const file of items) {
-        print('  ◯ ' + file.title.padEnd(40) + file.category.padEnd(12) + file.size);
+      if (isWide()) {
+        print('  ' + 'FILE'.padEnd(42) + 'CATEGORY'.padEnd(12) + 'SIZE');
+        for (const file of items) {
+          print('  ◯ ' + file.title.padEnd(40) + file.category.padEnd(12) + file.size);
+        }
+      } else {
+        for (const file of items) {
+          print('  ◯ ' + file.title);
+          print('      ' + file.category + ' · ' + file.size);
+        }
       }
       print('');
       printMuted(items.length + ' file(s). Use "cat <file>", "read <file>", or "open <file>".');
@@ -453,7 +463,12 @@ import Circle from '../components/Circle.astro';
       print('Commands:');
       for (const [name, text] of Object.entries(HELP)) {
         const [usage, description] = text.split(' — ');
-        print('  ' + usage.padEnd(30) + description);
+        if (isWide()) {
+          print('  ' + usage.padEnd(30) + description);
+        } else {
+          print('  ' + usage);
+          print('      ' + description);
+        }
       }
       print('');
       printMuted('Flags: --json  ·  Paths: /, /files, /files/licenses  ·  Slugs also work.');
@@ -560,6 +575,14 @@ import Circle from '../components/Circle.astro';
       } else if (command === 'links') {
         if (wantsJson) return jsonOut(index.links);
         for (const link of index.links) print('  ' + link.name + '\n      ' + link.url);
+      } else if (command === 'tools') {
+        if (wantsJson) return jsonOut(index.tools || []);
+        for (const tool of index.tools || []) {
+          print('  ' + tool.name + '  ' + tool.url + '\n      ' + tool.description);
+        }
+      } else if (command === 'contact') {
+        print('  email:  contact@original.wales');
+        print('  github: https://github.com/Verlintas');
       } else if (command === 'stats') {
         stats(wantsJson);
       } else if (command === 'about') {
@@ -576,7 +599,8 @@ import Circle from '../components/Circle.astro';
       } else if (command === 'clear' || command === 'cls') {
         output.replaceChildren();
       } else if (command === 'exit' || command === 'quit') {
-        printMuted('There is no exit. This is a website.');
+        printMuted('Leaving the shell…');
+        window.location.href = '/';
       } else if (command === 'echo') {
         print(args.join(' '));
       } else {
@@ -706,7 +730,11 @@ import Circle from '../components/Circle.astro';
       }
     });
 
-    document.querySelector('.cli-wrap').addEventListener('click', () => input.focus());
+    document.querySelector('.cli-screen').addEventListener('click', () => input.focus());
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') window.location.href = '/';
+    });
 
     boot();
   </script>

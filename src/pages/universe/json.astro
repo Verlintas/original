@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout
+  title="JSON"
+  description="Validate, format, and minify JSON in the browser."
+>
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> JSON</h1>
+    <p class="lede">
+      Validate, format, or minify JSON. Everything happens in this page.
+    </p>
+  </header>
+
+  <div class="tool-single" style="margin-top: 2rem;">
+    <div class="tool-pane">
+      <textarea
+        class="tool-textarea"
+        id="json-input"
+        spellcheck="false"
+        placeholder='Paste JSON here, for example: {"original": true}'
+      ></textarea>
+      <div class="tool-actions">
+        <button type="button" class="action" id="json-format">[ FORMAT ]</button>
+        <button type="button" class="action" id="json-minify">[ MINIFY ]</button>
+        <button type="button" class="action" id="json-clear">[ CLEAR ]</button>
+      </div>
+      <p class="tool-error" id="json-error" hidden></p>
+      <pre class="hash-output" id="json-output" style="margin-top: 1rem;">—</pre>
+    </div>
+  </div>
+
+  <script>
+    const jsonInput = document.getElementById('json-input');
+    const jsonOutput = document.getElementById('json-output');
+    const jsonError = document.getElementById('json-error');
+
+    function runJson(mode) {
+      jsonError.hidden = true;
+      try {
+        const value = JSON.parse(jsonInput.value);
+        jsonOutput.textContent =
+          mode === 'minify' ? JSON.stringify(value) : JSON.stringify(value, null, 2);
+      } catch (error) {
+        jsonOutput.textContent = '—';
+        jsonError.textContent = 'Invalid JSON: ' + error.message;
+        jsonError.hidden = false;
+      }
+    }
+
+    document.getElementById('json-format').addEventListener('click', () => runJson('format'));
+    document.getElementById('json-minify').addEventListener('click', () => runJson('minify'));
+    document.getElementById('json-clear').addEventListener('click', () => {
+      jsonInput.value = '';
+      jsonOutput.textContent = '—';
+      jsonError.hidden = true;
+    });
+  </script>
+</BaseLayout>

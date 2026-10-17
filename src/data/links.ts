@@ -6,14 +6,14 @@ export interface CuratedLink {
 
 export const links: CuratedLink[] = [
   {
+    name: 'EMAIL',
+    url: 'mailto:contact@original.wales',
+    note: 'Contact the maintainer.',
+  },
+  {
     name: 'GITHUB — VERLINTAS',
     url: 'https://github.com/Verlintas',
     note: 'Source code, releases, and the repository behind this site.',
-  },
-  {
-    name: 'X — @VERLINTAS',
-    url: 'https://x.com/Verlintas',
-    note: 'Occasional updates.',
   },
   {
     name: 'NOVABAIC',
