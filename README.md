@@ -135,8 +135,8 @@ history                  clear                 exit                echo <text>
 
 ## 联系与版权
 
-- 邮箱：`contact@original.wales`（已通过 Spaceship 邮件转发至维护者邮箱）
-- 安全报告：`security@original.wales`（已配置转发）；`/.well-known/security.txt`（RFC 9116）
+- 邮箱：`contact@original.wales`（已通过 ImprovMX 转发至维护者邮箱；MX: `mx1/mx2.improvmx.com`）
+- 安全报告：`security@original.wales`（同 ImprovMX 转发）；`/.well-known/security.txt`（RFC 9116）
 - GitHub：`https://github.com/Verlintas`
 - 版权：`© Verlintas`；favicon 为透明背景的红色空心圆
 
@@ -157,6 +157,13 @@ history                  clear                 exit                echo <text>
   - security.txt：RFC 9116
   - 贡献/治理：Open Source Guides、GitHub Docs、Google Code Review、Semantic Versioning、Keep a Changelog
 - 所有模板均标注 “not legal advice”；使用前请自行审查
+
+## 邮件
+
+- 提供商：ImprovMX（免费转发，catch-all：`*@original.wales → 维护者邮箱`）
+- MX：`10 mx1.improvmx.com`、`20 mx2.improvmx.com`
+- 建议 SPF（尚未添加）：`v=spf1 include:spf.improvmx.com ~all`
+- 已实测 `contact@` 与 `security@` 均可送达
 
 ## 部署（已完成）
 
