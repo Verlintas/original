@@ -5,6 +5,7 @@ import path from 'node:path';
 import { links } from '../data/links';
 import { sites } from '../data/sites';
 import { tools } from '../data/tools';
+import { sections } from '../data/sections';
 import { formatDate } from '../utils/format';
 
 export async function GET(context: APIContext) {
@@ -51,14 +52,7 @@ export async function GET(context: APIContext) {
     site: site.href,
     description: 'A cornerstone for files, references, and tools.',
     generated: new Date().toISOString(),
-    sections: [
-      { name: 'MAIN', path: '/', description: 'Home.' },
-      { name: 'STATUS', path: '/status/', description: 'Live checks for sites, projects and services.' },
-      { name: 'FILES', path: '/files/', description: 'Licenses, headers, policy and governance templates.' },
-      { name: 'UNIVERSE', path: '/universe/', description: 'Browser tools.' },
-      { name: 'ABOUT', path: '/about/', description: 'About the site and its maintainer.' },
-      { name: 'CLI', path: '/cli/', description: 'Terminal interface; supports ?cmd=.' },
-    ],
+    sections,
     sites: sites.map((entry) => ({ name: entry.name, url: entry.url, note: entry.note })),
     tools: tools.map((tool) => ({
       id: tool.id,
@@ -70,15 +64,24 @@ export async function GET(context: APIContext) {
     links: links.map((link) => ({ name: link.name, url: link.url, note: link.note })),
     machine: {
       cli: '/cli/',
+      cliHelp: '/cli/help.txt',
+      cliList: '/cli/ls.txt',
+      cliTree: '/cli/tree.txt',
+      cliFiles: '/cli/files.txt',
+      cliStats: '/cli/stats.txt',
       index: '/index.json',
       search: '/search.json',
       compare: '/universe/license-compare/',
+      security: '/.well-known/security.txt',
       llms: '/llms.txt',
       rss: '/rss.xml',
     },
   };
 
   return new Response(JSON.stringify(body, null, 2), {
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+    },
   });
 }

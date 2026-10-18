@@ -122,13 +122,21 @@ history                  clear                 exit                echo <text>
 - `files <category|tag>` 可按类别或标签筛选（如 `files COPYLEFT`）；`cat` 显示标签
 - `search` 使用 `/search.json`（构建时生成的全文索引，同时匹配标题/摘要/标签）；`verify` 在浏览器端下载文件并比对 SHA-256
 - 任意命令加 `--json` 输出机器可读结果，例如 `/cli/?cmd=cat%20mit-license%20--json`
-- 直接执行：`/cli/?cmd=ls`；多条命令用 `%3B` 分隔，如 `?cmd=cd%20files%3Bls%20-l`
-- 机器索引：`/index.json`（相对路径 + `site` + `generated` + 每文件 `bytes` + `tools`）
-- 站点描述与命令列表：`/llms.txt`
+- 直接执行（浏览器内）：`/cli/?cmd=ls`；多条命令用 `%3B` 分隔，如 `?cmd=cd%20files%3Bls%20-l`
+- **`?cmd=` 依赖 JavaScript，不是机器接口**。Agent/脚本请用构建期生成的纯文本端点：
+  - `/cli/help.txt`、`/cli/ls.txt`、`/cli/tree.txt`、`/cli/files.txt`
+  - `/cli/files/{licenses,headers,policies,governance}.txt`
+  - `/cli/cat/<id>.txt`（元数据+摘要）、`/cli/read/<id>.txt`（全文）
+  - `/cli/tools.txt`、`/cli/links.txt`、`/cli/stats.txt`、`/cli/about.txt`
+- 机器索引：`/index.json`（`site` + `generated` + `bytes` + `tools` + `machine`）
+- 全文索引：`/search.json`
+- JSON/文本接口在 GitHub Pages 上自动带 `Access-Control-Allow-Origin: *`（Pages 对静态资源统一添加）
+- 站点描述与机器端点目录：`/llms.txt`
 
 ## 联系与版权
 
 - 邮箱：`contact@original.wales`（**需在域名邮箱或转发服务中配置后才会收信**）
+- 安全报告：`security@original.wales`；`/.well-known/security.txt`（RFC 9116）
 - GitHub：`https://github.com/Verlintas`
 - 版权：`© Verlintas`；favicon 为透明背景的红色空心圆
 

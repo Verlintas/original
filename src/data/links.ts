@@ -11,6 +11,11 @@ export const links: CuratedLink[] = [
     note: 'Contact the maintainer.',
   },
   {
+    name: 'SECURITY',
+    url: 'mailto:security@original.wales',
+    note: 'Report vulnerabilities privately.',
+  },
+  {
     name: 'GITHUB — VERLINTAS',
     url: 'https://github.com/Verlintas',
     note: 'Source code, releases, and the repository behind this site.',

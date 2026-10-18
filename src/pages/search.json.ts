@@ -32,6 +32,9 @@ export async function GET() {
   }
 
   return new Response(JSON.stringify({ generated: new Date().toISOString(), docs }), {
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+    },
   });
 }

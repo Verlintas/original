@@ -43,25 +43,29 @@ export async function GET(context: APIContext) {
   lines.push(
     '',
     '## Machine interfaces',
-    `- [index.json](${new URL('/index.json', site).href}): every file, link, and section as JSON.`,
-    `- [search.json](${new URL('/search.json', site).href}): full text of every text file, for client-side search.`,
-    `- [Contact](mailto:contact@original.wales): contact@original.wales.`,
-    `- [CLI](${new URL('/cli/?cmd=ls', site).href}): HTML terminal output.`,
-    `- [RSS](${new URL('/rss.xml', site).href}): feed of published files.`,
-    `- [Sitemap](${new URL('/sitemap-index.xml', site).href}): index of pages.`,
+    `- [index.json](${new URL('/index.json', site).href}): every file, link, tool, and section as JSON. CORS: *.`,
+    `- [search.json](${new URL('/search.json', site).href}): full text of every text file. CORS: *.`,
+    `- [help.txt](${new URL('/cli/help.txt', site).href}): static CLI command list and endpoints.`,
+    `- [ls.txt](${new URL('/cli/ls.txt', site).href}) · [tree.txt](${new URL('/cli/tree.txt', site).href}) · [files.txt](${new URL('/cli/files.txt', site).href})`,
+    `- [tools.txt](${new URL('/cli/tools.txt', site).href}) · [links.txt](${new URL('/cli/links.txt', site).href}) · [stats.txt](${new URL('/cli/stats.txt', site).href}) · [about.txt](${new URL('/cli/about.txt', site).href})`,
+    `- Per file: [cat/<id>.txt](${new URL('/cli/cat/mit-license.txt', site).href}) metadata and summary; [read/<id>.txt](${new URL('/cli/read/mit-license.txt', site).href}) full text.`,
+    `- [RSS](${new URL('/rss.xml', site).href}) · [Sitemap](${new URL('/sitemap-index.xml', site).href})`,
+    `- [security.txt](${new URL('/.well-known/security.txt', site).href}): report vulnerabilities to security@original.wales.`,
     '',
     '## CLI',
-    'Open /cli/ and type commands, or run one through the URL: /cli/?cmd=<command>',
-    'Multiple commands can be separated with %3B (semicolon). Add --json to get machine-readable output.',
-    '',
-    'Commands: help, ls [-l] [path], cd <path>, pwd, tree, files [category|tag], cat <file>,',
-    'read <file>, head <file> [n], tail <file> [n], search <term>, verify <file>,',
-    'download <file>, open <section|file|url>, status, links, tools, contact, stats, about, date,',
-    'whoami, source, history, clear, exit.',
+    'The interactive terminal at /cli/ requires JavaScript.',
+    'Scripts and agents should use the static text endpoints above; they are rendered at build time.',
+    '?cmd=<command> is a browser-only convenience and does not work without JavaScript.',
+    'The interactive shell supports: help, ls, cd, pwd, tree, files, cat, read, head, tail,',
+    'search, verify, download, open, status, links, tools, contact, stats, about, date, whoami,',
+    'source, history, clear, exit. Add --json for machine-readable output in the browser.',
     '',
   );
 
   return new Response(lines.join('\n'), {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+    },
   });
 }

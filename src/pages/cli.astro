@@ -13,7 +13,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     <div class="cli-topbar">
       <a class="cli-brand" href="/">◯ ORIGINAL — SHELL</a>
       <span class="cli-hintline">
-        help · /index.json · /search.json · /llms.txt
+        help · text api: /cli/help.txt · /index.json
       </span>
       <a class="cli-back" href="/">[ BACK TO SITE ]</a>
     </div>
@@ -34,9 +34,12 @@ import BaseLayout from '../components/BaseLayout.astro';
 
     <noscript>
       <p class="cli-noscript">
-        The terminal needs JavaScript. The same content is available at
-        <a href="/files/">/files/</a>, <a href="/status/">/status/</a>, and
-        <a href="/index.json">/index.json</a>.
+        The interactive terminal needs JavaScript. Static endpoints:
+        <a href="/cli/help.txt">/cli/help.txt</a> ·
+        <a href="/cli/ls.txt">/cli/ls.txt</a> ·
+        <a href="/cli/files.txt">/cli/files.txt</a> ·
+        <a href="/index.json">/index.json</a> ·
+        <a href="/search.json">/search.json</a>
       </p>
     </noscript>
   </div>
@@ -472,7 +475,8 @@ import BaseLayout from '../components/BaseLayout.astro';
       }
       print('');
       printMuted('Flags: --json  ·  Paths: /, /files, /files/licenses  ·  Slugs also work.');
-      printMuted('Direct links: /cli/?cmd=search%20license · /index.json · /search.json · /llms.txt');
+      printMuted('Agents: /cli/help.txt · /cli/ls.txt · /cli/files.txt · /index.json · /search.json');
+      printMuted('Browser shortcuts: /cli/?cmd=search%20license · /cli/?cmd=files%20COPYLEFT');
     }
 
     function resolveOrWarn(target) {

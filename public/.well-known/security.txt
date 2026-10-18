@@ -1,0 +1,4 @@
+Contact: mailto:security@original.wales
+Expires: 2027-04-18T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://original.wales/.well-known/security.txt
