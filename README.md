@@ -135,8 +135,8 @@ history                  clear                 exit                echo <text>
 
 ## 联系与版权
 
-- 邮箱：`contact@original.wales`（**需在域名邮箱或转发服务中配置后才会收信**）
-- 安全报告：`security@original.wales`；`/.well-known/security.txt`（RFC 9116）
+- 邮箱：`contact@original.wales`（已通过 Spaceship 邮件转发至维护者邮箱）
+- 安全报告：`security@original.wales`（已配置转发）；`/.well-known/security.txt`（RFC 9116）
 - GitHub：`https://github.com/Verlintas`
 - 版权：`© Verlintas`；favicon 为透明背景的红色空心圆
 
