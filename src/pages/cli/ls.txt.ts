@@ -11,7 +11,9 @@ export async function GET(context: APIContext) {
   lines.push(
     '',
     'MACHINE',
-    `  ${new URL('/cli/help.txt', site).href}   command list and endpoints`,
+    `  ${new URL('/cli/manual.txt', site).href} manual for agents`,
+    `  ${new URL('/AGENTS.md', site).href}       agent onboarding`,
+    `  ${new URL('/cli/help.txt', site).href}    command list and endpoints`,
     `  ${new URL('/cli/files.txt', site).href}  every file`,
     `  ${new URL('/index.json', site).href}     JSON index`,
     `  ${new URL('/search.json', site).href}    full-text search data`,

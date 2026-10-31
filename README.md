@@ -15,14 +15,21 @@
 |---|---|
 | `/` | MAIN：hero + 统计 + 文件 + 工具 + 状态 + 关于摘要 |
 | `/status/` | STATUS：GitHub 平台状态、站点可达性、GitHub 项目动态、外链 |
-| `/files/` | FILES：许可证原文、版权头、政策/治理模板（44 份；类别 chips + 标签 + 全文检索） |
+| `/files/` | FILES：许可证原文、版权头、政策/治理模板（48 份；类别 chips + 标签 + 全文检索） |
 | `/files/<slug>/` | 文件详情：摘要、元数据、标签、SHA-256、下载 |
 | `/universe/` | UNIVERSE：工具索引（每个工具独立子页面） |
 | `/universe/checksum/` | SHA-256 校验器 |
 | `/universe/json/` | JSON 校验/格式化/压缩 |
 | `/universe/license-compare/` | 16 种许可证特征比较（权限/条件/限制） |
 | `/about/` | ABOUT：站点、维护者、文件维护方式、FAQ |
-| `/cli/` | CLI：全屏终端（隐藏页，不在导航中；页脚与 ABOUT 有人类入口） |
+| `/cli/` | CLI：全屏终端（隐藏页；页脚与 ABOUT 有人类入口） |
+| `/AGENTS.md` | Agent 入门：端点、保障、常用任务 |
+| `/cli/manual.txt` | 完整 CLI / 静态 API 手册（面向 AI） |
+| `/cli/commands.json` | 命令与端点清单（机器可读） |
+| `/cli/manifest.tsv` | 文件清单（含校验值与下载地址） |
+| `/cli/context/<id>.txt` | 单文件上下文包（元数据+引用+相关+全文） |
+| `/cli/cite/<id>.txt` | 单文件引用行 |
+| `/cli/licenses.json` | 16 种许可证特征矩阵 |
 | `/404.html` | 自定义报错页（显示请求路径；`noindex`） |
 | `/index.json` | 全站机器可读索引（文件、链接、区块、工具） |
 | `/search.json` | 全文搜索索引 |
@@ -33,12 +40,13 @@
 
 ## FILES 内容库
 
-当前 44 份，全部为 TXT，带真实大小与 SHA-256：
+当前 48 份，全部为 TXT，带真实大小与 SHA-256：
 
 - **LICENSES（16）**：MIT、Apache-2.0、GPL-2.0、GPL-3.0、LGPL-3.0、AGPL-3.0、MPL-2.0、EPL-2.0、EUPL-1.2、ISC、0BSD、Zlib、BSL-1.0、BSD-3-Clause、Unlicense、CC0-1.0
 - **HEADERS（8）**：MIT、Apache、GPL、LGPL、AGPL、MPL、SPDX、短标识符合集
 - **POLICIES（10）**：网站/App 隐私政策、Cookie 政策、服务条款、EULA、可接受使用政策、无障碍声明、DMCA 通知、开源声明、security.txt
 - **GOVERNANCE（10）**：Contributor Covenant 行为准则、DCO 1.1、贡献指南、安全政策、个人 CLA、项目治理、AI 贡献政策、Issue/PR 模板、代码评审政策、发布政策
+- **AGENTS（4）**：AGENTS.md 模板、MCP 配置模板、工具定义 JSON 模板、Agent 评测清单
 
 检索与分类：
 
@@ -109,9 +117,11 @@ summary: 一句话摘要，用于列表、RSS、CLI、llms.txt。
 独立全屏窗口，黑底红字；`exit` 或 `Esc` 返回站点。
 
 ```
-help [command]           ls [-l] [path]        cd <path>           pwd
-tree                     files [category|tag]  cat <file>          read <file>
-head <file> [n]          tail <file> [n]       search <term>       verify <file>
+help [command]           manual                agents              api
+ls [-l] [path]           cd <path>             pwd                 tree
+files [category|tag]     cat <file>            read <file>         context <file>
+cite <file>              related <file>        search <term>       verify <file>
+manifest                 sitemap               licenses [id]       compare <id...>
 download <file>          open <section|file|url>                   status
 links                    tools                 contact             stats
 about                    date                  whoami              source
@@ -124,10 +134,12 @@ history                  clear                 exit                echo <text>
 - 任意命令加 `--json` 输出机器可读结果，例如 `/cli/?cmd=cat%20mit-license%20--json`
 - 直接执行（浏览器内）：`/cli/?cmd=ls`；多条命令用 `%3B` 分隔，如 `?cmd=cd%20files%3Bls%20-l`
 - **`?cmd=` 依赖 JavaScript，不是机器接口**。Agent/脚本请用构建期生成的纯文本端点：
-  - `/cli/help.txt`、`/cli/ls.txt`、`/cli/tree.txt`、`/cli/files.txt`
+  - `/cli/help.txt`、`/cli/ls.txt`、`/cli/tree.txt`、`/cli/files.txt`、`/cli/files/agents.txt`
   - `/cli/files/{licenses,headers,policies,governance}.txt`
   - `/cli/cat/<id>.txt`（元数据+摘要）、`/cli/read/<id>.txt`（全文）
+  - `/cli/context/<id>.txt`、`/cli/cite/<id>.txt`、`/cli/manifest.tsv`、`/cli/sitemap.txt`
   - `/cli/tools.txt`、`/cli/links.txt`、`/cli/stats.txt`、`/cli/about.txt`
+  - `/AGENTS.md`、`/cli/manual.txt`、`/cli/commands.json`、`/cli/licenses.json`
 - 机器索引：`/index.json`（`site` + `generated` + `bytes` + `tools` + `machine`）
 - 全文索引：`/search.json`
 - JSON/文本接口在 GitHub Pages 上自动带 `Access-Control-Allow-Origin: *`（Pages 对静态资源统一添加）
@@ -156,6 +168,7 @@ history                  clear                 exit                echo <text>
   - 开源声明：SPDX、REUSE、Apache NOTICE、CycloneDX
   - security.txt：RFC 9116
   - 贡献/治理：Open Source Guides、GitHub Docs、Google Code Review、Semantic Versioning、Keep a Changelog
+  - Agent 模板：AGENTS.md、Model Context Protocol、OpenAI function calling、Anthropic tool use、NIST AI RMF
 - 所有模板均标注 “not legal advice”；使用前请自行审查
 
 ## 邮件

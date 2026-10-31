@@ -1,0 +1,115 @@
+import type { APIContext } from 'astro';
+
+export async function GET(context: APIContext) {
+  const site = context.site ?? new URL('https://original.wales');
+  const url = (pathname: string) => new URL(pathname, site).href;
+
+  const commands = [
+    { name: 'help', usage: 'help [command]', description: 'List commands or explain one.', interactiveOnly: true },
+    { name: 'manual', usage: 'manual', description: 'Print the agent CLI manual.', endpoint: '/cli/manual.txt' },
+    { name: 'agents', usage: 'agents', description: 'Print agent onboarding.', endpoint: '/AGENTS.md' },
+    { name: 'api', usage: 'api', description: 'List machine endpoints.', endpoint: '/cli/commands.json' },
+    { name: 'ls', usage: 'ls [-l] [path]', description: 'List a directory, section, or file category.', endpoint: '/cli/ls.txt' },
+    { name: 'cd', usage: 'cd <path>', description: 'Change the virtual directory.', interactiveOnly: true },
+    { name: 'pwd', usage: 'pwd', description: 'Print the current path.', interactiveOnly: true },
+    { name: 'tree', usage: 'tree', description: 'Print the site tree.', endpoint: '/cli/tree.txt' },
+    { name: 'files', usage: 'files [category|tag]', description: 'List files by category or tag.', endpoint: '/cli/files.txt' },
+    { name: 'cat', usage: 'cat <file>', description: 'Metadata and summary for one file.', endpoint: '/cli/cat/<id>.txt' },
+    { name: 'read', usage: 'read <file>', description: 'Complete text of one file.', endpoint: '/cli/read/<id>.txt' },
+    { name: 'head', usage: 'head <file> [n]', description: 'First n lines of a file.', interactiveOnly: true },
+    { name: 'tail', usage: 'tail <file> [n]', description: 'Last n lines of a file.', interactiveOnly: true },
+    { name: 'search', usage: 'search <term>', description: 'Full-text search over /search.json.', endpoint: '/search.json', interactiveOnly: true },
+    { name: 'context', usage: 'context <file>', description: 'Metadata, citation, related files, and full text.', endpoint: '/cli/context/<id>.txt' },
+    { name: 'cite', usage: 'cite <file>', description: 'Citation line for one file.', endpoint: '/cli/cite/<id>.txt' },
+    { name: 'related', usage: 'related <file>', description: 'Files sharing category or tags.', interactiveOnly: true },
+    { name: 'verify', usage: 'verify <file>', description: 'Download and verify SHA-256 in the browser.', interactiveOnly: true },
+    { name: 'manifest', usage: 'manifest', description: 'Print the TSV inventory.', endpoint: '/cli/manifest.tsv' },
+    { name: 'sitemap', usage: 'sitemap', description: 'Print the plain-text sitemap.', endpoint: '/cli/sitemap.txt' },
+    { name: 'licenses', usage: 'licenses [id]', description: 'License feature matrix, or one license.', endpoint: '/cli/licenses.json' },
+    { name: 'compare', usage: 'compare <id...>', description: 'Compare 2-6 licenses in text.', endpoint: '/cli/licenses.json', interactiveOnly: true },
+    { name: 'download', usage: 'download <file>', description: 'Start a download (browser).', interactiveOnly: true },
+    { name: 'open', usage: 'open <section|file|url>', description: 'Navigate or open an external URL (browser).', interactiveOnly: true },
+    { name: 'status', usage: 'status', description: 'GitHub platform and site reachability (browser).', interactiveOnly: true },
+    { name: 'links', usage: 'links', description: 'List curated links.', endpoint: '/cli/links.txt' },
+    { name: 'tools', usage: 'tools', description: 'List browser tools.', endpoint: '/cli/tools.txt' },
+    { name: 'contact', usage: 'contact', description: 'Email and GitHub contact details.', interactiveOnly: true },
+    { name: 'stats', usage: 'stats', description: 'Counts, total bytes, generation time.', endpoint: '/cli/stats.txt' },
+    { name: 'about', usage: 'about', description: 'One-paragraph site description.', endpoint: '/cli/about.txt' },
+    { name: 'date', usage: 'date', description: 'Current date and time.', interactiveOnly: true },
+    { name: 'whoami', usage: 'whoami', description: 'Identify the visitor.', interactiveOnly: true },
+    { name: 'source', usage: 'source', description: 'Source repository URL.', interactiveOnly: true },
+    { name: 'history', usage: 'history', description: 'Command history.', interactiveOnly: true },
+    { name: 'clear', usage: 'clear', description: 'Clear the screen.', interactiveOnly: true },
+    { name: 'exit', usage: 'exit', description: 'Leave the shell (Esc also works).', interactiveOnly: true },
+  ];
+
+  const endpoints = [
+    { path: '/AGENTS.md', format: 'text/markdown', description: 'Agent onboarding.' },
+    { path: '/cli/manual.txt', format: 'text/plain', description: 'Complete CLI/AI manual.' },
+    { path: '/cli/commands.json', format: 'application/json', description: 'This manifest.' },
+    { path: '/cli/ls.txt', format: 'text/plain', description: 'Sections with URLs.' },
+    { path: '/cli/tree.txt', format: 'text/plain', description: 'Site tree.' },
+    { path: '/cli/files.txt', format: 'text/plain', description: 'All files with metadata and checksums.' },
+    { path: '/cli/files/<category>.txt', format: 'text/plain', description: 'One file category.' },
+    { path: '/cli/cat/<id>.txt', format: 'text/plain', description: 'File metadata and summary.' },
+    { path: '/cli/read/<id>.txt', format: 'text/plain', description: 'Full file text.' },
+    { path: '/cli/context/<id>.txt', format: 'text/plain', description: 'Metadata, citation, related files, full text.' },
+    { path: '/cli/cite/<id>.txt', format: 'text/plain', description: 'Citation line.' },
+    { path: '/cli/manifest.tsv', format: 'text/tab-separated-values', description: 'One row per file.' },
+    { path: '/cli/sitemap.txt', format: 'text/plain', description: 'Plain-text site map.' },
+    { path: '/cli/tools.txt', format: 'text/plain', description: 'Browser tools.' },
+    { path: '/cli/links.txt', format: 'text/plain', description: 'Curated links and contacts.' },
+    { path: '/cli/stats.txt', format: 'text/plain', description: 'Counts and total size.' },
+    { path: '/cli/about.txt', format: 'text/plain', description: 'Site description.' },
+    { path: '/cli/licenses.json', format: 'application/json', description: 'License feature matrix.' },
+    { path: '/index.json', format: 'application/json', description: 'Full site index.' },
+    { path: '/search.json', format: 'application/json', description: 'Full-text search corpus.' },
+    { path: '/llms.txt', format: 'text/plain', description: 'llms.txt site description.' },
+    { path: '/.well-known/security.txt', format: 'text/plain', description: 'RFC 9116 security contact.' },
+    { path: '/rss.xml', format: 'application/rss+xml', description: 'RSS feed.' },
+    { path: '/sitemap-index.xml', format: 'application/xml', description: 'XML sitemap.' },
+  ];
+
+  const body = {
+    name: 'Original CLI',
+    version: '1.0',
+    generated: new Date().toISOString(),
+    site: url('/'),
+    interactive: url('/cli/'),
+    manual: url('/cli/manual.txt'),
+    agents: url('/AGENTS.md'),
+    note:
+      'Static endpoints are the canonical machine interface. ?cmd= requires JavaScript and is not an API.',
+    commands,
+    endpoints: endpoints.map((endpoint) => ({
+      ...endpoint,
+      url: endpoint.path.startsWith('/cli/<') || endpoint.path.includes('<')
+        ? endpoint.path
+        : url(endpoint.path),
+    })),
+    schemas: {
+      index: url('/index.json'),
+      search: url('/search.json'),
+      licenses: url('/cli/licenses.json'),
+      manifest: url('/cli/manifest.tsv'),
+    },
+    conventions: {
+      encoding: 'UTF-8',
+      lineEndings: 'LF',
+      cors: 'GitHub Pages sends Access-Control-Allow-Origin: *',
+      auth: 'none',
+      readonly: true,
+    },
+    security: {
+      contact: 'security@original.wales',
+      securityTxt: url('/.well-known/security.txt'),
+    },
+  };
+
+  return new Response(JSON.stringify(body, null, 2), {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}

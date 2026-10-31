@@ -39,7 +39,7 @@ export function fileBlock(entry: CollectionEntry<'files'>, site: URL): string[] 
 
 export function filesBody(entries: CollectionEntry<'files'>[], site: URL): string[] {
   const lines: string[] = [];
-  const categories = ['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE'];
+  const categories = ['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE', 'AGENTS'];
   for (const category of categories) {
     const items = entries.filter((entry) => entry.data.category === category);
     if (!items.length) continue;
@@ -51,4 +51,35 @@ export function filesBody(entries: CollectionEntry<'files'>[], site: URL): strin
   }
   lines.push(`TOTAL: ${entries.length} files`);
   return lines;
+}
+
+export function citationFor(entry: CollectionEntry<'files'>, site: URL): string {
+  const page = new URL(`/files/${entry.id}/`, site).href;
+  const parts = [
+    `${entry.data.title} (v${entry.data.version}, ${formatDate(entry.data.date)}).`,
+    'Original.',
+    page,
+  ];
+  if (entry.data.sha256) parts.push(`SHA-256: ${entry.data.sha256}.`);
+  if (entry.data.source) parts.push(`Source: ${entry.data.source}.`);
+  return parts.join(' ');
+}
+
+export function relatedFor(
+  entry: CollectionEntry<'files'>,
+  all: CollectionEntry<'files'>[],
+  limit = 3,
+): CollectionEntry<'files'>[] {
+  const tags = new Set(entry.data.tags ?? []);
+  return all
+    .filter((candidate) => candidate.id !== entry.id)
+    .map((candidate) => {
+      const shared = (candidate.data.tags ?? []).filter((tag) => tags.has(tag)).length;
+      const sameCategory = candidate.data.category === entry.data.category ? 1 : 0;
+      return { candidate, score: shared * 2 + sameCategory };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score || a.candidate.data.title.localeCompare(b.candidate.data.title))
+    .slice(0, limit)
+    .map((item) => item.candidate);
 }

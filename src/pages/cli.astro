@@ -13,7 +13,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     <div class="cli-topbar">
       <a class="cli-brand" href="/">◯ ORIGINAL — SHELL</a>
       <span class="cli-hintline">
-        help · text api: /cli/help.txt · /index.json
+        help · manual: /cli/manual.txt · agents: /AGENTS.md
       </span>
       <a class="cli-back" href="/">[ BACK TO SITE ]</a>
     </div>
@@ -51,13 +51,18 @@ import BaseLayout from '../components/BaseLayout.astro';
     const promptEl = document.getElementById('cli-prompt');
 
     const COMMANDS = [
-      'help', 'ls', 'cd', 'pwd', 'tree', 'files', 'cat', 'read', 'head', 'tail',
-      'search', 'verify', 'download', 'open', 'status', 'links', 'tools', 'contact', 'stats', 'about',
+      'help', 'manual', 'agents', 'api', 'ls', 'cd', 'pwd', 'tree', 'files',
+      'cat', 'read', 'head', 'tail', 'search', 'context', 'cite', 'related',
+      'verify', 'manifest', 'sitemap', 'licenses', 'compare', 'download',
+      'open', 'status', 'links', 'tools', 'contact', 'stats', 'about',
       'date', 'whoami', 'source', 'history', 'clear', 'exit', 'echo',
     ];
 
     const HELP = {
       help: 'help [command] — list commands or explain one.',
+      manual: 'manual — print the full agent/CLI manual. Static: /cli/manual.txt',
+      agents: 'agents — print agent onboarding. Static: /AGENTS.md',
+      api: 'api — list machine endpoints and commands. Static: /cli/commands.json',
       ls: 'ls [-l] [path] — list the current directory, a section, or a files category. -l adds size and date.',
       cd: 'cd <path> — change directory: /, /files, /files/licenses, /files/headers, /files/policies, /status, /universe, /about.',
       pwd: 'pwd — print the current path.',
@@ -68,7 +73,14 @@ import BaseLayout from '../components/BaseLayout.astro';
       head: 'head <file> [n] — print the first n lines (default 20).',
       tail: 'tail <file> [n] — print the last n lines (default 20).',
       search: 'search <term> — full-text search across every text file on the site.',
+      context: 'context <file> — print metadata, citation, related files, and full text.',
+      cite: 'cite <file> — print a one-line citation with version, date, URL, checksum.',
+      related: 'related <file> — list files sharing a category or tags.',
       verify: 'verify <file> — download a file and check its SHA-256 against the published value.',
+      manifest: 'manifest — print the TSV inventory. Static: /cli/manifest.tsv',
+      sitemap: 'sitemap — print the plain-text site map. Static: /cli/sitemap.txt',
+      licenses: 'licenses [id] — print the license feature matrix, or one license. Static: /cli/licenses.json',
+      compare: 'compare <id...> — compare 2-6 licenses in text, for example: compare mit gpl-3.0 mpl-2.0',
       download: 'download <file> — start a download.',
       open: 'open <section|file|url> — open a page, file, or external URL.',
       status: 'status — GitHub platform status and site reachability.',
@@ -475,7 +487,8 @@ import BaseLayout from '../components/BaseLayout.astro';
       }
       print('');
       printMuted('Flags: --json  ·  Paths: /, /files, /files/licenses  ·  Slugs also work.');
-      printMuted('Agents: /cli/help.txt · /cli/ls.txt · /cli/files.txt · /index.json · /search.json');
+      printMuted('Agents: /cli/manual.txt · /AGENTS.md · /cli/commands.json · /cli/manifest.tsv');
+      printMuted('Machine: /cli/files.txt · /cli/context/<id>.txt · /index.json · /search.json · /cli/licenses.json');
       printMuted('Browser shortcuts: /cli/?cmd=search%20license · /cli/?cmd=files%20COPYLEFT');
     }
 
@@ -483,6 +496,105 @@ import BaseLayout from '../components/BaseLayout.astro';
       const entry = resolveEntry(target);
       if (!entry) printMuted('No such file: ' + (target || '(none)'));
       return entry;
+    }
+
+    let licensesData = null;
+
+    async function fetchTextFile(url) {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
+      return res.text();
+    }
+
+    async function fetchJsonFile(url) {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
+      return res.json();
+    }
+
+    function absolutePath(pathname) {
+      return location.origin + pathname;
+    }
+
+    function citationText(entry) {
+      const parts = [
+        entry.title + ' (v' + entry.version + ', ' + entry.date + ').',
+        'Original.',
+        absolutePath(entry.url),
+      ];
+      if (entry.sha256) parts.push('SHA-256: ' + entry.sha256 + '.');
+      if (entry.source) parts.push('Source: ' + entry.source + '.');
+      return parts.join(' ');
+    }
+
+    function relatedEntries(entry, limit = 3) {
+      if (!index) return [];
+      const tags = new Set(entry.tags || []);
+      return index.files
+        .filter((file) => file.id !== entry.id)
+        .map((file) => {
+          const shared = (file.tags || []).filter((tag) => tags.has(tag)).length;
+          const sameCategory = file.category === entry.category ? 1 : 0;
+          return { file, score: shared * 2 + sameCategory };
+        })
+        .filter((item) => item.score > 0)
+        .sort((a, b) => b.score - a.score || a.file.title.localeCompare(b.file.title))
+        .slice(0, limit)
+        .map((item) => item.file);
+    }
+
+    async function getLicensesData() {
+      if (!licensesData) licensesData = await fetchJsonFile('/cli/licenses.json');
+      return licensesData;
+    }
+
+    function licenseCell(value) {
+      return value === 'yes' ? '✓' : value === 'source' ? 'SOURCE' : '—';
+    }
+
+    function printLicenseDetail(data, license) {
+      print('  ' + license.name + ' (' + license.id + ')');
+      print('  SPDX:      ' + license.spdx);
+      print('  page:      ' + absolutePath(license.page));
+      if (license.download) print('  download:  ' + absolutePath(license.download));
+      if (license.sha256) print('  sha256:    ' + license.sha256);
+      print('');
+
+      for (const group of data.groups) {
+        print('  ' + group);
+        for (const feature of data.features.filter((item) => item.group === group)) {
+          const value = license.values[group]?.[feature.key] ?? 'no';
+          print('    ' + feature.label.padEnd(30) + licenseCell(value));
+        }
+        print('');
+      }
+      printMuted('Comparison aid, not legal advice. Source: ' + data.source);
+    }
+
+    function printLicensesTable(data) {
+      print('  LICENSES (' + data.licenses.length + ')');
+      for (const license of data.licenses) {
+        print('  ' + license.id.padEnd(16) + license.name.padEnd(20) + license.spdx);
+      }
+      print('');
+      printMuted('licenses <id> · compare <id...> · static: /cli/licenses.json');
+    }
+
+    function printCompare(data, selected) {
+      print('LICENSE COMPARE — ' + selected.map((license) => license.name).join(' · '));
+      print('');
+      for (const group of data.groups) {
+        print(group);
+        for (const feature of data.features.filter((item) => item.group === group)) {
+          const cells = selected.map((license) => {
+            const value = license.values[group]?.[feature.key] ?? 'no';
+            return licenseCell(value).padEnd(10);
+          });
+          print('  ' + feature.label.padEnd(30) + cells.join(''));
+        }
+        print('');
+      }
+      printMuted('Comparison aid, not legal advice. Source: ' + data.source);
     }
 
     async function run(raw) {
@@ -498,7 +610,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       const command = (tokens[0] || '').toLowerCase();
       const args = tokens.slice(1);
 
-      const offlineSafe = ['help', 'man', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
+      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
       if (!index && !offlineSafe.includes(command)) {
         return printMuted('The index is not loaded. Try refreshing the page.');
       }
@@ -538,6 +650,140 @@ import BaseLayout from '../components/BaseLayout.astro';
         if (entry) await headTail(entry, args[1] ? parseInt(args[1], 10) : 20, command === 'tail');
       } else if (command === 'search' || command === 'grep' || command === 'find') {
         await search(args.join(' ').trim(), wantsJson);
+      } else if (command === 'manual') {
+        try {
+          print(await fetchTextFile('/cli/manual.txt'));
+        } catch (error) {
+          printMuted('Could not load manual: ' + error.message);
+        }
+      } else if (command === 'agents') {
+        try {
+          print(await fetchTextFile('/AGENTS.md'));
+        } catch (error) {
+          printMuted('Could not load AGENTS.md: ' + error.message);
+        }
+      } else if (command === 'api') {
+        try {
+          const data = await fetchJsonFile('/cli/commands.json');
+          if (wantsJson) return jsonOut(data);
+          print('ENDPOINTS');
+          for (const endpoint of data.endpoints) {
+            print('  ' + endpoint.path.padEnd(34) + String(endpoint.format).padEnd(24) + endpoint.description);
+          }
+          print('');
+          print('COMMANDS');
+          for (const item of data.commands) {
+            print('  ' + item.usage.padEnd(32) + item.description);
+          }
+        } catch (error) {
+          printMuted('Could not load API manifest: ' + error.message);
+        }
+      } else if (command === 'context') {
+        const entry = resolveOrWarn(args[0]);
+        if (!entry) return;
+        if (wantsJson) {
+          try {
+            const text = await fileText(entry);
+            return jsonOut({
+              ...entry,
+              text,
+              citation: citationText(entry),
+              related: relatedEntries(entry).map((item) => ({
+                id: item.id,
+                title: item.title,
+                url: item.url,
+              })),
+            });
+          } catch (error) {
+            return printMuted('Could not build context: ' + error.message);
+          }
+        }
+        try {
+          print(await fetchTextFile('/cli/context/' + entry.id + '.txt'));
+        } catch (error) {
+          printMuted('Could not load context pack: ' + error.message);
+        }
+      } else if (command === 'cite') {
+        const entry = resolveOrWarn(args[0]);
+        if (!entry) return;
+        const citation = citationText(entry);
+        if (wantsJson) return jsonOut({ id: entry.id, citation });
+        print(citation);
+      } else if (command === 'related') {
+        const entry = resolveOrWarn(args[0]);
+        if (!entry) return;
+        const related = relatedEntries(entry);
+        if (wantsJson) return jsonOut(related);
+        if (!related.length) return printMuted('No related files.');
+        for (const item of related) {
+          print('  ◯ ' + item.title + '  (' + item.category + ')\n      ' + item.url);
+        }
+      } else if (command === 'manifest') {
+        try {
+          const text = await fetchTextFile('/cli/manifest.tsv');
+          if (wantsJson) {
+            const lines = text.trim().split('\n');
+            const header = lines.shift().split('\t');
+            return jsonOut(
+              lines.map((line) => {
+                const cells = line.split('\t');
+                return Object.fromEntries(header.map((key, index) => [key, cells[index] ?? '']));
+              }),
+            );
+          }
+          print(text);
+        } catch (error) {
+          printMuted('Could not load manifest: ' + error.message);
+        }
+      } else if (command === 'sitemap') {
+        try {
+          print(await fetchTextFile('/cli/sitemap.txt'));
+        } catch (error) {
+          printMuted('Could not load sitemap: ' + error.message);
+        }
+      } else if (command === 'licenses') {
+        try {
+          const data = await getLicensesData();
+          if (args[0]) {
+            const needle = args[0].toLowerCase();
+            const license = data.licenses.find(
+              (item) =>
+                item.id === needle ||
+                item.spdx.toLowerCase() === needle ||
+                item.name.toLowerCase() === needle,
+            );
+            if (!license) return printMuted('No such license: ' + args[0]);
+            if (wantsJson) return jsonOut(license);
+            printLicenseDetail(data, license);
+          } else {
+            if (wantsJson) return jsonOut(data);
+            printLicensesTable(data);
+          }
+        } catch (error) {
+          printMuted('Could not load licenses: ' + error.message);
+        }
+      } else if (command === 'compare') {
+        try {
+          const data = await getLicensesData();
+          const ids = (args.length ? args : data.defaults).map((item) => item.toLowerCase());
+          const selected = ids
+            .map((id) =>
+              data.licenses.find(
+                (license) =>
+                  license.id === id ||
+                  license.spdx.toLowerCase() === id ||
+                  license.name.toLowerCase() === id,
+              ),
+            )
+            .filter(Boolean);
+          if (selected.length < 2) {
+            return printMuted('Provide at least two license ids, for example: compare mit gpl-3.0 mpl-2.0');
+          }
+          if (wantsJson) return jsonOut({ licenses: selected, features: data.features, source: data.source });
+          printCompare(data, selected);
+        } catch (error) {
+          printMuted('Could not compare licenses: ' + error.message);
+        }
       } else if (command === 'verify' || command === 'sha256') {
         const entry = resolveOrWarn(args[0]);
         if (entry) await verify(entry, wantsJson);
@@ -662,7 +908,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     }
 
     async function boot() {
-      printMuted('ORIGINAL — shell · type help · --json for machine output');
+      printMuted('ORIGINAL — shell · type help or manual · --json for machine output');
       print('');
       try {
         const res = await fetch('/index.json', { cache: 'no-store' });

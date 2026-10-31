@@ -1,0 +1,75 @@
+MCP SERVER CONFIG — TEMPLATE
+============================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. Model Context Protocol (MCP) client configuration for
+connecting tools and data sources to an AI client. The exact schema varies
+by client; these examples follow the common `mcpServers` shape.
+
+Replace every [PLACEHOLDER]. Never commit real tokens; use environment
+variables or a secret manager.
+
+---
+LOCAL (STDIO) SERVER
+--------------------
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/workspace"],
+      "env": {}
+    },
+    "git": {
+      "command": "uvx",
+      "args": ["mcp-server-git", "--repository", "/path/to/repo"],
+      "env": {
+        "GIT_AUTHOR_NAME": "[NAME]"
+      }
+    }
+  }
+}
+
+REMOTE (HTTP) SERVER
+--------------------
+{
+  "mcpServers": {
+    "remote-tools": {
+      "type": "http",
+      "url": "https://[HOST]/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MCP_TOKEN}"
+      }
+    }
+  }
+}
+
+MIXED
+-----
+{
+  "mcpServers": {
+    "original": {
+      "type": "http",
+      "url": "https://original.wales/[MCP ENDPOINT]",
+      "headers": {}
+    },
+    "local-notes": {
+      "command": "[COMMAND]",
+      "args": ["[ARG]"],
+      "env": {}
+    }
+  }
+}
+
+SECURITY NOTES
+--------------
+- Grant the minimum filesystem scope; never mount `/` or a home directory.
+- Prefer read-only servers unless writes are required.
+- Use environment variables for tokens; do not inline secrets.
+- Review third-party servers before running them; they execute local code.
+- Log tool calls; agents can be prompt-injected by untrusted content.
+- An MCP server is code execution. Treat it like installing software.
+
+SOURCES
+-------
+MCP specification: https://modelcontextprotocol.io/
+MCP servers (official examples): https://github.com/modelcontextprotocol/servers

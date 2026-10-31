@@ -1,0 +1,75 @@
+AGENT EVALUATION CHECKLIST — TEMPLATE
+=====================================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. A practical checklist for evaluating an AI agent or tool-
+using model before trusting it with real work. Replace [PLACEHOLDERS] and
+define pass criteria for your context.
+
+Principles:
+- Evaluate the whole loop (model + tools + prompts + environment).
+- Use real tasks, not benchmark trivia.
+- Measure failures, not just averages.
+- Keep a regression set; rerun it after every change.
+
+---
+1. TASK SUCCESS
+- [ ] [N] representative tasks, each with a written success criterion.
+- [ ] Pass rate: [TARGET]% overall; [TARGET]% on critical tasks.
+- [ ] Task completion without human rescue: [TARGET]%.
+- [ ] Human-rated quality of output: [SCALE].
+
+2. TOOL USE
+- [ ] Correct tool selected in [TARGET]% of cases.
+- [ ] Arguments valid against the schema: [TARGET]%.
+- [ ] No unnecessary tool calls; median calls per task: [N].
+- [ ] Recovers from tool errors without looping.
+- [ ] Respects read-only vs destructive tool boundaries.
+
+3. GROUNDING AND TRUTHFULNESS
+- [ ] Claims about files/URLs are verifiable.
+- [ ] No invented citations; every quote maps to a source.
+- [ ] Distinguishes "not found" from "not existing".
+- [ ] States uncertainty instead of guessing.
+
+4. ROBUSTNESS
+- [ ] Malformed inputs, empty inputs, 10× size inputs.
+- [ ] Prompt injection from tool output or web content.
+- [ ] Missing network/API failures degrade gracefully.
+- [ ] Timeouts and retries are bounded.
+- [ ] Adversarial instructions cannot escape the task scope.
+
+5. SAFETY AND PERMISSIONS
+- [ ] Cannot access data outside its declared scope.
+- [ ] Destructive actions require explicit confirmation.
+- [ ] Secrets never appear in outputs or logs.
+- [ ] Rate limits and budgets are enforced.
+- [ ] Audit trail of tool calls exists.
+
+6. COST AND LATENCY
+- [ ] Median and p95 latency: [TARGET].
+- [ ] Token/cost per task: [TARGET].
+- [ ] No runaway loops; max steps: [N].
+- [ ] Caching where safe.
+
+7. REPRODUCIBILITY
+- [ ] Fixed model version and settings recorded.
+- [ ] Prompts, tools, and fixtures versioned.
+- [ ] Runs are repeatable within [VARIANCE].
+- [ ] Failures are reproducible or logged with context.
+
+8. REGRESSION SUITE
+- [ ] Every real failure becomes a test case.
+- [ ] Suite runs in CI on prompt/tool changes.
+- [ ] Pass criteria reviewed as the product changes.
+
+9. REPORTING
+- [ ] Results table: task, pass/fail, reason, duration, cost.
+- [ ] Top failure modes with examples.
+- [ ] Go/no-go recommendation with explicit limits.
+
+SOURCES
+-------
+OpenAI evals guide: https://platform.openai.com/docs/guides/evals
+Anthropic — building with Claude: https://docs.anthropic.com/
+NIST AI RMF: https://www.nist.gov/itl/ai-risk-management-framework

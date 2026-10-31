@@ -5,7 +5,7 @@ const files = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/files' }),
   schema: z.object({
     title: z.string(),
-    category: z.enum(['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE']),
+    category: z.enum(['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE', 'AGENTS']),
     date: z.coerce.date(),
     version: z.string().default('1.0'),
     format: z.string(),

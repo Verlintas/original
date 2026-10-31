@@ -1,0 +1,100 @@
+AGENTS.MD TEMPLATE
+==================
+Version 1.0 — 2026-10-17
+
+TEMPLATE ONLY. AGENTS.md is a README for coding agents: the shortest path
+to a correct change in this repository. Replace every [PLACEHOLDER] and
+delete this notice.
+
+Keep it current. An outdated AGENTS.md is worse than none.
+
+---
+# AGENTS.md — [PROJECT NAME]
+
+## PROJECT OVERVIEW
+
+[One paragraph: what the project does, who uses it, and what "done" means.]
+
+- Stack: [LANGUAGES, FRAMEWORKS, RUNTIME VERSIONS]
+- Package manager: [npm / pnpm / cargo / gradle / ...]
+- Entry points: [PATHS]
+- Docs: [DOCS URL OR PATH]
+
+## SETUP
+
+```sh
+[INSTALL COMMAND]
+[ENV FILE COMMAND]
+```
+
+Required environment variables: [LIST OR "none"].
+
+## BUILD, TEST, LINT
+
+```sh
+[BUILD COMMAND]
+[TEST COMMAND]
+[LINT COMMAND]
+[FORMAT COMMAND]
+```
+
+Run the smallest relevant test first. The full suite must pass before a
+change is considered complete.
+
+## CODE MAP
+
+- `[PATH]/` — [PURPOSE]
+- `[PATH]/` — [PURPOSE]
+- `[PATH]/` — [PURPOSE]
+
+## CONVENTIONS
+
+- Language/style: [RULES]
+- Error handling: [RULES]
+- Logging: [RULES]
+- Dependencies: do not add a dependency without [APPROVAL RULE].
+- Generated files: edit [SOURCE] and regenerate with [COMMAND]; never
+  hand-edit [GENERATED PATH].
+
+## CHANGE RULES
+
+- Keep diffs focused; do not refactor unrelated code.
+- Add tests for behaviour changes; bug fixes need a regression test.
+- Update documentation and changelog when user-facing behaviour changes.
+- Do not commit secrets, credentials, build output, or large binaries.
+- Follow [CODE_OF_CONDUCT.md] and [CONTRIBUTING.md].
+
+## PULL REQUESTS
+
+- Branch from [main].
+- Commit messages: [Conventional Commits / project convention].
+- PR description must state: problem, approach, tests, risks.
+- Required checks: [CI JOBS].
+- Do not merge without [APPROVAL COUNT] review(s).
+
+## SECURITY
+
+- Report vulnerabilities to [SECURITY EMAIL]; never open a public issue.
+- Do not run destructive commands against production.
+- Ask before: deleting data, changing access controls, force-pushing shared
+  branches, or running migrations.
+
+## AGENT BOUNDARIES
+
+- You may edit: [PATHS].
+- Ask first: [PATHS / OPERATIONS].
+- Never: [HARD PROHIBITIONS].
+- When uncertain, stop and ask a human.
+
+## DEFINITION OF DONE
+
+- [ ] Tests added or updated and passing
+- [ ] Lint and type checks pass
+- [ ] Docs/changelog updated if needed
+- [ ] No secrets or unrelated changes
+- [ ] Change is explained in the PR
+
+## SOURCE
+
+AGENTS.md convention: https://agents.md/
+Open Source Guides — contributing: https://opensource.guide/how-to-contribute/

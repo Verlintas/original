@@ -5,7 +5,7 @@ export async function GET() {
   const files = (await getCollection('files')).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
   );
-  const categories = ['licenses', 'headers', 'policies', 'governance'];
+  const categories = ['licenses', 'headers', 'policies', 'governance', 'agents'];
   const lines = ['/'];
 
   for (const category of categories) {
