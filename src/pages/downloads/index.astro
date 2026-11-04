@@ -1,0 +1,73 @@
+---
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+
+let data = { totalFiles: 0, downloads: [] };
+try {
+  data = JSON.parse(
+    await readFile(path.join(process.cwd(), 'public/downloads/index.json'), 'utf8'),
+  );
+} catch {
+  /* the prebuild step normally creates this file */
+}
+const full = data.downloads.find((item) => item.id === 'all-files');
+const categories = data.downloads.filter((item) => item.id !== 'all-files');
+---
+
+<BaseLayout title="DOWNLOADS" description="Download the whole Original library, or one category at a time, with checksums and a catalog.">
+  <p class="back"><a href="/files/">← All files</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> DOWNLOADS</h1>
+    <p class="lede">
+      Take the library with you. Every ZIP includes a catalog and the original plain-text files;
+      each download has its own SHA-256.
+    </p>
+  </header>
+
+  <div class="download-hero">
+    <div>
+      <h2>FULL LIBRARY</h2>
+      <p>{data.totalFiles} local files, one archive. Use this for offline reading, backups, or a local search index.</p>
+      <p class="actions">
+        <a class="action" href="/downloads/all-files.zip" download>[ DOWNLOAD .ZIP ]</a>
+        <a class="action" href="/downloads/catalog.csv">[ CATALOG .CSV ]</a>
+        <a class="action" href="/downloads/catalog.md">[ CATALOG .MD ]</a>
+      </p>
+    </div>
+    <dl class="meta-list">
+      <div><dt>Files</dt><dd>{data.totalFiles}</dd></div>
+      <div><dt>Size</dt><dd>{full ? (full.bytes / 1024 / 1024).toFixed(1) + ' MB' : '—'}</dd></div>
+      <div><dt>SHA-256</dt><dd><code>{full?.sha256 ?? '—'}</code></dd></div>
+      <div><dt>Index</dt><dd><a href="/downloads/index.json">downloads/index.json</a></dd></div>
+    </dl>
+  </div>
+
+  <div class="section-head" style="margin-top: 2.5rem;">
+    <h2 class="label">By category</h2>
+    <span class="section-count">{categories.length} archives</span>
+  </div>
+
+  <div class="download-grid">
+    {
+      categories.map((item) => (
+        <article class="download-card">
+          <h3>{item.name}</h3>
+          <p>{item.files} entries · {(item.bytes / 1024).toFixed(0)} KB</p>
+          <p class="download-hash"><code>{item.sha256}</code></p>
+          <p class="actions">
+            <a class="action" href={item.download} download>[ DOWNLOAD ]</a>
+          </p>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Verify a download with <a href="/guides/verify-a-download/">VERIFY A DOWNLOAD</a> or the
+    <a href="/universe/checksum/">checksum tool</a>. The catalog is also available as
+    <a href="/downloads/catalog.csv">CSV</a> and <a href="/downloads/catalog.md">Markdown</a>.
+  </p>
+</BaseLayout>

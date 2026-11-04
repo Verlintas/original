@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+
+const guides = (await getCollection('guides')).sort(
+  (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout title="GUIDES" description="Plain-language guides for licenses, privacy, accessibility, security, and publishing.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> GUIDES</h1>
+    <p class="lede">
+      Plain-language explanations for work that affects everyone: licensing, privacy, accessibility,
+      security, and publishing. No account, no tracking, no legal advice.
+    </p>
+  </header>
+
+  <nav class="files-jump" aria-label="Guide collections">
+    <a class="action" href="/guides/paths/">[ LEARNING PATHS ]</a>
+    <a class="action" href="/guides/checklists/">[ CHECKLISTS ]</a>
+    <a class="action" href="/guides/letters/">[ LETTERS ]</a>
+    <a class="action" href="/guides/directory/">[ DIRECTORY ]</a>
+    <a class="action" href="/guides/transparency/">[ TRANSPARENCY ]</a>
+  </nav>
+
+  <div class="guide-grid">
+    {
+      guides.map((guide) => (
+        <a class="guide-card" href={`/guides/${guide.id}/`}>
+          <span class="guide-meta">{guide.data.audience} · {guide.data.readingTime}</span>
+          <h2>{guide.data.title}</h2>
+          <p>{guide.data.summary}</p>
+          <span class="tool-arrow">[ READ ]</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Machine-readable guide list: <a href="/guides.json">/guides.json</a>. Every guide links to the
+    original texts and tools it depends on.
+  </p>
+</BaseLayout>

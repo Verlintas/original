@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout title="CONTRIBUTE" description="How to suggest a source, report an error, submit a guide, translate, or mirror Original.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> CONTRIBUTE</h1>
+    <p class="lede">
+      Original is a public resource. Corrections, sources, and translations are welcome; the bar is
+      evidence, not volume.
+    </p>
+  </header>
+
+  <div class="prose">
+    <h2>WAYS TO HELP</h2>
+    <ul>
+      <li><strong>Suggest a source:</strong> an official standard, license, public-domain work, or public-interest dataset.</li>
+      <li><strong>Report an error:</strong> a broken link, wrong checksum, outdated version, or unclear explanation.</li>
+      <li><strong>Submit a guide:</strong> a plain-language explanation that links to primary sources.</li>
+      <li><strong>Translate:</strong> a guide or checklist into another language, with the English original linked.</li>
+      <li><strong>Mirror:</strong> host a copy of the public corpus or a category archive.</li>
+      <li><strong>Test:</strong> check the site with a keyboard, screen reader, small screen, or slow connection.</li>
+    </ul>
+
+    <h2>WHAT MAKES A GOOD SUGGESTION</h2>
+    <ul>
+      <li>The source is primary, official, or clearly licensed for reuse.</li>
+      <li>The URL is stable and the license is stated.</li>
+      <li>The content is useful beyond one person or one project.</li>
+      <li>You can name the audience and the task it helps with.</li>
+      <li>For a correction, include the URL and evidence.</li>
+    </ul>
+
+    <h2>EDITORIAL RULES</h2>
+    <ul>
+      <li>No tracking, advertising, affiliate links, or sponsored placement.</li>
+      <li>No legal advice; explanations link to the full text.</li>
+      <li>Prefer plain language over jargon, and link the jargon when it is necessary.</li>
+      <li>Record corrections; do not silently rewrite history.</li>
+      <li>Keep third-party texts under their original licenses.</li>
+    </ul>
+
+    <h2>HOW TO SEND</h2>
+    <p>
+      Email <a href="mailto:contact@original.wales">contact@original.wales</a> with the subject
+      “Original contribution”. For security issues, use
+      <a href="mailto:security@original.wales">security@original.wales</a> instead.
+    </p>
+    <p>
+      You can also open an issue on
+      <a href="https://github.com/Verlintas/original">github.com/Verlintas/original</a>. Include the
+      URL, the problem, and the change you propose.
+    </p>
+
+    <h2>REVIEW</h2>
+    <p>
+      Suggestions are reviewed for sourcing, licensing, clarity, and public value. Not every
+      submission is accepted; a small, well-sourced library is more useful than a large,
+      unmaintained one. Accepted changes are recorded in the
+      <a href="/guides/transparency/">corrections log</a>.
+    </p>
+  </div>
+</BaseLayout>

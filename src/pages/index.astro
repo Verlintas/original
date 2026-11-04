@@ -5,10 +5,12 @@ import Circle from '../components/Circle.astro';
 import FileTable from '../components/FileTable.astro';
 import { links } from '../data/links';
 import { tools } from '../data/tools';
+import { publicData } from '../data/public-data';
 
 const files = (await getCollection('files')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
 );
+const guides = await getCollection('guides');
 const latest = files.slice(0, 5);
 const categoryCount = new Set(files.map((file) => file.data.category)).size;
 ---
@@ -20,16 +22,20 @@ const categoryCount = new Set(files.map((file) => file.data.category)).size;
       <p class="hero-copy">A cornerstone for files, references, and tools.</p>
       <div class="hero-actions">
         <a class="action" href="/files/">[ FILES ]</a>
-        <a class="action" href="/status/">[ STATUS ]</a>
+        <a class="action" href="/guides/">[ GUIDES ]</a>
         <a class="action" href="/universe/">[ UNIVERSE ]</a>
+        <a class="action" href="/data/">[ DATA ]</a>
+        <a class="action" href="/status/">[ STATUS ]</a>
         <a class="action" href="/about/">[ ABOUT ]</a>
       </div>
     </div>
 
     <dl class="hero-stats">
       <div><dt>Files</dt><dd>{files.length}</dd></div>
-      <div><dt>Categories</dt><dd>{categoryCount}</dd></div>
+      <div><dt>Guides</dt><dd>{guides.length}</dd></div>
+      <div><dt>Data sets</dt><dd>{publicData.length}</dd></div>
       <div><dt>Tools</dt><dd>{tools.length}</dd></div>
+      <div><dt>Categories</dt><dd>{categoryCount}</dd></div>
       <div><dt>Links</dt><dd>{links.length}</dd></div>
     </dl>
   </section>
@@ -94,8 +100,8 @@ const categoryCount = new Set(files.map((file) => file.data.category)).size;
 
   <section class="about-teaser">
     <p>
-      Original is the foundation I build from: a stable address for reference files, licenses,
-      standards, policies, live project status, and small tools.
+      Original is a public cornerstone: reference files, plain-language guides, public data,
+      everyday tools, and a clear record of what changed.
     </p>
     <a class="more-link" href="/about/">About →</a>
   </section>

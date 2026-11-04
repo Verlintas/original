@@ -32,13 +32,14 @@ const buildDate = new Date(buildInfo.generated).toISOString().replace('T', ' ').
 
 <BaseLayout
   title="STATUS"
-  description="Build information and live checks for this site, its maintainer's projects, and the services they depend on."
+  description="Build information, public infrastructure reachability, and live checks for this site."
 >
   <header class="page-head">
     <h1 class="page-title"><Circle /> STATUS</h1>
     <p class="lede">
-      Build information for this site, plus live checks for its projects and the services they
-      depend on. The build card is static; the live checks run in the browser when this page loads.
+      Build information, public infrastructure reachability, and the projects maintained by this
+      site's maintainer. The build card is static; the live checks run in the browser when this page
+      loads.
     </p>
   </header>
 
@@ -94,8 +95,8 @@ const buildDate = new Date(buildInfo.generated).toISOString().replace('T', ' ').
 
     <section class="panel" aria-labelledby="sites-heading">
       <div class="section-head">
-        <h2 id="sites-heading" class="label">Sites</h2>
-        <span class="section-count">Reachability</span>
+        <h2 id="sites-heading" class="label">Public infrastructure</h2>
+        <span class="section-count">Public reachability</span>
       </div>
       <div class="status-rows">
         {
@@ -116,7 +117,7 @@ const buildDate = new Date(buildInfo.generated).toISOString().replace('T', ' ').
 
     <section class="panel panel-wide" aria-labelledby="projects-heading">
       <div class="section-head">
-        <h2 id="projects-heading" class="label">Projects</h2>
+        <h2 id="projects-heading" class="label">Maintainer projects</h2>
         <span class="section-count" id="project-count">GitHub</span>
       </div>
       <div class="status-rows" id="project-rows">

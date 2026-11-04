@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { checklists } from '../../data/checklists';
+---
+
+<BaseLayout title="CHECKLISTS" description="Practical public checklists for sites, repositories, photos, accessibility, security.txt, and licenses.">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> CHECKLISTS</h1>
+    <p class="lede">
+      Short, printable checklists for work that is easy to get wrong. Checkboxes are local to this
+      page; nothing is saved or sent.
+    </p>
+  </header>
+
+  <div class="checklist-grid">
+    {
+      checklists.map((checklist) => (
+        <article class="checklist" id={checklist.id} data-checklist>
+          <div class="checklist-head">
+            <h2>{checklist.title}</h2>
+            <span class="checklist-count" data-checklist-count>0 / {checklist.items.length}</span>
+          </div>
+          <p>{checklist.summary}</p>
+          <ul class="checklist-items">
+            {checklist.items.map((item) => (
+              <li>
+                <label>
+                  <input type="checkbox" data-checklist-item />
+                  <span>{item}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Machine-readable checklist data: <a href="/guides/checklists.json">/guides/checklists.json</a>.
+  </p>
+
+  <script>
+    for (const checklist of document.querySelectorAll('[data-checklist]')) {
+      const items = Array.from(checklist.querySelectorAll('[data-checklist-item]'));
+      const count = checklist.querySelector('[data-checklist-count]');
+      const update = () => {
+        const done = items.filter((item) => item.checked).length;
+        count.textContent = done + ' / ' + items.length;
+      };
+      for (const item of items) item.addEventListener('change', update);
+      update();
+    }
+  </script>
+</BaseLayout>

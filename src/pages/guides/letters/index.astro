@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import Circle from '../../../components/Circle.astro';
+import { letters } from '../../../data/letters';
+---
+
+<BaseLayout title="LETTERS" description="Plain-language letter templates for data requests, DMCA notices, accessibility feedback, and security reports.">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> LETTERS</h1>
+    <p class="lede">
+      Templates for messages that are hard to write from scratch. Fill in the fields, copy the
+      result, and send it yourself. Nothing is uploaded.
+    </p>
+  </header>
+
+  <div class="guide-grid">
+    {
+      letters.map((letter) => (
+        <a class="guide-card" href={`/guides/letters/${letter.id}/`}>
+          <span class="guide-meta">{letter.audience}</span>
+          <h2>{letter.title}</h2>
+          <p>{letter.summary}</p>
+          <span class="tool-arrow">[ OPEN ]</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    These are templates, not legal advice. Machine-readable list:
+    <a href="/guides/letters.json">/guides/letters.json</a>.
+  </p>
+</BaseLayout>

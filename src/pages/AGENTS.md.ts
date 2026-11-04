@@ -16,11 +16,13 @@ Machine command manifest: ${url('/cli/commands.json')}
 ## Start here
 
 1. ${url('/llms.txt')} — site description.
-2. ${url('/llms-small.txt')} — metadata for every file.
-3. ${url('/llms-full.txt')} — every file, in full.
+2. ${url('/llms-small.txt')} — metadata for every file and guide.
+3. ${url('/llms-full.txt')} — every file and guide, in full.
 4. ${url('/cli/manual.txt')} — complete CLI/API manual.
-5. ${url('/index.json')} — every file, link, tool, and section as JSON.
-6. ${url('/search.json')} — full text of every text file.
+5. ${url('/index.json')} — every file, guide, dataset, link, tool, and section as JSON.
+6. ${url('/search.json')} — full text of every text document.
+7. ${url('/guides/')} — plain-language guides for licenses, privacy, accessibility, and security.
+8. ${url('/data/')} — source-linked public datasets with JSON and CSV downloads.
 
 The interactive terminal at ${url('/cli/')} requires JavaScript.
 **Do not use ?cmd= as an API.** For scripts, use the static endpoints below.
@@ -42,6 +44,14 @@ The interactive terminal at ${url('/cli/')} requires JavaScript.
 | Kits | /kits/index.json | JSON |
 | JSON Feed | /feed.json | JSON |
 | JSON schemas | /schemas/index.schema.json | JSON |
+| Guides | /guides.json | JSON |
+| Public data | /data/index.json | JSON |
+| Directory | /guides/directory.json | JSON |
+| Letters | /guides/letters.json | JSON |
+| Checklists | /guides/checklists.json | JSON |
+| Downloads | /downloads/index.json | JSON |
+| Corrections | /corrections.json | JSON |
+| OpenSearch | /opensearch.xml | XML |
 | File metadata + summary | /cli/cat/<id>.txt | text |
 | Full file text | /cli/read/<id>.txt | text |
 | File Markdown | /files/<id>.md | markdown |
@@ -85,6 +95,16 @@ All links are relative to ${url('/')}.
     curl ${url('/cli/files/snippets.txt')}
     curl ${url('/cli/context/rfc-2119.txt')}
     curl ${url('/cli/context/gitignore-node.txt')}
+
+**Find a plain-language guide**
+
+    curl ${url('/guides.json')}
+    curl ${url('/guides/choose-a-license/')}
+
+**Download the whole library**
+
+    curl -O ${url('/downloads/all-files.zip')}
+    curl ${url('/downloads/catalog.csv')}
 
 **List official resources**
 

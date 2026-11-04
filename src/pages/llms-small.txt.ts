@@ -4,6 +4,9 @@ import { formatDate } from '../utils/format';
 
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://original.wales');
+  const guides = (await getCollection('guides')).sort(
+    (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+  );
   const files = (await getCollection('files')).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
   );
@@ -14,6 +17,7 @@ export async function GET(context: APIContext) {
     `Generated: ${new Date().toISOString()}`,
     `Site: ${new URL('/', site).href}`,
     `Files: ${files.length}`,
+    `Guides: ${guides.length}`,
     '',
     'This is the metadata-only corpus. Full texts are in /llms-full.txt.',
     '',
@@ -36,6 +40,24 @@ export async function GET(context: APIContext) {
       ...(entry.data.file ? [`download: ${new URL(entry.data.file, site).href}`] : []),
       ...(entry.data.source ? [`source: ${entry.data.source}`] : []),
       ...(entry.data.sha256 ? [`sha256: ${entry.data.sha256}`] : []),
+      '',
+      entry.data.summary,
+      '',
+    );
+  }
+
+  lines.push('', '## Guides', '');
+  for (const entry of guides) {
+    lines.push(
+      `### ${entry.data.title}`,
+      '',
+      `id: ${entry.id}`,
+      `audience: ${entry.data.audience}`,
+      `updated: ${formatDate(entry.data.updated)}`,
+      `readingtime: ${entry.data.readingTime}`,
+      `tags: ${entry.data.tags.join(', ')}`,
+      `url: ${new URL(`/guides/${entry.id}/`, site).href}`,
+      `markdown: ${new URL(`/guides/${entry.id}.md`, site).href}`,
       '',
       entry.data.summary,
       '',

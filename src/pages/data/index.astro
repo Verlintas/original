@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { publicData } from '../../data/public-data';
+---
+
+<BaseLayout title="DATA" description="Small, source-linked public datasets for everyone: HTTP status codes, MIME types, file signatures, currencies, and time zones.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> DATA</h1>
+    <p class="lede">
+      Small public datasets with a source, license, update date, and direct JSON/CSV downloads.
+      Use them in scripts, teaching, or an agent.
+    </p>
+  </header>
+
+  <div class="guide-grid">
+    {
+      publicData.map((dataset) => (
+        <a class="guide-card" href={`/data/${dataset.id}/`}>
+          <span class="guide-meta">{dataset.rows.length} rows · JSON + CSV</span>
+          <h2>{dataset.title}</h2>
+          <p>{dataset.summary}</p>
+          <span class="tool-arrow">[ OPEN ]</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Machine-readable index: <a href="/data/index.json">/data/index.json</a>. Every dataset links to
+    its upstream source and states its license.
+  </p>
+</BaseLayout>

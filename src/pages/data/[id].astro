@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { publicData } from '../../data/public-data';
+
+export async function getStaticPaths() {
+  return publicData.map((dataset) => ({ params: { id: dataset.id }, props: { dataset } }));
+}
+
+const { dataset } = Astro.props;
+---
+
+<BaseLayout title={dataset.title} description={dataset.summary} type="article">
+  <p class="back"><a href="/data/">← All data</a></p>
+
+  <header class="file-head">
+    <h1 class="page-title"><Circle /> {dataset.title}</h1>
+    <p class="lede">{dataset.summary}</p>
+    <p class="actions">
+      <a class="action" href={`/data/${dataset.id}.json`} download>[ DOWNLOAD JSON ]</a>
+      <a class="action" href={`/data/${dataset.id}.csv`} download>[ DOWNLOAD CSV ]</a>
+      <a class="action" href={dataset.source} rel="noopener">[ SOURCE ]</a>
+    </p>
+  </header>
+
+  <div class="detail-grid">
+    <div class="prose">
+      <div class="dataset-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>{dataset.columns.map((column) => <th scope="col">{column}</th>)}</tr>
+          </thead>
+          <tbody>
+            {dataset.rows.map((row) => (
+              <tr>{row.map((cell) => <td>{cell}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside class="meta-aside" aria-label="Dataset metadata">
+      <h2>Metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Rows</dt><dd>{dataset.rows.length}</dd></div>
+        <div><dt>Columns</dt><dd>{dataset.columns.length}</dd></div>
+        <div><dt>Updated</dt><dd>{dataset.updated}</dd></div>
+        <div><dt>License</dt><dd>{dataset.license}</dd></div>
+        <div><dt>Source</dt><dd><a href={dataset.source} rel="noopener">{dataset.source.replace(/^https?:\/\//, '')}</a></dd></div>
+        <div><dt>JSON</dt><dd><a href={`/data/${dataset.id}.json`}>/data/{dataset.id}.json</a></dd></div>
+        <div><dt>CSV</dt><dd><a href={`/data/${dataset.id}.csv`}>/data/{dataset.id}.csv</a></dd></div>
+      </dl>
+      <p class="kit-note">
+        Data is a snapshot, not a live API. Check the source before relying on a value for a
+        safety-critical decision.
+      </p>
+    </aside>
+  </div>
+
+  <p class="back" style="margin-top: 3rem;"><a href="/data/">← All data</a></p>
+</BaseLayout>

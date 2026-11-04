@@ -35,6 +35,7 @@ for (const name of fs.readdirSync(contentDir)) {
     title: readField(frontmatter, 'title') || id,
     category: readField(frontmatter, 'category') || 'FILES',
     file: readField(frontmatter, 'file'),
+    license: readField(frontmatter, 'license'),
     sha256: readField(frontmatter, 'sha256'),
   });
 }
@@ -212,3 +213,107 @@ fs.writeFileSync(
   JSON.stringify({ generated: new Date().toISOString(), kits: kitIndex }, null, 2) + '\n',
 );
 console.log(`Wrote ${kitIndex.length} kits to public/kits/`);
+
+// --- public library downloads ------------------------------------------------
+
+const downloadsDir = path.join(publicDir, 'downloads');
+fs.rmSync(downloadsDir, { recursive: true, force: true });
+fs.mkdirSync(downloadsDir, { recursive: true });
+
+function csvCell(value) {
+  const text = String(value ?? '');
+  return /[",\n\r]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+}
+
+const localFiles = [...files.values()]
+  .filter((file) => file.file)
+  .sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title));
+
+const catalogRows = localFiles.map((file) => ({
+  id: file.id,
+  title: file.title,
+  category: file.category,
+  license: file.license || '',
+  sha256: file.sha256 || '',
+  page: `https://original.wales/files/${file.id}/`,
+  download: `https://original.wales${file.file}`,
+}));
+
+const catalogCsv = [
+  ['id', 'title', 'category', 'license', 'sha256', 'page', 'download'],
+  ...catalogRows.map((row) => [row.id, row.title, row.category, row.license, row.sha256, row.page, row.download]),
+]
+  .map((row) => row.map(csvCell).join(','))
+  .join('\n') + '\n';
+
+const catalogMd = [
+  '# Original — public library catalog',
+  '',
+  `Generated: ${new Date().toISOString()}`,
+  `Files: ${localFiles.length}`,
+  '',
+  '| ID | Title | Category | License | SHA-256 |',
+  '|---|---|---|---|---|',
+  ...catalogRows.map(
+    (row) => `| [${row.id}](${row.page}) | ${row.title} | ${row.category} | ${row.license} | \`${row.sha256}\` |`,
+  ),
+  '',
+  'Source: https://original.wales/files/',
+  '',
+].join('\n');
+
+fs.writeFileSync(path.join(downloadsDir, 'catalog.csv'), catalogCsv);
+fs.writeFileSync(path.join(downloadsDir, 'catalog.md'), catalogMd);
+
+const downloadsIndex = [];
+
+function writeDownload(id, name, entries) {
+  const zip = makeZip(entries);
+  const filePath = path.join(downloadsDir, `${id}.zip`);
+  fs.writeFileSync(filePath, zip);
+  downloadsIndex.push({
+    id,
+    name,
+    download: `https://original.wales/downloads/${id}.zip`,
+    bytes: zip.length,
+    sha256: crypto.createHash('sha256').update(zip).digest('hex'),
+    files: entries.length,
+  });
+  console.log(`download ${id.padEnd(24)} ${String(zip.length).padStart(8)} bytes  ${entries.length} entries`);
+}
+
+function libraryEntries(items) {
+  return [
+    { name: 'CATALOG.md', data: Buffer.from(catalogMd, 'utf8') },
+    { name: 'catalog.csv', data: Buffer.from(catalogCsv, 'utf8') },
+    ...items.map((file) => ({
+      name: `files/${file.category.toLowerCase()}/${path.basename(file.file)}`,
+      data: fs.readFileSync(path.join(publicDir, file.file.replace(/^\//, ''))),
+    })),
+  ];
+}
+
+writeDownload('all-files', 'FULL LIBRARY', libraryEntries(localFiles));
+for (const category of [...new Set(localFiles.map((file) => file.category))].sort()) {
+  const items = localFiles.filter((file) => file.category === category);
+  writeDownload(category.toLowerCase(), `${category} FILES`, libraryEntries(items));
+}
+
+fs.writeFileSync(
+  path.join(downloadsDir, 'index.json'),
+  JSON.stringify(
+    {
+      generated: new Date().toISOString(),
+      page: 'https://original.wales/downloads/',
+      catalog: {
+        csv: 'https://original.wales/downloads/catalog.csv',
+        markdown: 'https://original.wales/downloads/catalog.md',
+      },
+      totalFiles: localFiles.length,
+      downloads: downloadsIndex,
+    },
+    null,
+    2,
+  ) + '\n',
+);
+console.log(`Wrote ${downloadsIndex.length} library downloads to public/downloads/`);

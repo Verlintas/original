@@ -2354,3 +2354,462 @@ html.theme-cli body {
     flex-basis: 100%;
   }
 }
+
+/* ============================================================
+   PUBLIC LAYER — GUIDES, LETTERS, DIRECTORY, DATA, DOWNLOADS
+   ============================================================ */
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid var(--red-pale);
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem 1.1rem;
+  background: var(--bg);
+  color: var(--red-deep);
+  text-decoration: none;
+  min-height: 13rem;
+}
+
+.guide-card:hover {
+  border-color: var(--red);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.guide-card h2 {
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin: 0.15rem 0 0.1rem;
+}
+
+.guide-card p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.guide-meta {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.guide-byline {
+  margin-top: 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.guide-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--red);
+  font-size: 0.86rem;
+}
+
+.guide-pager a {
+  max-width: 48%;
+}
+
+/* --- checklists ---------------------------------------------- */
+
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.checklist {
+  border: 1px solid var(--red-pale);
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  background: var(--bg);
+}
+
+.checklist-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid var(--red);
+  padding-bottom: 0.5rem;
+}
+
+.checklist-head h2 {
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.checklist-count {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  white-space: nowrap;
+}
+
+.checklist > p {
+  font-size: 0.9rem;
+  margin: 0.7rem 0;
+}
+
+.checklist-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checklist-items li {
+  border-bottom: 1px solid var(--red-pale);
+  padding: 0.45rem 0;
+}
+
+.checklist-items li:last-child {
+  border-bottom: 0;
+}
+
+.checklist-items label {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.checklist-items input {
+  margin-top: 0.3rem;
+  accent-color: var(--red);
+}
+
+/* --- letters -------------------------------------------------- */
+
+.letter-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem 1.2rem;
+}
+
+.letter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.letter-field:has(textarea) {
+  grid-column: 1 / -1;
+}
+
+.letter-field input,
+.letter-field textarea {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--red-pale);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--red-deep);
+}
+
+.letter-field input:focus,
+.letter-field textarea:focus {
+  border-color: var(--red);
+  outline: none;
+}
+
+.letter-output-block {
+  margin-top: 2.5rem;
+}
+
+.letter-preview {
+  white-space: pre-wrap;
+  min-height: 18rem;
+}
+
+/* --- directory ------------------------------------------------ */
+
+.directory-controls {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--red);
+  padding-top: 0.9rem;
+  margin-bottom: 1.8rem;
+}
+
+.directory-controls input[type='search'] {
+  flex: 1;
+  min-width: 14rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--red-pale);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--red-deep);
+}
+
+.directory-controls input[type='search']:focus {
+  border-color: var(--red);
+  outline: none;
+}
+
+.directory-group {
+  margin-top: 2rem;
+}
+
+.directory-list {
+  border-top: 1px solid var(--red-pale);
+}
+
+.directory-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--red-pale);
+}
+
+.directory-entry h3 {
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.directory-entry h3 a {
+  text-decoration: none;
+}
+
+.directory-entry p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.directory-note {
+  margin-top: 0.25rem !important;
+  color: var(--red);
+  font-size: 0.82rem !important;
+}
+
+.directory-tags {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* --- paths ---------------------------------------------------- */
+
+.path-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1rem;
+}
+
+.path-card {
+  border: 1px solid var(--red-pale);
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+}
+
+.path-card h2 {
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--red);
+  padding-bottom: 0.45rem;
+}
+
+.path-card p {
+  font-size: 0.9rem;
+  margin: 0.7rem 0;
+}
+
+.path-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.path-card li {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+/* --- transparency / data / downloads ------------------------- */
+
+.corrections-table,
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.corrections-table th,
+.corrections-table td,
+.data-table th,
+.data-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 0.7rem 0.6rem 0;
+  border-bottom: 1px solid var(--red-pale);
+}
+
+.corrections-table th,
+.data-table th {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  white-space: nowrap;
+}
+
+.data-table td {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.dataset-scroll {
+  overflow-x: auto;
+  border-top: 1px solid var(--red);
+}
+
+.download-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  gap: 2rem 4rem;
+  border-top: 1px solid var(--red);
+  padding-top: 1.4rem;
+}
+
+.download-hero h2 {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.download-hero p {
+  max-width: 42rem;
+}
+
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.download-card {
+  border: 1px solid var(--red-pale);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+
+.download-card h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.download-card p {
+  font-size: 0.82rem;
+  margin: 0.45rem 0;
+}
+
+.download-hash code {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  word-break: break-all;
+}
+
+@media (max-width: 900px) {
+  .letter-fields,
+  .download-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .directory-entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .directory-tags {
+    text-align: left;
+    white-space: normal;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .back,
+  .actions,
+  .guide-pager,
+  .files-jump,
+  .compare-legend,
+  .search-form,
+  .file-controls,
+  .directory-controls,
+  .tool-actions,
+  .full-text-actions {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  .shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .page-head,
+  .file-head,
+  .meta-aside,
+  .checklist,
+  .guide-card,
+  .path-card {
+    border-color: #999;
+  }
+
+  .file-preview,
+  .letter-preview,
+  .tool-textarea,
+  .hash-output {
+    max-height: none;
+    overflow: visible;
+    background: #fff;
+    border: 0;
+    padding: 0;
+    color: #000;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+}

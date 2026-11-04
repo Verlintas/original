@@ -5,10 +5,12 @@ import path from 'node:path';
 import { links } from '../../data/links';
 import { tools } from '../../data/tools';
 import { buildInfo } from '../../data/build-info';
+import { publicData } from '../../data/public-data';
 import { textResponse } from '../../utils/cli-text';
 
 export async function GET() {
   const files = await getCollection('files');
+  const guides = await getCollection('guides');
   const counts: Record<string, number> = {};
   let bytes = 0;
 
@@ -40,6 +42,8 @@ export async function GET() {
     ...order
       .filter((category) => counts[category])
       .map((category) => `${category.toLowerCase().padEnd(12)}${counts[category]}`),
+    `guides:      ${guides.length}`,
+    `datasets:    ${publicData.length}`,
     `links:       ${links.length}`,
     `tools:       ${tools.length}`,
     `total bytes: ${bytes}`,

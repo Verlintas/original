@@ -14,8 +14,17 @@
 | 路径 | 说明 |
 |---|---|
 | `/` | MAIN：hero + 统计 + 文件 + 工具 + 状态 + 关于摘要 |
-| `/status/` | STATUS：本站构建信息（提交、时间、语料哈希）、GitHub 平台状态、站点可达性、GitHub 项目动态、外链 |
+| `/status/` | STATUS：本站构建信息（提交、时间、语料哈希）、公共基础设施可达性、GitHub 项目动态、外链 |
 | `/files/` | FILES：许可证、官方标准、gitignore 片段、版权头、政策/治理模板（86 份；类别 chips + 标签 + 元数据检索） |
+| `/guides/` | GUIDES：10 篇面向所有人的 plain-language 指南 |
+| `/guides/paths/` | 按受众组织的学习路径（创作者、站长、开发者、研究者、Agent） |
+| `/guides/checklists/` | 站点上线、仓库、照片、无障碍、security.txt、许可证清单 |
+| `/guides/letters/` | 数据请求、DMCA、无障碍反馈、安全报告等信件模板与填写器 |
+| `/guides/directory/` | 公共来源目录（公共领域、标准、开放数据、无障碍、隐私、档案、独立网站） |
+| `/guides/transparency/` | 编辑政策、来源验证、更正记录 |
+| `/data/` | DATA：5 个公共数据集，JSON + CSV + 页面 |
+| `/downloads/` | 全库 ZIP、按类别 ZIP、CSV/Markdown 目录 |
+| `/contribute/` | 如何提交来源、纠错、翻译、镜像 |
 | `/files/<slug>/` | 文件详情：摘要、全文预览、复制/引用、SHA-256 校验、相关文件、分类/标签页 |
 | `/files/<slug>.md` | 文件的 Markdown 版本（元数据 + 正文 + 全文） |
 | `/files/kits/` | KITS：可直接下载的 ZIP 套件（开源起步、Agent 仓库、网站政策、许可证包） |
@@ -45,16 +54,21 @@
 | `/cli/licenses.json` | 16 种常见许可证特征矩阵 |
 | `/cli/resources.json` | 资源清单（按类别分组，含官方来源标记与校验值） |
 | `/404.html` | 自定义报错页（显示请求路径；`noindex`） |
-| `/index.json` | 全站机器可读索引（文件、链接、区块、工具、KIT、构建信息） |
-| `/search.json` | 全文搜索索引 |
-| `/llms-full.txt` | 全部文件全文语料（约 800 KB） |
-| `/llms-small.txt` | 仅元数据语料 |
-| `/feed.json` | JSON Feed 1.1 |
-| `/schemas/*.schema.json` | `index/resources/search/licenses` 的 JSON Schema |
+| `/index.json` | 全站机器可读索引（文件、指南、数据、链接、区块、工具、KIT、构建信息） |
+| `/search.json` | 全文搜索索引（文件 + 指南） |
+| `/llms-full.txt` | 全部文件与指南全文语料 |
+| `/llms-small.txt` | 文件与指南的元数据语料 |
+| `/feed.json` | JSON Feed 1.1（文件 + 指南） |
+| `/opensearch.xml` | OpenSearch 搜索描述 |
+| `/guides.json` | 指南元数据 |
+| `/data/index.json` | 公共数据集索引 |
+| `/downloads/index.json` | 下载包与校验值 |
+| `/corrections.json` | 更正记录 |
+| `/schemas/*.schema.json` | `index/resources/search/licenses/data` 的 JSON Schema |
 | `/llms.txt` | llms.txt 标准描述，供 AI Agent 读取 |
-| `/rss.xml` | 文件更新订阅 |
+| `/rss.xml` | 文件与指南更新订阅 |
 
-隐藏页：`/cli/` 与 404 页不进入导航，且被排除在 sitemap 之外；CLI 页额外标记 `noindex`。
+隐藏页：`/cli/` 与 404 页不进入导航，且被排除在 sitemap 之外；CLI 页额外标记 `noindex`。GUIDES 与 DATA 已进入主导航。
 
 ## FILES 内容库
 
@@ -67,6 +81,14 @@
 - **POLICIES（10）**：网站/App 隐私政策、Cookie 政策、服务条款、EULA、可接受使用政策、无障碍声明、DMCA 通知、开源声明、security.txt
 - **GOVERNANCE（10）**：Contributor Covenant 行为准则、DCO 1.1、贡献指南、安全政策、个人 CLA、项目治理、AI 贡献政策、Issue/PR 模板、代码评审政策、发布政策
 - **AGENTS（4）**：AGENTS.md 模板、MCP 配置模板、工具定义 JSON 模板、Agent 评测清单
+
+公共层：
+
+- **GUIDES（10）**：选许可证、理解许可证、隐私政策、无障碍声明、security.txt、验证下载、公共领域、CC 署名、安全报告、上线小站
+- **DATA（5）**：HTTP 状态码（62）、MIME 类型（41）、文件签名（30）、ISO 4217 货币（162）、IANA 时区（418）
+- **DOWNLOADS（8）**：全库 + 7 个分类 ZIP，带 catalog.csv / catalog.md / SHA-256
+- **LETTERS（6）**：数据访问、数据删除、DMCA 删除、DMCA 反通知、无障碍反馈、安全报告
+- **DIRECTORY（37）**：公共领域、标准、开放数据、无障碍、隐私安全、档案、独立网站
 
 检索与分类：
 
@@ -93,7 +115,7 @@
 ```sh
 npm install          # 国内网络慢可加 --registry=https://registry.npmmirror.com
 npm run dev          # 先生成 KIT ZIP，再启动 http://localhost:4321
-npm run build        # 先重建 KIT ZIP，再构建到 dist/
+npm run build        # 先重建 KIT、全库 ZIP、分类 ZIP 和目录，再构建 dist/
 npm run preview      # 预览构建产物
 ```
 
@@ -130,7 +152,7 @@ summary: 一句话摘要，用于列表、RSS、CLI、llms.txt。
 - 构建卡片：最近构建时间、提交、构建日志、语料 SHA-256、总字节数、manifest 校验入口
 - 每次打开页面在浏览器端实时检查：
   - GitHub 平台状态（`githubstatus.com` API，含 API/Actions/Pages/Git Operations 组件）
-  - 站点可达性（`src/data/sites.ts` 中配置，`no-cors` 请求，显示延迟）
+  - 公共基础设施可达性（`src/data/sites.ts`：本站、Wikipedia、Internet Archive、SPDX、Creative Commons、RFC Editor、OSI、W3C）
   - GitHub 项目动态（`api.github.com`，未认证请求限 60 次/小时/IP；展示最近 8 个仓库）
   - 外链列表（`src/data/links.ts`，含邮箱与 GitHub）
 - 无需构建期任务；点 `[ REFRESH ]` 重新检查。无 JS 时降级为静态链接。
@@ -145,7 +167,8 @@ ls [-l] [path]           cd <path>             pwd                   tree
 files [category|tag]     cat <file>            read <file>           context <file>
 cite <file>              related <file>        search <term>         verify <file>
 manifest                 sitemap               licenses [id]         resources [category]
-kits                     compare <id...>       download <file>       open <section|file|url>
+kits                     guides                data                  downloads
+compare <id...>          download <file>       open <section|file|url>
 status                   links                 tools                 contact
 stats                    about                 date                  whoami
 source                   history               clear                 exit
@@ -165,8 +188,9 @@ echo <text>
   - `/cli/tools.txt`、`/cli/links.txt`、`/cli/stats.txt`、`/cli/about.txt`
   - `/AGENTS.md`、`/cli/manual.txt`、`/cli/commands.json`、`/cli/licenses.json`、`/cli/resources.json`
   - `/llms.txt`、`/llms-small.txt`、`/llms-full.txt`、`/feed.json`、`/kits/index.json`
+  - `/guides.json`、`/data/index.json`、`/downloads/index.json`、`/guides/directory.json`、`/guides/letters.json`、`/guides/checklists.json`、`/corrections.json`、`/opensearch.xml`
   - `/files/<id>.md`（单文件 Markdown）、`/schemas/*.schema.json`
-- 机器索引：`/index.json`（`site` + `generated` + `build` + `bytes` + `tools` + `kits` + `machine`）
+- 机器索引：`/index.json`（`site` + `generated` + `build` + `bytes` + `tools` + `kits` + `guides` + `data` + `machine`）
 - 全文索引：`/search.json`（约 840 KB，含外链条目的元数据）
 - JSON/文本接口在 GitHub Pages 上自动带 `Access-Control-Allow-Origin: *`（Pages 对静态资源统一添加）
 - 站点描述与机器端点目录：`/llms.txt`
@@ -195,6 +219,7 @@ echo <text>
   - DMCA：17 U.S.C. §512、U.S. Copyright Office
   - 开源声明：SPDX、REUSE、Apache NOTICE、CycloneDX
   - security.txt：RFC 9116
+  - 数据：IANA HTTP 状态码、IANA 媒体类型、文件签名参考、Unicode CLDR / ECMA-402 Intl、IANA 时区数据库
   - 贡献/治理：Open Source Guides、GitHub Docs、Google Code Review
   - Agent 模板：AGENTS.md、Model Context Protocol、OpenAI function calling、Anthropic tool use、NIST AI RMF
 - 所有模板均标注 “not legal advice”；使用前请自行审查

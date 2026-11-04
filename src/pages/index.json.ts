@@ -9,9 +9,13 @@ import { sections } from '../data/sections';
 import { formatDate } from '../utils/format';
 import { buildInfo } from '../data/build-info';
 import kitData from '../data/kits.json';
+import { publicData } from '../data/public-data';
 
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://original.wales');
+  const guides = (await getCollection('guides')).sort(
+    (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+  );
   const files = (await getCollection('files')).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
   );
@@ -65,6 +69,29 @@ export async function GET(context: APIContext) {
       description: tool.description,
     })),
     files: filesWithBytes,
+    guides: guides.map((entry) => ({
+      id: entry.id,
+      title: entry.data.title,
+      summary: entry.data.summary,
+      audience: entry.data.audience,
+      updated: formatDate(entry.data.updated),
+      readingTime: entry.data.readingTime,
+      tags: entry.data.tags,
+      url: `/guides/${entry.id}/`,
+      markdown: `/guides/${entry.id}.md`,
+    })),
+    data: publicData.map((dataset) => ({
+      id: dataset.id,
+      title: dataset.title,
+      summary: dataset.summary,
+      source: dataset.source,
+      license: dataset.license,
+      updated: dataset.updated,
+      rows: dataset.rows.length,
+      page: `/data/${dataset.id}/`,
+      json: `/data/${dataset.id}.json`,
+      csv: `/data/${dataset.id}.csv`,
+    })),
     links: links.map((link) => ({ name: link.name, url: link.url, note: link.note })),
     kits: kitData.kits.map((kit) => ({
       id: kit.id,
@@ -93,6 +120,20 @@ export async function GET(context: APIContext) {
       manifestHash: '/cli/manifest-sha256.txt',
       kits: '/kits/index.json',
       kitsPage: '/files/kits/',
+      guides: '/guides/',
+      guidesJson: '/guides.json',
+      data: '/data/',
+      dataIndex: '/data/index.json',
+      downloads: '/downloads/',
+      downloadsIndex: '/downloads/index.json',
+      directory: '/guides/directory/',
+      directoryJson: '/guides/directory.json',
+      letters: '/guides/letters/',
+      lettersJson: '/guides/letters.json',
+      checklists: '/guides/checklists/',
+      corrections: '/corrections.json',
+      opensearch: '/opensearch.xml',
+      contribute: '/contribute/',
       searchPage: '/search/',
       recent: '/files/recent/',
       feed: '/feed.json',

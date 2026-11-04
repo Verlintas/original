@@ -20,6 +20,9 @@ export async function GET() {
 
   lines.push(
     '    kits/',
+    '  guides/',
+    '  data/',
+    '  downloads/',
     '  search/',
     '  index.json',
     '  search.json',

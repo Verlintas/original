@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../../components/BaseLayout.astro';
+import Circle from '../../../components/Circle.astro';
+import { letters } from '../../../data/letters';
+
+export async function getStaticPaths() {
+  return letters.map((letter) => ({ params: { id: letter.id }, props: { letter } }));
+}
+
+const { letter } = Astro.props;
+---
+
+<BaseLayout title={letter.title} description={letter.summary} type="article">
+  <p class="back"><a href="/guides/letters/">← All letters</a></p>
+
+  <header class="file-head">
+    <h1 class="page-title"><Circle /> {letter.title}</h1>
+    <p class="lede">{letter.summary}</p>
+    <p class="guide-byline">{letter.audience} · Fill in the fields, then copy or download.</p>
+  </header>
+
+  <div class="detail-grid">
+    <div class="prose">
+      <section class="letter-builder" aria-labelledby="letter-fields-heading">
+        <div class="section-head">
+          <h2 id="letter-fields-heading">FIELDS</h2>
+        </div>
+        <div class="letter-fields">
+          {letter.fields.map((field) => (
+            <label class="letter-field">
+              <span class="label">{field.label}</span>
+              {field.multiline ? (
+                <textarea
+                  rows="3"
+                  data-letter-field={field.key}
+                  data-letter-label={field.label}
+                  placeholder={field.placeholder}
+                ></textarea>
+              ) : (
+                <input
+                  type="text"
+                  data-letter-field={field.key}
+                  data-letter-label={field.label}
+                  placeholder={field.placeholder}
+                />
+              )}
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <section class="letter-output-block" aria-labelledby="letter-output-heading">
+        <div class="section-head">
+          <h2 id="letter-output-heading">LETTER</h2>
+          <div class="full-text-actions">
+            <button class="action" type="button" data-letter-copy>[ COPY ]</button>
+            <button class="action" type="button" data-letter-download>[ DOWNLOAD .TXT ]</button>
+            <button class="action" type="button" data-letter-print>[ PRINT ]</button>
+          </div>
+        </div>
+        <pre class="file-preview letter-preview" id="letter-output" tabindex="0"></pre>
+      </section>
+
+      <h2>NOTES</h2>
+      <ul>
+        {letter.notes.map((note) => <li>{note}</li>)}
+      </ul>
+    </div>
+
+    <aside class="meta-aside" aria-label="Letter metadata">
+      <h2>Before sending</h2>
+      <dl class="meta-list">
+        <div><dt>Audience</dt><dd>{letter.audience}</dd></div>
+        <div><dt>Format</dt><dd>Plain text</dd></div>
+        <div><dt>Machine</dt><dd><a href="/guides/letters.json">letters.json</a></dd></div>
+      </dl>
+      <p class="kit-note">
+        This is a template, not legal advice. Read the linked law or the recipient's requirements
+        before sending.
+      </p>
+    </aside>
+  </div>
+
+  <p class="back" style="margin-top: 3rem;"><a href="/guides/letters/">← All letters</a></p>
+
+  <pre id="letter-template" hidden>{letter.body}</pre>
+
+  <script>
+    const template = document.getElementById('letter-template')?.textContent || '';
+    const output = document.getElementById('letter-output');
+    const fields = Array.from(document.querySelectorAll('[data-letter-field]'));
+
+    function renderLetter() {
+      let text = template;
+      const values = {};
+      for (const field of fields) {
+        values[field.dataset.letterField] = field.value.trim();
+      }
+      for (const field of fields) {
+        const key = field.dataset.letterField;
+        const value = values[key] || '[' + field.dataset.letterLabel + ']';
+        text = text.split('{{' + key + '}}').join(value);
+      }
+      output.textContent = text.trim() + '\n';
+    }
+
+    for (const field of fields) field.addEventListener('input', renderLetter);
+    renderLetter();
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const helper = document.createElement('textarea');
+      helper.value = text;
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand('copy');
+      helper.remove();
+    }
+
+    document.querySelector('[data-letter-copy]')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      const label = button.textContent;
+      try {
+        await copyText(output.textContent || '');
+        button.textContent = '[ COPIED ]';
+      } catch {
+        button.textContent = '[ COPY FAILED ]';
+      }
+      window.setTimeout(() => (button.textContent = label), 1400);
+    });
+
+    document.querySelector('[data-letter-download]')?.addEventListener('click', () => {
+      const blob = new Blob([output.textContent || ''], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'letter.txt';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+
+    document.querySelector('[data-letter-print]')?.addEventListener('click', () => window.print());
+  </script>
+</BaseLayout>

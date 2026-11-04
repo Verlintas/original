@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { directory, directoryCategories } from '../../data/directory';
+
+const grouped = directoryCategories
+  .map((category) => ({
+    category,
+    entries: directory.filter((entry) => entry.category === category),
+  }))
+  .filter((group) => group.entries.length > 0);
+---
+
+<BaseLayout title="DIRECTORY" description="A curated directory of public sources: public domain, standards, open data, accessibility, privacy, archives, and the independent web.">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> DIRECTORY</h1>
+    <p class="lede">
+      A public shelf of sources worth knowing. No affiliate links and no tracking. Every entry
+      links to the original project.
+    </p>
+  </header>
+
+  <div class="directory-controls">
+    <label class="label" for="directory-search">Search</label>
+    <input id="directory-search" type="search" placeholder="Name, category, or tag" autocomplete="off" />
+    <span class="filter-count" id="directory-count">{directory.length} entries</span>
+  </div>
+
+  {
+    grouped.map((group) => (
+      <section class="directory-group" data-directory-group data-category={group.category}>
+        <div class="section-head">
+          <h2 class="label">{group.category}</h2>
+          <span class="section-count">{group.entries.length}</span>
+        </div>
+        <div class="directory-list">
+          {group.entries.map((entry) => (
+            <article
+              class="directory-entry"
+              data-directory-entry
+              data-search={[entry.name, entry.category, entry.description, ...entry.tags].join(' ').toLowerCase()}
+            >
+              <div>
+                <h3><a href={entry.url} rel="noopener">{entry.name}</a></h3>
+                <p>{entry.description}</p>
+                {entry.note && <p class="directory-note">{entry.note}</p>}
+              </div>
+              <div class="directory-tags">{entry.tags.join(' · ')}</div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+
+  <p class="empty-state" id="directory-empty" hidden>No entries match that search.</p>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Machine-readable directory: <a href="/guides/directory.json">/guides/directory.json</a>.
+  </p>
+
+  <script>
+    const input = document.getElementById('directory-search');
+    const count = document.getElementById('directory-count');
+    const empty = document.getElementById('directory-empty');
+    const groups = Array.from(document.querySelectorAll('[data-directory-group]'));
+    const entries = Array.from(document.querySelectorAll('[data-directory-entry]'));
+
+    function apply() {
+      const query = input.value.trim().toLowerCase();
+      let visible = 0;
+      for (const entry of entries) {
+        const show = !query || entry.dataset.search.includes(query);
+        entry.hidden = !show;
+        if (show) visible += 1;
+      }
+      for (const group of groups) {
+        group.hidden = Array.from(group.querySelectorAll('[data-directory-entry]')).every((entry) => entry.hidden);
+      }
+      count.textContent = visible + (visible === 1 ? ' entry' : ' entries');
+      empty.hidden = visible !== 0;
+    }
+
+    input.addEventListener('input', apply);
+    apply();
+  </script>
+</BaseLayout>

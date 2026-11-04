@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+
+const paths = [
+  {
+    title: 'I MAKE THINGS',
+    note: 'For writers, artists, photographers, musicians, and anyone publishing creative work.',
+    links: [
+      ['Choose a license', '/guides/choose-a-license/'],
+      ['Attribute CC works', '/guides/attribute-cc/'],
+      ['Understand the public domain', '/guides/public-domain/'],
+      ['Share a photo safely', '/guides/checklists/#photo-sharing'],
+      ['License chooser', '/universe/license-chooser/'],
+    ],
+  },
+  {
+    title: 'I RUN A SMALL SITE',
+    note: 'For personal sites, small businesses, community projects, and side projects.',
+    links: [
+      ['Launch a small site', '/guides/launch-a-small-site/'],
+      ['Write a privacy policy', '/guides/privacy-policy/'],
+      ['Write an accessibility statement', '/guides/accessibility-statement/'],
+      ['Publish security.txt', '/guides/security-txt/'],
+      ['Website policy pack', '/files/kits/website-policy-pack/'],
+    ],
+  },
+  {
+    title: 'I BUILD SOFTWARE',
+    note: 'For developers who need licenses, headers, repository documents, and agent instructions.',
+    links: [
+      ['Understand a license', '/guides/understand-licenses/'],
+      ['Open source starter kit', '/files/kits/open-source-starter/'],
+      ['Agent-ready repository', '/files/kits/agent-ready-repo/'],
+      ['Verify a download', '/guides/verify-a-download/'],
+      ['CLI and machine endpoints', '/cli/manual.txt'],
+    ],
+  },
+  {
+    title: 'I RESEARCH OR STUDY',
+    note: 'For students, researchers, journalists, and anyone who needs a source they can cite.',
+    links: [
+      ['Directory of public sources', '/guides/directory/'],
+      ['The public domain', '/guides/public-domain/'],
+      ['Standards under FILES', '/files/category/standards/'],
+      ['Full corpus', '/llms-full.txt'],
+      ['Citation packs', '/cli/context/mit-license.txt'],
+    ],
+  },
+  {
+    title: 'I USE AI AGENTS',
+    note: 'For people building or supervising agents that need stable, read-only access to sources.',
+    links: [
+      ['Agent onboarding', '/AGENTS.md'],
+      ['Full CLI manual', '/cli/manual.txt'],
+      ['Full corpus', '/llms-full.txt'],
+      ['Metadata corpus', '/llms-small.txt'],
+      ['Machine index', '/index.json'],
+    ],
+  },
+];
+---
+
+<BaseLayout title="LEARNING PATHS" description="Start with who you are and what you need to do.">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> LEARNING PATHS</h1>
+    <p class="lede">
+      The same library is useful in different ways. Pick the path that matches the work in front
+      of you, not the file format.
+    </p>
+  </header>
+
+  <div class="path-grid">
+    {
+      paths.map((path) => (
+        <section class="path-card">
+          <h2>{path.title}</h2>
+          <p>{path.note}</p>
+          <ul>
+            {path.links.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Not sure where to start? Open the <a href="/files/">library</a>, search the
+    <a href="/search/">full text</a>, or write to
+    <a href="mailto:contact@original.wales">contact@original.wales</a>.
+  </p>
+</BaseLayout>

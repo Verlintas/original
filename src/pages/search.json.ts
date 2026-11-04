@@ -6,6 +6,7 @@ import { formatDate } from '../utils/format';
 
 export async function GET(context: APIContext) {
   const files = await getCollection('files');
+  const guides = await getCollection('guides');
   const docs = [];
 
   for (const entry of files) {
@@ -32,6 +33,35 @@ export async function GET(context: APIContext) {
       url: `/files/${entry.id}/`,
       download: entry.data.file,
       source: entry.data.source ?? null,
+      text,
+    });
+  }
+
+  for (const entry of guides) {
+    let text = '';
+    try {
+      text = await readFile(
+        path.join(process.cwd(), 'src/content/guides', `${entry.id}.md`),
+        'utf8',
+      );
+      text = text.replace(/^---\n[\s\S]*?\n---\n?/, '');
+      text = text.replace(/^---\n[\s\S]*?\n---\n?/, '');
+    } catch {
+      text = '';
+    }
+    docs.push({
+      id: entry.id,
+      title: entry.data.title,
+      category: 'GUIDE',
+      date: formatDate(entry.data.updated),
+      size: entry.data.readingTime,
+      license: 'SITE TEXT',
+      sha256: null,
+      tags: entry.data.tags,
+      summary: entry.data.summary,
+      url: `/guides/${entry.id}/`,
+      download: `/guides/${entry.id}.md`,
+      source: null,
       text,
     });
   }

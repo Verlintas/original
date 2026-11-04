@@ -20,4 +20,17 @@ const files = defineCollection({
   }),
 });
 
-export const collections = { files };
+const guides = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    audience: z.string(),
+    updated: z.coerce.date(),
+    readingTime: z.string(),
+    tags: z.array(z.string()).default([]),
+    order: z.number().default(100),
+  }),
+});
+
+export const collections = { files, guides };

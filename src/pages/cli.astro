@@ -53,7 +53,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     const COMMANDS = [
       'help', 'manual', 'agents', 'api', 'ls', 'cd', 'pwd', 'tree', 'files',
       'cat', 'read', 'head', 'tail', 'search', 'context', 'cite', 'related',
-      'verify', 'manifest', 'sitemap', 'licenses', 'resources', 'kits', 'compare', 'download',
+      'verify', 'manifest', 'sitemap', 'licenses', 'resources', 'kits', 'guides', 'data', 'downloads', 'compare', 'download',
       'open', 'status', 'links', 'tools', 'contact', 'stats', 'about',
       'date', 'whoami', 'source', 'history', 'clear', 'exit', 'echo',
     ];
@@ -64,7 +64,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       agents: 'agents — print agent onboarding. Static: /AGENTS.md',
       api: 'api — list machine endpoints and commands. Static: /cli/commands.json',
       ls: 'ls [-l] [path] — list the current directory, a section, or a files category. -l adds size and date.',
-      cd: 'cd <path> — change directory: /, /files, /files/licenses, /files/standards, /files/snippets, /files/headers, /files/policies, /files/governance, /files/agents, /status, /universe, /about.',
+      cd: 'cd <path> — change directory: /, /files, /files/<category>, /guides, /data, /status, /universe, /about.',
       pwd: 'pwd — print the current path.',
       tree: 'tree — show the whole site tree.',
       files: 'files [category|tag] — list files, filtered by category or tag (for example COPYLEFT).',
@@ -82,6 +82,9 @@ import BaseLayout from '../components/BaseLayout.astro';
       licenses: 'licenses [id] — print the license feature matrix, or one license. Static: /cli/licenses.json',
       resources: 'resources [category] — print the official resource inventory. Static: /cli/resources.json',
       kits: 'kits — list downloadable kit bundles. Static: /kits/index.json',
+      guides: 'guides — list plain-language guides. Static: /guides.json',
+      data: 'data — list public datasets. Static: /data/index.json',
+      downloads: 'downloads — list library and category archives. Static: /downloads/index.json',
       compare: 'compare <id...> — compare 2-6 licenses in text, for example: compare mit gpl-3.0 mpl-2.0',
       download: 'download <file> — start a download.',
       open: 'open <section|file|url> — open a page, file, or external URL.',
@@ -646,7 +649,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       const command = (tokens[0] || '').toLowerCase();
       const args = tokens.slice(1);
 
-      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'resources', 'kits', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
+      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'resources', 'kits', 'guides', 'data', 'downloads', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
       if (!index && !offlineSafe.includes(command)) {
         return printMuted('The index is not loaded. Try refreshing the page.');
       }
@@ -823,6 +826,48 @@ import BaseLayout from '../components/BaseLayout.astro';
           printMuted('open <kit page> · download <zip> · static: /kits/index.json');
         } catch (error) {
           printMuted('Could not load kits: ' + error.message);
+        }
+      } else if (command === 'guides') {
+        try {
+          const data = await fetchJsonFile('/guides.json');
+          if (wantsJson) return jsonOut(data);
+          print('GUIDES (' + data.guides.length + ')');
+          for (const guide of data.guides) {
+            print('  ◯ ' + guide.title + '  [' + guide.id + ']');
+            print('    ' + guide.audience + ' · ' + guide.readingTime + ' · ' + guide.url);
+          }
+          print('');
+          printMuted('open <guide> · static: /guides.json');
+        } catch (error) {
+          printMuted('Could not load guides: ' + error.message);
+        }
+      } else if (command === 'data') {
+        try {
+          const data = await fetchJsonFile('/data/index.json');
+          if (wantsJson) return jsonOut(data);
+          print('DATA (' + data.datasets.length + ')');
+          for (const dataset of data.datasets) {
+            print('  ◯ ' + dataset.title + '  [' + dataset.id + ']');
+            print('    ' + dataset.rows + ' rows · ' + dataset.json);
+          }
+          print('');
+          printMuted('open <dataset> · static: /data/index.json');
+        } catch (error) {
+          printMuted('Could not load data: ' + error.message);
+        }
+      } else if (command === 'downloads') {
+        try {
+          const data = await fetchJsonFile('/downloads/index.json');
+          if (wantsJson) return jsonOut(data);
+          print('DOWNLOADS (' + data.downloads.length + ')');
+          for (const item of data.downloads) {
+            print('  ◯ ' + item.name + '  [' + item.id + ']');
+            print('    ' + item.files + ' entries · ' + item.bytes + ' bytes · ' + item.download);
+          }
+          print('');
+          printMuted('static: /downloads/index.json');
+        } catch (error) {
+          printMuted('Could not load downloads: ' + error.message);
         }
       } else if (command === 'compare') {
         try {

@@ -20,6 +20,8 @@ export async function GET(context: APIContext) {
           sites: { type: 'array', items: { type: 'object' } },
           tools: { type: 'array', items: { $ref: '#/$defs/tool' } },
           files: { type: 'array', items: { $ref: '#/$defs/file' } },
+          guides: { type: 'array', items: { type: 'object' } },
+          data: { type: 'array', items: { type: 'object' } },
           links: { type: 'array', items: { type: 'object' } },
           build: {
             type: 'object',

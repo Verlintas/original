@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { corrections } from '../../data/corrections';
+---
+
+<BaseLayout title="TRANSPARENCY" description="Editorial policy, source verification, corrections, and the public record for Original.">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> TRANSPARENCY</h1>
+    <p class="lede">
+      What this site promises, how sources are handled, and what changed. The record is public so
+      mistakes can be traced, not hidden.
+    </p>
+  </header>
+
+  <div class="prose">
+    <h2>EDITORIAL POLICY</h2>
+    <ul>
+      <li>Primary sources first: link to the original, mirror only when the license allows it.</li>
+      <li>Every local file has a size and SHA-256 checksum.</li>
+      <li>Official texts name their source and keep their original license.</li>
+      <li>Templates written for this site are CC0-1.0 unless the file says otherwise.</li>
+      <li>No accounts, no tracking scripts, no advertising, no affiliate links.</li>
+      <li>No legal advice. Guides explain; the reader decides.</li>
+      <li>Corrections are recorded below, with the date and what changed.</li>
+    </ul>
+
+    <h2>SOURCE VERIFICATION</h2>
+    <p>
+      Sources are linked on every file page. The local text is checksummed and included in
+      <a href="/cli/manifest.tsv">manifest.tsv</a>, whose own checksum is published at
+      <a href="/cli/manifest-sha256.txt">/cli/manifest-sha256.txt</a>. The build commit and corpus
+      hash are on <a href="/status/">STATUS</a>.
+    </p>
+    <p>
+      A checksum proves that a file matches the published version. It does not prove that the
+      publisher is trustworthy or that the upstream source has not changed. Check both.
+    </p>
+
+    <h2>WHAT IS NOT HERE</h2>
+    <ul>
+      <li>No user accounts, comments, or profiles.</li>
+      <li>No analytics or behavioral tracking.</li>
+      <li>No warranty and no legal advice.</li>
+      <li>No claim that a license or policy is suitable for your jurisdiction.</li>
+    </ul>
+
+    <h2>CORRECTIONS</h2>
+    <table class="corrections-table">
+      <thead>
+        <tr><th>Date</th><th>Type</th><th>Change</th></tr>
+      </thead>
+      <tbody>
+        {corrections.map((entry) => (
+          <tr>
+            <td>{entry.date}</td>
+            <td>{entry.type}</td>
+            <td><strong>{entry.title}</strong><br />{entry.detail}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2>REPORT A PROBLEM</h2>
+    <p>
+      Send a correction or removal request to
+      <a href="mailto:contact@original.wales">contact@original.wales</a>. Include the URL, what is
+      wrong, and a source if one exists. Security issues go to
+      <a href="mailto:security@original.wales">security@original.wales</a>.
+    </p>
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Machine-readable corrections: <a href="/corrections.json">/corrections.json</a>.
+  </p>
+</BaseLayout>
