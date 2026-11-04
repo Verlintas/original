@@ -1,9 +1,23 @@
 import type { APIContext } from 'astro';
+import { getCollection } from 'astro:content';
 import { textResponse } from '../../utils/cli-text';
 
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://original.wales');
   const generated = new Date().toISOString();
+  const files = await getCollection('files');
+  const categoryOrder = [
+    'LICENSES',
+    'STANDARDS',
+    'SNIPPETS',
+    'HEADERS',
+    'POLICIES',
+    'GOVERNANCE',
+    'AGENTS',
+  ];
+  const categories = categoryOrder.filter((category) =>
+    files.some((entry) => entry.data.category === category),
+  );
 
   const url = (pathname: string) => new URL(pathname, site).href;
 
@@ -43,8 +57,9 @@ export async function GET(context: APIContext) {
     '1. WHAT IS HERE',
     '---------------',
     '',
-    'FILES      Canonical license texts, copyright headers, policy templates,',
-    '           governance documents, and agent templates. 48 plain-text files.',
+    'FILES      Canonical licenses, official standards, gitignore snippets,',
+    '           copyright headers, policies, governance, and agent templates.',
+    `           ${files.length} plain-text files in ${categories.length} categories.`,
     'STATUS     Live checks for sites, GitHub projects, and services.',
     'UNIVERSE   Browser tools: checksums, JSON, license comparison.',
     'ABOUT      What the site is, who maintains it, how files are kept.',
@@ -100,6 +115,8 @@ export async function GET(context: APIContext) {
     '      license, source, and tags.',
     '',
     `  ${url('/cli/files/licenses.txt')}`,
+    `  ${url('/cli/files/standards.txt')}`,
+    `  ${url('/cli/files/snippets.txt')}`,
     `  ${url('/cli/files/headers.txt')}`,
     `  ${url('/cli/files/policies.txt')}`,
     `  ${url('/cli/files/governance.txt')}`,
@@ -142,8 +159,12 @@ export async function GET(context: APIContext) {
     '      What the site is and how it is maintained.',
     '',
     `  ${url('/cli/licenses.json')}`,
-    '      License feature matrix: 16 licenses x permissions/conditions/',
-    '      limitations. Machine-readable form of the comparison tool.',
+    '      License feature matrix: 16 common licenses x permissions/',
+    '      conditions/limitations. Machine-readable comparison data.',
+    '',
+    `  ${url('/cli/resources.json')}`,
+    '      Resource inventory grouped by category, with official-source',
+    '      flags and checksums.',
     '',
     `  ${url('/index.json')}`,
     '      JSON index: site metadata, sections, tools, files, links, and a',
@@ -151,7 +172,7 @@ export async function GET(context: APIContext) {
     '',
     `  ${url('/search.json')}`,
     '      Full-text search corpus: every text file with title, category,',
-    '      tags, summary, URLs, and text. Large (~64 KB).',
+    '      tags, summary, URLs, and text. Large; fetch once and search locally.',
     '',
     `  ${url('/llms.txt')}`,
     '      llms.txt description of the site.',
@@ -184,7 +205,8 @@ export async function GET(context: APIContext) {
     '5. INTERACTIVE COMMAND REFERENCE',
     '--------------------------------',
     '',
-    'Paths: / , /files , /files/licenses , /files/headers , /files/policies ,',
+    'Paths: / , /files , and one directory per category: /files/licenses ,',
+    '       /files/standards , /files/snippets , /files/headers , /files/policies ,',
     '       /files/governance , /files/agents.',
     'Targets: a file id (mit-license), a filename (mit.txt), or a full path.',
     '',
@@ -209,6 +231,7 @@ export async function GET(context: APIContext) {
     '  manifest              Print the TSV inventory.',
     '  sitemap               Print the plain-text sitemap.',
     '  licenses [id]         License matrix, or one license.',
+    '  resources [category]  Official resource inventory, grouped by category.',
     '  compare <id...>       Compare 2-6 licenses in text.',
     '  download <file>       Start a download (browser only).',
     '  open <section|file|url>  Navigate or open a URL (browser only).',
@@ -344,12 +367,14 @@ export async function GET(context: APIContext) {
     '11. CONTENT MODEL',
     '-----------------',
     '',
-    'Categories: LICENSES, HEADERS, POLICIES, GOVERNANCE, AGENTS.',
+    `Categories: ${categories.join(', ')}.`,
     'IDs are stable slugs (for example mit-license). Titles are uppercase',
     'display names, not identifiers.',
     '',
     'Provenance:',
-    '  - License texts are canonical SPDX texts, unmodified.',
+    '  - License texts are canonical SPDX and Creative Commons texts, unmodified.',
+    '  - RFCs, SemVer, Conventional Commits, and Keep a Changelog are the',
+    '    official texts, source-linked; gitignore templates come from GitHub.',
     '  - Contributor Covenant and DCO are canonical texts with attribution.',
     '  - Templates authored for this site are CC0-1.0 unless stated otherwise.',
     '  - Every entry names its source where one exists.',

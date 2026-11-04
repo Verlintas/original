@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172
 file: /files/licenses/mpl-2.0.txt
 source: "https://spdx.org/licenses/MPL-2.0.html"
-tags: ["WEAK COPYLEFT","FILE-LEVEL"]
+tags: ["WEAK COPYLEFT","FILE-LEVEL","OFFICIAL"]
 summary: "The Mozilla Public License 2.0, verbatim: file-level copyleft with an express patent grant."
 ---
 The Mozilla Public License 2.0, verbatim. File-level copyleft: modified MPL-covered files stay under MPL, while larger works may combine it with other licenses.

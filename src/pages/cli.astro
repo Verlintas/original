@@ -53,7 +53,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     const COMMANDS = [
       'help', 'manual', 'agents', 'api', 'ls', 'cd', 'pwd', 'tree', 'files',
       'cat', 'read', 'head', 'tail', 'search', 'context', 'cite', 'related',
-      'verify', 'manifest', 'sitemap', 'licenses', 'compare', 'download',
+      'verify', 'manifest', 'sitemap', 'licenses', 'resources', 'compare', 'download',
       'open', 'status', 'links', 'tools', 'contact', 'stats', 'about',
       'date', 'whoami', 'source', 'history', 'clear', 'exit', 'echo',
     ];
@@ -64,7 +64,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       agents: 'agents — print agent onboarding. Static: /AGENTS.md',
       api: 'api — list machine endpoints and commands. Static: /cli/commands.json',
       ls: 'ls [-l] [path] — list the current directory, a section, or a files category. -l adds size and date.',
-      cd: 'cd <path> — change directory: /, /files, /files/licenses, /files/headers, /files/policies, /status, /universe, /about.',
+      cd: 'cd <path> — change directory: /, /files, /files/licenses, /files/standards, /files/snippets, /files/headers, /files/policies, /files/governance, /files/agents, /status, /universe, /about.',
       pwd: 'pwd — print the current path.',
       tree: 'tree — show the whole site tree.',
       files: 'files [category|tag] — list files, filtered by category or tag (for example COPYLEFT).',
@@ -80,6 +80,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       manifest: 'manifest — print the TSV inventory. Static: /cli/manifest.tsv',
       sitemap: 'sitemap — print the plain-text site map. Static: /cli/sitemap.txt',
       licenses: 'licenses [id] — print the license feature matrix, or one license. Static: /cli/licenses.json',
+      resources: 'resources [category] — print the official resource inventory. Static: /cli/resources.json',
       compare: 'compare <id...> — compare 2-6 licenses in text, for example: compare mit gpl-3.0 mpl-2.0',
       download: 'download <file> — start a download.',
       open: 'open <section|file|url> — open a page, file, or external URL.',
@@ -486,7 +487,7 @@ import BaseLayout from '../components/BaseLayout.astro';
         }
       }
       print('');
-      printMuted('Flags: --json  ·  Paths: /, /files, /files/licenses  ·  Slugs also work.');
+      printMuted('Flags: --json  ·  Paths: /, /files, /files/<category>  ·  Slugs also work.');
       printMuted('Agents: /cli/manual.txt · /AGENTS.md · /cli/commands.json · /cli/manifest.tsv');
       printMuted('Machine: /cli/files.txt · /cli/context/<id>.txt · /index.json · /search.json · /cli/licenses.json');
       printMuted('Browser shortcuts: /cli/?cmd=search%20license · /cli/?cmd=files%20COPYLEFT');
@@ -499,6 +500,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     }
 
     let licensesData = null;
+    let resourcesData = null;
 
     async function fetchTextFile(url) {
       const res = await fetch(url, { cache: 'no-store' });
@@ -546,6 +548,34 @@ import BaseLayout from '../components/BaseLayout.astro';
     async function getLicensesData() {
       if (!licensesData) licensesData = await fetchJsonFile('/cli/licenses.json');
       return licensesData;
+    }
+
+    async function getResourcesData() {
+      if (!resourcesData) resourcesData = await fetchJsonFile('/cli/resources.json');
+      return resourcesData;
+    }
+
+    function printResources(data, category) {
+      const needle = (category || '').toUpperCase();
+      const items = needle
+        ? data.resources.filter((resource) => resource.category === needle)
+        : data.resources;
+      if (!items.length) return printMuted('No resources in ' + (needle || 'this site') + '.');
+      let current = '';
+      for (const resource of items) {
+        if (resource.category !== current) {
+          const count = items.filter((item) => item.category === resource.category).length;
+          print('');
+          print(resource.category + ' (' + count + ')');
+          current = resource.category;
+        }
+        print('  ◯ ' + resource.title + '  [' + resource.id + ']');
+        print('    ' + (resource.official ? 'official' : 'template') + ' · ' + resource.size + ' · ' + resource.format);
+        if (resource.source) print('    source: ' + resource.source);
+        print('    page:   ' + resource.page);
+      }
+      print('');
+      printMuted('resources <category> · --json · static: /cli/resources.json');
     }
 
     function licenseCell(value) {
@@ -610,7 +640,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       const command = (tokens[0] || '').toLowerCase();
       const args = tokens.slice(1);
 
-      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
+      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'resources', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
       if (!index && !offlineSafe.includes(command)) {
         return printMuted('The index is not loaded. Try refreshing the page.');
       }
@@ -627,7 +657,7 @@ import BaseLayout from '../components/BaseLayout.astro';
         printEntries(target, long);
       } else if (command === 'cd') {
         const target = normalizePath(args[0] || '/');
-        if (target === '/' || target === '/files' || /^\/files\/(licenses|headers|policies)$/.test(target) || sectionForPath(target)) {
+        if (target === '/' || target === '/files' || /^\/files\/(licenses|standards|snippets|headers|policies|governance|agents)$/.test(target) || sectionForPath(target)) {
           cwd = target;
           setPrompt();
         } else {
@@ -761,6 +791,17 @@ import BaseLayout from '../components/BaseLayout.astro';
           }
         } catch (error) {
           printMuted('Could not load licenses: ' + error.message);
+        }
+      } else if (command === 'resources') {
+        try {
+          const data = await getResourcesData();
+          if (wantsJson) {
+            const needle = (args[0] || '').toUpperCase();
+            return jsonOut(needle ? { ...data, resources: data.resources.filter((resource) => resource.category === needle) } : data);
+          }
+          printResources(data, args[0]);
+        } catch (error) {
+          printMuted('Could not load resources: ' + error.message);
         }
       } else if (command === 'compare') {
         try {

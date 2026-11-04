@@ -26,6 +26,6 @@ export const tools: Tool[] = [
     index: '03',
     name: 'LICENSE COMPARE',
     url: '/universe/license-compare/',
-    description: 'Compare permissions, conditions, and limitations across sixteen licenses.',
+    description: 'Compare permissions, conditions, and limitations across sixteen common licenses.',
   },
 ];

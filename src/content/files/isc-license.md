@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 521c6f0ed8e64736684f89843d16a4df6b4b7449acbcfc6ca6630a3037ca8c53
 file: /files/licenses/isc.txt
 source: "https://spdx.org/licenses/ISC.html"
-tags: ["PERMISSIVE","MINIMAL"]
+tags: ["PERMISSIVE","MINIMAL","OFFICIAL"]
 summary: "The ISC License, verbatim: a minimal permissive license functionally similar to MIT."
 ---
 The ISC License, verbatim. A minimal permissive license, functionally similar to MIT with simpler wording.

@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 57fb42fbcd0b037ce528ed8f72f1ec095d67bc6825ecf1448ff39be1fe68a4b4
 file: /files/licenses/eupl-1.2.txt
 source: "https://spdx.org/licenses/EUPL-1.2.html"
-tags: ["COPYLEFT","EUROPEAN"]
+tags: ["COPYLEFT","EUROPEAN","OFFICIAL"]
 summary: "The European Union Public License 1.2, verbatim: a copyleft license written for European public administrations."
 ---
 The European Union Public License 1.2, verbatim. A copyleft license written for European public administrations, with compatible-license provisions.

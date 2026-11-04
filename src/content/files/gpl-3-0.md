@@ -9,7 +9,7 @@ license: CANONICAL TEXT
 sha256: fb981668c18a279e285fc4d83fba1e836cc84dd4daa73c9697d3cfd2d8aca6e0
 file: /files/licenses/gpl-3.0.txt
 source: https://www.gnu.org/licenses/gpl-3.0.txt
-tags: ["COPYLEFT"]
+tags: ["COPYLEFT","OFFICIAL"]
 summary: The canonical GNU General Public License version 3 text, including the how-to-apply appendix.
 ---
 

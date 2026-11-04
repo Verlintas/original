@@ -15,12 +15,12 @@
 |---|---|
 | `/` | MAIN：hero + 统计 + 文件 + 工具 + 状态 + 关于摘要 |
 | `/status/` | STATUS：GitHub 平台状态、站点可达性、GitHub 项目动态、外链 |
-| `/files/` | FILES：许可证原文、版权头、政策/治理模板（48 份；类别 chips + 标签 + 全文检索） |
+| `/files/` | FILES：许可证、官方标准、gitignore 片段、版权头、政策/治理模板（82 份；类别 chips + 标签 + 全文检索） |
 | `/files/<slug>/` | 文件详情：摘要、元数据、标签、SHA-256、下载 |
 | `/universe/` | UNIVERSE：工具索引（每个工具独立子页面） |
 | `/universe/checksum/` | SHA-256 校验器 |
 | `/universe/json/` | JSON 校验/格式化/压缩 |
-| `/universe/license-compare/` | 16 种许可证特征比较（权限/条件/限制） |
+| `/universe/license-compare/` | 16 种常见许可证特征比较（权限/条件/限制） |
 | `/about/` | ABOUT：站点、维护者、文件维护方式、FAQ |
 | `/cli/` | CLI：全屏终端（隐藏页；页脚与 ABOUT 有人类入口） |
 | `/AGENTS.md` | Agent 入门：端点、保障、常用任务 |
@@ -29,7 +29,8 @@
 | `/cli/manifest.tsv` | 文件清单（含校验值与下载地址） |
 | `/cli/context/<id>.txt` | 单文件上下文包（元数据+引用+相关+全文） |
 | `/cli/cite/<id>.txt` | 单文件引用行 |
-| `/cli/licenses.json` | 16 种许可证特征矩阵 |
+| `/cli/licenses.json` | 16 种常见许可证特征矩阵 |
+| `/cli/resources.json` | 资源清单（按类别分组，含官方来源标记与校验值） |
 | `/404.html` | 自定义报错页（显示请求路径；`noindex`） |
 | `/index.json` | 全站机器可读索引（文件、链接、区块、工具） |
 | `/search.json` | 全文搜索索引 |
@@ -40,9 +41,11 @@
 
 ## FILES 内容库
 
-当前 48 份，全部为 TXT，带真实大小与 SHA-256：
+当前 82 份，全部为纯文本，带真实大小与 SHA-256：
 
-- **LICENSES（16）**：MIT、Apache-2.0、GPL-2.0、GPL-3.0、LGPL-3.0、AGPL-3.0、MPL-2.0、EPL-2.0、EUPL-1.2、ISC、0BSD、Zlib、BSL-1.0、BSD-3-Clause、Unlicense、CC0-1.0
+- **LICENSES（32）**：MIT、Apache-2.0、GPL-2.0、GPL-3.0、LGPL-3.0、AGPL-3.0、MPL-2.0、EPL-2.0、EUPL-1.2、ISC、0BSD、Zlib、BSL-1.0、BSD-3-Clause、Unlicense、CC0-1.0、Artistic-2.0、OSL-3.0、AFL-3.0、PostgreSQL、Python-2.0、MS-PL、MS-RL、ECL-2.0、UPL-1.0、NCSA，以及 CC BY / BY-SA / BY-NC / BY-ND / BY-NC-SA / BY-NC-ND 4.0
+- **STANDARDS（8）**：RFC 2119、RFC 8174、RFC 8259（JSON）、RFC 4180（CSV）、RFC 9116（security.txt）、Semantic Versioning 2.0.0、Conventional Commits 1.0.0、Keep a Changelog 1.1.0
+- **SNIPPETS（10）**：GitHub 官方 .gitignore 模板（Node、Python、macOS、Go、Rust、Java、C、C++、Ruby、Terraform）
 - **HEADERS（8）**：MIT、Apache、GPL、LGPL、AGPL、MPL、SPDX、短标识符合集
 - **POLICIES（10）**：网站/App 隐私政策、Cookie 政策、服务条款、EULA、可接受使用政策、无障碍声明、DMCA 通知、开源声明、security.txt
 - **GOVERNANCE（10）**：Contributor Covenant 行为准则、DCO 1.1、贡献指南、安全政策、个人 CLA、项目治理、AI 贡献政策、Issue/PR 模板、代码评审政策、发布政策
@@ -51,7 +54,7 @@
 检索与分类：
 
 - 搜索框：匹配标题、摘要、标签
-- 类别 chips：All / Licenses / Headers / Policies / Governance（数量实时更新）
+- 类别 chips：All / Licenses / Standards / Snippets / Headers / Policies / Governance / Agents（数量实时更新）
 - 标签下拉：PERMISSIVE、COPYLEFT、WEAK COPYLEFT、PUBLIC DOMAIN、PRIVACY、TERMS、SECURITY、ACCESSIBILITY 等
 - URL 可分享：`/files/?q=privacy`、`/files/?category=LICENSES&tag=COPYLEFT`
 - 详情页的类别与每个标签都可点击回到筛选结果
@@ -62,7 +65,7 @@
 
 - **CHECKSUM**：Web Crypto 计算 SHA-256，本地处理
 - **JSON**：校验、格式化、压缩
-- **LICENSE COMPARE**：16 种许可证的特征矩阵；数据来自 [Choose a License](https://choosealicense.com/appendix/)，默认选 5 种，可切换任意组合；“Only differences” 隐藏相同项；选择状态写入 `?licenses=`，可分享/可被脚本读取
+- **LICENSE COMPARE**：16 种常见许可证的特征矩阵；数据来自 [Choose a License](https://choosealicense.com/appendix/)，默认选 5 种，可切换任意组合；“Only differences” 隐藏相同项；选择状态写入 `?licenses=`，可分享/可被脚本读取。FILES 另收录 32 份许可证原文。
 
 新增工具：在 `src/pages/universe/` 建子页面，并在 `src/data/tools.ts` 增加条目（name/url/description）即可同步到首页、索引与机器接口。
 
@@ -83,7 +86,7 @@ npm run preview      # 预览构建产物
 ```yaml
 ---
 title: MY TEMPLATE              # 站点上全大写显示
-category: POLICIES              # LICENSES / HEADERS / POLICIES / GOVERNANCE
+category: POLICIES              # LICENSES / STANDARDS / SNIPPETS / HEADERS / POLICIES / GOVERNANCE / AGENTS
 date: 2026-10-17
 version: '1.0'
 format: TXT
@@ -117,15 +120,16 @@ summary: 一句话摘要，用于列表、RSS、CLI、llms.txt。
 独立全屏窗口，黑底红字；`exit` 或 `Esc` 返回站点。
 
 ```
-help [command]           manual                agents              api
-ls [-l] [path]           cd <path>             pwd                 tree
-files [category|tag]     cat <file>            read <file>         context <file>
-cite <file>              related <file>        search <term>       verify <file>
-manifest                 sitemap               licenses [id]       compare <id...>
-download <file>          open <section|file|url>                   status
-links                    tools                 contact             stats
-about                    date                  whoami              source
-history                  clear                 exit                echo <text>
+help [command]           manual                agents                api
+ls [-l] [path]           cd <path>             pwd                   tree
+files [category|tag]     cat <file>            read <file>           context <file>
+cite <file>              related <file>        search <term>         verify <file>
+manifest                 sitemap               licenses [id]         resources [category]
+compare <id...>          download <file>       open <section|file|url>
+status                   links                 tools                 contact
+stats                    about                 date                  whoami
+source                   history               clear                 exit
+echo <text>
 ```
 
 - 虚拟文件系统（`cd` / `ls` / `pwd` / `tree`）、Tab 补全、历史记录（↑/↓）、Ctrl+L 清屏
@@ -135,11 +139,11 @@ history                  clear                 exit                echo <text>
 - 直接执行（浏览器内）：`/cli/?cmd=ls`；多条命令用 `%3B` 分隔，如 `?cmd=cd%20files%3Bls%20-l`
 - **`?cmd=` 依赖 JavaScript，不是机器接口**。Agent/脚本请用构建期生成的纯文本端点：
   - `/cli/help.txt`、`/cli/ls.txt`、`/cli/tree.txt`、`/cli/files.txt`、`/cli/files/agents.txt`
-  - `/cli/files/{licenses,headers,policies,governance}.txt`
+  - `/cli/files/{licenses,standards,snippets,headers,policies,governance,agents}.txt`
   - `/cli/cat/<id>.txt`（元数据+摘要）、`/cli/read/<id>.txt`（全文）
   - `/cli/context/<id>.txt`、`/cli/cite/<id>.txt`、`/cli/manifest.tsv`、`/cli/sitemap.txt`
   - `/cli/tools.txt`、`/cli/links.txt`、`/cli/stats.txt`、`/cli/about.txt`
-  - `/AGENTS.md`、`/cli/manual.txt`、`/cli/commands.json`、`/cli/licenses.json`
+  - `/AGENTS.md`、`/cli/manual.txt`、`/cli/commands.json`、`/cli/licenses.json`、`/cli/resources.json`
 - 机器索引：`/index.json`（`site` + `generated` + `bytes` + `tools` + `machine`）
 - 全文索引：`/search.json`
 - JSON/文本接口在 GitHub Pages 上自动带 `Access-Control-Allow-Origin: *`（Pages 对静态资源统一添加）
@@ -154,8 +158,10 @@ history                  clear                 exit                echo <text>
 
 ## 内容来源
 
-- **16 份许可证原文**均取自 SPDX License List（`spdx/license-list-data`），未改写正文
+- **32 份许可证原文**：SPDX License List（`spdx/license-list-data`）与 Creative Commons 官方 legalcode，未改写正文
 - **Contributor Covenant 2.1** 取自 contributor-covenant.org（CC BY 4.0）；**DCO 1.1** 取自 developercertificate.org（逐字复制）
+- **官方标准**：RFC Editor（RFC 2119/8174/8259/4180/9116）、semver.org、conventionalcommits.org、keepachangelog.com
+- **gitignore 模板**：GitHub `github/gitignore`（CC0-1.0）
 - **许可证对比数据**取自 Choose a License（GitHub 官方项目）
 - **版权头**依据 Apache License 附录、MPL Exhibit A、GNU How-To、SPDX/REUSE 规范整理
 - **政策/合规模板**参考：
@@ -167,7 +173,7 @@ history                  clear                 exit                echo <text>
   - DMCA：17 U.S.C. §512、U.S. Copyright Office
   - 开源声明：SPDX、REUSE、Apache NOTICE、CycloneDX
   - security.txt：RFC 9116
-  - 贡献/治理：Open Source Guides、GitHub Docs、Google Code Review、Semantic Versioning、Keep a Changelog
+  - 贡献/治理：Open Source Guides、GitHub Docs、Google Code Review
   - Agent 模板：AGENTS.md、Model Context Protocol、OpenAI function calling、Anthropic tool use、NIST AI RMF
 - 所有模板均标注 “not legal advice”；使用前请自行审查
 

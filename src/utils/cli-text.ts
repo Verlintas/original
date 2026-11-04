@@ -39,7 +39,7 @@ export function fileBlock(entry: CollectionEntry<'files'>, site: URL): string[] 
 
 export function filesBody(entries: CollectionEntry<'files'>[], site: URL): string[] {
   const lines: string[] = [];
-  const categories = ['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE', 'AGENTS'];
+  const categories = ['LICENSES', 'STANDARDS', 'SNIPPETS', 'HEADERS', 'POLICIES', 'GOVERNANCE', 'AGENTS'];
   for (const category of categories) {
     const items = entries.filter((entry) => entry.data.category === category);
     if (!items.length) continue;

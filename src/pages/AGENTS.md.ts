@@ -33,11 +33,14 @@ The interactive terminal at ${url('/cli/')} requires JavaScript.
 | Site tree | /cli/tree.txt | text |
 | All files + checksums | /cli/files.txt | text |
 | File inventory | /cli/manifest.tsv | TSV |
+| Resource inventory (official flags) | /cli/resources.json | JSON |
 | File metadata + summary | /cli/cat/<id>.txt | text |
 | Full file text | /cli/read/<id>.txt | text |
 | Context pack (metadata + citation + related + text) | /cli/context/<id>.txt | text |
 | Citation | /cli/cite/<id>.txt | text |
 | License feature matrix | /cli/licenses.json | JSON |
+| Official standards | /cli/files/standards.txt | text |
+| Gitignore snippets | /cli/files/snippets.txt | text |
 | Site map | /cli/sitemap.txt | text |
 | Tools | /cli/tools.txt | text |
 | Links/contact | /cli/links.txt | text |
@@ -49,7 +52,8 @@ All links are relative to ${url('/')}.
 ## Content guarantees
 
 - Every file has a stable id, page, download, and SHA-256 checksum.
-- License texts are canonical (SPDX and other primary sources), unmodified.
+- License texts are canonical (SPDX, Creative Commons, and other primary sources), unmodified.
+- RFCs, SemVer, Conventional Commits, and Keep a Changelog are official texts with named sources.
 - Templates are CC0-1.0 unless the file says otherwise.
 - Files are versioned; content changes bump version and date.
 - Cite version + date + URL + checksum, not just a URL.
@@ -64,6 +68,17 @@ All links are relative to ${url('/')}.
 **Compare licenses**
 
     curl ${url('/cli/licenses.json')}
+
+**Find a standard or snippet**
+
+    curl ${url('/cli/files/standards.txt')}
+    curl ${url('/cli/files/snippets.txt')}
+    curl ${url('/cli/context/rfc-2119.txt')}
+    curl ${url('/cli/context/gitignore-node.txt')}
+
+**List official resources**
+
+    curl ${url('/cli/resources.json')}
 
 **Search**
 

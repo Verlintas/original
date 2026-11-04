@@ -47,6 +47,7 @@ export async function GET(context: APIContext) {
     '/cli/stats.txt',
     '/cli/about.txt',
     '/cli/licenses.json',
+    '/cli/resources.json',
     '/index.json',
     '/search.json',
     '/llms.txt',

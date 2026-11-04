@@ -9,7 +9,7 @@ license: CANONICAL TEXT
 sha256: 074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff
 file: /files/licenses/apache-2.0.txt
 source: https://www.apache.org/licenses/LICENSE-2.0
-tags: ["PERMISSIVE","PATENT GRANT"]
+tags: ["PERMISSIVE","PATENT GRANT","OFFICIAL"]
 summary: The canonical Apache License 2.0 text, including the appendix on how to apply it.
 ---
 

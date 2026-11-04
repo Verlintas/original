@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 996af0513df21f7496288951c41428a03c174e9e4a9d63665c57d670f845ccb1
 file: /files/licenses/lgpl-3.0.txt
 source: "https://spdx.org/licenses/LGPL-3.0-only.html"
-tags: ["WEAK COPYLEFT","LIBRARIES"]
+tags: ["WEAK COPYLEFT","LIBRARIES","OFFICIAL"]
 summary: "The GNU Lesser General Public License 3.0, verbatim, for libraries that stay free while applications link to them."
 ---
 The GNU Lesser General Public License 3.0, verbatim. A weak copyleft license designed for libraries: the library stays free, while programs that link to it may use other terms.

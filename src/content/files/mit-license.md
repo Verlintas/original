@@ -9,7 +9,7 @@ license: CANONICAL TEXT
 sha256: b05785f9f18e6716bab63424b11454513b9943a222595b70411009202fc592b5
 file: /files/licenses/mit.txt
 source: https://spdx.org/licenses/MIT.html
-tags: ["PERMISSIVE"]
+tags: ["PERMISSIVE","OFFICIAL"]
 summary: The canonical MIT license text, with placeholders for year and copyright holders.
 ---
 

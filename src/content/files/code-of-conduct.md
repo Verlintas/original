@@ -9,7 +9,7 @@ license: "CC BY 4.0"
 sha256: 369bf7301883368fc19203bd0f1233fed2b83f0378ad19c4d0708bf61925339b
 file: /files/governance/code-of-conduct.txt
 source: "https://www.contributor-covenant.org/version/2/1/code_of_conduct/"
-tags: ["COMMUNITY","CONDUCT"]
+tags: ["COMMUNITY","CONDUCT","OFFICIAL"]
 summary: "The Contributor Covenant 2.1, verbatim: the standard community code of conduct with enforcement guidance."
 ---
 The Contributor Covenant, version 2.1, verbatim. The most widely used code of conduct for open source communities, including the enforcement ladder and attribution notes.

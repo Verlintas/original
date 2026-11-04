@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee
 file: /files/licenses/agpl-3.0.txt
 source: "https://spdx.org/licenses/AGPL-3.0-only.html"
-tags: ["COPYLEFT","NETWORK"]
+tags: ["COPYLEFT","NETWORK","OFFICIAL"]
 summary: "The GNU Affero General Public License 3.0, verbatim: GPLv3 plus a network-use source offer."
 ---
 The GNU Affero General Public License 3.0, verbatim. GPLv3 plus a network condition: users who interact with a modified version over a network must be offered its source.

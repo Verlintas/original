@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: bfb1112d49db5b1daecdfef24bd7e2f3ea0bafb33aa67aa0ab51e2bf8407c03d
 file: /files/licenses/zlib.txt
 source: "https://spdx.org/licenses/Zlib.html"
-tags: ["PERMISSIVE"]
+tags: ["PERMISSIVE","OFFICIAL"]
 summary: "The zlib License, verbatim: short and permissive, requiring attribution and marking of altered versions."
 ---
 The zlib License, verbatim. A short permissive license from the zlib project; it requires attribution and marks altered source versions.

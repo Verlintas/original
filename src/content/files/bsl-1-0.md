@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 84c6ef3ea9e3254a54d0acf5d3e0c61ae011b8fef7dd6940591cf060e6380a8f
 file: /files/licenses/bsl-1.0.txt
 source: "https://spdx.org/licenses/BSL-1.0.html"
-tags: ["PERMISSIVE"]
+tags: ["PERMISSIVE","OFFICIAL"]
 summary: "The Boost Software License 1.0, verbatim: permissive, with attribution required only in source distributions."
 ---
 The Boost Software License 1.0, verbatim. A short permissive license from Boost; the license text need not be included in compiled binaries.

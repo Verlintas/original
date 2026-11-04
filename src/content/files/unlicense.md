@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 0bdebfeda07d45dada625ae1317c6f833186e798b171d0db640bcf32e92a8240
 file: /files/licenses/unlicense.txt
 source: "https://spdx.org/licenses/Unlicense.html"
-tags: ["PUBLIC DOMAIN"]
+tags: ["PUBLIC DOMAIN","OFFICIAL"]
 summary: "The Unlicense, verbatim: a public-domain dedication with a fallback license where dedication is not possible."
 ---
 The Unlicense, verbatim. A public-domain dedication with a fallback permissive license for jurisdictions where dedication is not possible.

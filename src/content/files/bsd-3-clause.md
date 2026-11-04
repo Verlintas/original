@@ -9,7 +9,7 @@ license: CANONICAL TEXT
 sha256: 5a93d5831e1297ab10fe643e1a631e83be392896da14ee2951285a79012df69d
 file: /files/licenses/bsd-3-clause.txt
 source: https://spdx.org/licenses/BSD-3-Clause.html
-tags: ["PERMISSIVE"]
+tags: ["PERMISSIVE","OFFICIAL"]
 summary: The canonical BSD 3-Clause license text with year and owner placeholders.
 ---
 

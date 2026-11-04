@@ -77,6 +77,7 @@ export async function GET(context: APIContext) {
       context: '/cli/context/<id>.txt',
       cite: '/cli/cite/<id>.txt',
       licenses: '/cli/licenses.json',
+      resources: '/cli/resources.json',
       index: '/index.json',
       search: '/search.json',
       compare: '/universe/license-compare/',

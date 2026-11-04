@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { filesBody, textResponse } from '../../../utils/cli-text';
 
 export async function getStaticPaths() {
-  return ['licenses', 'headers', 'policies', 'governance', 'agents'].map((category) => ({
+  return ['licenses', 'standards', 'snippets', 'headers', 'policies', 'governance', 'agents'].map((category) => ({
     params: { category },
   }));
 }

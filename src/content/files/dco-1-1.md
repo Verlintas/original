@@ -9,7 +9,7 @@ license: "VERBATIM"
 sha256: f7ac75b443f4ca16b503241344b41aeff9503b0c30bedc2b119551d83cb0fa90
 file: /files/governance/dco-1.1.txt
 source: "https://developercertificate.org/"
-tags: ["CONTRIBUTION","LEGAL","DCO"]
+tags: ["CONTRIBUTION","LEGAL","DCO","OFFICIAL"]
 summary: "The Developer Certificate of Origin 1.1, verbatim: the per-commit sign-off certifying the right to contribute."
 ---
 The Developer Certificate of Origin, version 1.1, verbatim. A per-commit statement that the contributor has the right to submit the work under the project licence.

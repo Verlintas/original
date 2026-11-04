@@ -9,7 +9,7 @@ license: "CANONICAL TEXT"
 sha256: 61616a4066701bc7888ad910de1633dbc55eb4d4d30d930feef55afb9492e33c
 file: /files/licenses/epl-2.0.txt
 source: "https://spdx.org/licenses/EPL-2.0.html"
-tags: ["WEAK COPYLEFT"]
+tags: ["WEAK COPYLEFT","OFFICIAL"]
 summary: "The Eclipse Public License 2.0, verbatim: weak copyleft with a secondary-license option and patent grant."
 ---
 The Eclipse Public License 2.0, verbatim. A weak copyleft license with a secondary-license option and an express patent grant.

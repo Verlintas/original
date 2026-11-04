@@ -8,7 +8,7 @@ const files = (await getCollection('files')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
 );
 
-const categories = ['LICENSES', 'HEADERS', 'POLICIES', 'GOVERNANCE', 'AGENTS'] as const;
+const categories = ['LICENSES', 'STANDARDS', 'SNIPPETS', 'HEADERS', 'POLICIES', 'GOVERNANCE', 'AGENTS'] as const;
 const grouped = categories
   .map((category) => ({
     category,
@@ -21,13 +21,14 @@ const tags = [...new Set(files.flatMap((file) => file.data.tags ?? []))].sort();
 
 <BaseLayout
   title="FILES"
-  description="Licenses, headers, policies, governance, and agent templates, ready to copy or download."
+  description="Licenses, standards, snippets, headers, policies, governance, and agent templates, ready to copy or download."
 >
   <header class="page-head">
     <h1 class="page-title"><Circle /> FILES</h1>
     <p class="lede">
-      Licenses, headers, policies, governance, and agent templates. Every entry is a plain
-      text file with a checksum; copy it, or download it and verify.
+      Licenses, official standards, snippets, headers, policies, governance, and agent
+      templates. Every entry is a plain text file with a checksum; copy it, or download it and verify.
+      Official-source texts are tagged OFFICIAL.
     </p>
   </header>
 
