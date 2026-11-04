@@ -30,10 +30,10 @@ import Circle from '../components/Circle.astro';
       <h2>WHAT IS HERE</h2>
       <ul>
         <li><strong>STATUS</strong> — live checks of this site, my other sites, my GitHub projects, and GitHub itself.</li>
-        <li><strong>FILES</strong> — licenses, official standards, gitignore snippets, copyright headers, policy/governance, and agent templates, kept as canonical plain text.</li>
-        <li><strong>UNIVERSE</strong> — browser tools, each on its own page: SHA-256 checksums, JSON formatting, and license comparison.</li>
+        <li><strong>FILES</strong> — licenses, official standards, gitignore snippets, copyright headers, policy/governance, and agent templates, kept as canonical plain text. Includes <a href="/files/kits/">kits</a>, <a href="/search/">full-text search</a>, and static category and tag pages.</li>
+        <li><strong>UNIVERSE</strong> — browser tools, each on its own page: SHA-256 checksums, JSON formatting, license comparison, and a license chooser.</li>
         <li><strong>CLI</strong> — a terminal interface to the same content, reachable from the footer or at <code>/cli/</code>.</li>
-        <li><strong>Machine index</strong> — <a href="/index.json">/index.json</a> and <a href="/llms.txt">/llms.txt</a> describe the site for scripts and AI agents.</li>
+        <li><strong>Machine index</strong> — <a href="/index.json">/index.json</a>, <a href="/llms.txt">/llms.txt</a>, and <a href="/llms-full.txt">/llms-full.txt</a> describe the site for scripts and AI agents.</li>
       </ul>
 
       <h2>WHO RUNS IT</h2>
@@ -51,7 +51,8 @@ import Circle from '../components/Circle.astro';
         Every file carries a date, version, format, size and — where possible — a SHA-256
         checksum. Canonical third-party texts name their source. Templates written here are
         released under CC0-1.0 unless the file itself says otherwise. Files are versioned in git;
-        replacing a file means adding a new version, not overwriting history.
+        replacing a file means adding a new version, not overwriting history. Each file page shows
+        the full text, a citation, a browser-side checksum verifier, and a Markdown version.
       </p>
 
       <h2>QUESTIONS</h2>
@@ -86,7 +87,9 @@ import Circle from '../components/Circle.astro';
         <li><span class="fact-key">Hosting</span><span>GitHub Pages</span></li>
         <li><span class="fact-key">Source</span><span><a href="https://github.com/Verlintas/original">Verlintas/original</a></span></li>
         <li><span class="fact-key">CLI</span><span><a href="/cli/">/cli/</a></span></li>
-        <li><span class="fact-key">Feed</span><span><a href="/rss.xml">/rss.xml</a></span></li>
+        <li><span class="fact-key">Feed</span><span><a href="/rss.xml">RSS</a> · <a href="/feed.json">JSON</a></span></li>
+        <li><span class="fact-key">Search</span><span><a href="/search/">/search/</a></span></li>
+        <li><span class="fact-key">Kits</span><span><a href="/files/kits/">/files/kits/</a></span></li>
       </ul>
     </aside>
   </div>

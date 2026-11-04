@@ -27,10 +27,17 @@ const tags = [...new Set(files.flatMap((file) => file.data.tags ?? []))].sort();
     <h1 class="page-title"><Circle /> FILES</h1>
     <p class="lede">
       Licenses, official standards, snippets, headers, policies, governance, and agent
-      templates. Every entry is a plain text file with a checksum; copy it, or download it and verify.
-      Official-source texts are tagged OFFICIAL.
+      templates. Every local entry is a plain text file with a checksum; external references
+      link to their source. Official-source texts are tagged OFFICIAL.
     </p>
   </header>
+
+  <nav class="files-jump" aria-label="File views">
+    <a class="action" href="/files/kits/">[ KITS ]</a>
+    <a class="action" href="/search/">[ SEARCH FULL TEXT ]</a>
+    <a class="action" href="/files/recent/">[ RECENT ]</a>
+    <a class="action" href="/rss.xml">[ RSS ]</a>
+  </nav>
 
   <div class="file-controls">
     <div class="filter-block">

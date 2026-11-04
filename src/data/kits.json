@@ -1,0 +1,86 @@
+{
+  "kits": [
+    {
+      "id": "open-source-starter",
+      "name": "OPEN SOURCE STARTER",
+      "summary": "A minimal repository skeleton: license, contribution rules, conduct, security policy, issue and PR templates, and agent instructions.",
+      "description": "Start a public repository with the documents contributors and agents expect. Choose one license from this kit, then replace the placeholders in the templates.",
+      "files": [
+        "mit-license",
+        "contributing",
+        "code-of-conduct",
+        "security-policy",
+        "issue-pr-templates",
+        "agents-md",
+        "dco-1-1"
+      ],
+      "notes": [
+        "MIT is a safe default; swap in Apache-2.0, GPL-3.0, or MPL-2.0 if the project needs different terms.",
+        "Replace every placeholder before publishing.",
+        "The DCO is optional if the project uses a CLA instead."
+      ]
+    },
+    {
+      "id": "agent-ready-repo",
+      "name": "AGENT-READY REPO",
+      "summary": "Instructions, tool definitions, evaluation criteria, and contribution rules for repositories that coding agents will work in.",
+      "description": "Make a repository legible to coding agents without giving them uncontrolled access. The kit pairs concrete commands and boundaries with honest evaluation and disclosure rules.",
+      "files": [
+        "agents-md",
+        "mcp-config",
+        "tool-definition",
+        "eval-checklist",
+        "ai-contribution-policy",
+        "security-policy",
+        "code-of-conduct",
+        "conventional-commits-1-0-0"
+      ],
+      "notes": [
+        "Fill AGENTS.md from the actual repository; do not copy commands that do not work.",
+        "Keep MCP permissions read-only unless a task requires writes.",
+        "Review the evaluation checklist before trusting an agent with releases or credentials."
+      ]
+    },
+    {
+      "id": "website-policy-pack",
+      "name": "WEBSITE POLICY PACK",
+      "summary": "Privacy, cookies, terms, accessibility, acceptable use, DMCA, and security.txt templates for a public website or app.",
+      "description": "A starting pack for a small public site. Every document is a template, not legal advice; adapt it to the jurisdiction, data flows, and platform that actually apply.",
+      "files": [
+        "website-privacy-policy",
+        "cookie-policy",
+        "terms-of-service",
+        "accessibility-statement",
+        "acceptable-use-policy",
+        "dmca-notice",
+        "security-txt"
+      ],
+      "notes": [
+        "Remove sections that do not describe your actual data practices.",
+        "security.txt belongs at /.well-known/security.txt.",
+        "Have the final documents reviewed before relying on them."
+      ]
+    },
+    {
+      "id": "license-pack",
+      "name": "LICENSE PACK",
+      "summary": "Common license texts, source headers, and an open-source notices template in one download.",
+      "description": "A compact set for projects that need a license, consistent source headers, and a notices file. Pick one license; the others are included for comparison.",
+      "files": [
+        "mit-license",
+        "apache-license-2-0",
+        "gpl-3-0",
+        "mpl-2-0",
+        "bsd-3-clause",
+        "mit-header",
+        "apache-header",
+        "open-source-notices"
+      ],
+      "notes": [
+        "Do not apply multiple incompatible licenses to the same code.",
+        "Keep the copyright notice and license text with every distribution.",
+        "Use the SPDX identifiers in source headers where the project supports them."
+      ]
+    }
+  ]
+}

@@ -28,4 +28,11 @@ export const tools: Tool[] = [
     url: '/universe/license-compare/',
     description: 'Compare permissions, conditions, and limitations across sixteen common licenses.',
   },
+  {
+    id: 'license-chooser',
+    index: '04',
+    name: 'LICENSE CHOOSER',
+    url: '/universe/license-chooser/',
+    description: 'Answer four questions and get a short list of licenses that fit.',
+  },
 ];

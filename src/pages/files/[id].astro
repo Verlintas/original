@@ -1,8 +1,12 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import BaseLayout from '../../components/BaseLayout.astro';
 import Circle from '../../components/Circle.astro';
 import { formatDate } from '../../utils/format';
+import { citationFor, relatedFor } from '../../utils/cli-text';
+import { slugify } from '../../utils/slug';
 
 export async function getStaticPaths() {
   const files = await getCollection('files');
@@ -14,8 +18,34 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, category, date, version, format, size, license, sha256, file, external, source, summary, tags } =
-  entry.data;
+const all = await getCollection('files');
+const related = relatedFor(entry, all, 4);
+const site = Astro.site ?? new URL('https://original.wales');
+const citation = citationFor(entry, site);
+const {
+  title,
+  category,
+  date,
+  version,
+  format,
+  size,
+  license,
+  sha256,
+  file,
+  external,
+  source,
+  summary,
+  tags,
+} = entry.data;
+
+let fullText = '';
+if (file) {
+  try {
+    fullText = await readFile(path.join(process.cwd(), 'public', file), 'utf8');
+  } catch {
+    fullText = '';
+  }
+}
 ---
 
 <BaseLayout title={title} description={summary} type="article">
@@ -26,14 +56,68 @@ const { title, category, date, version, format, size, license, sha256, file, ext
     <p class="lede">{summary}</p>
     <p class="actions">
       {file && <a class="action" href={file} download>[ DOWNLOAD ]</a>}
+      <a class="action" href={`/files/${entry.id}.md`}>[ MARKDOWN ]</a>
       {external && <a class="action" href={external} rel="noopener">[ MIRROR ]</a>}
       {source && <a class="action" href={source} rel="noopener">[ SOURCE ]</a>}
+      {fullText && <button class="action" type="button" data-copy-target="file-text">[ COPY TEXT ]</button>}
+      <button class="action" type="button" data-copy-target="citation-text">[ COPY CITATION ]</button>
     </p>
   </header>
 
   <div class="detail-grid">
     <div class="prose">
       <Content />
+
+      {fullText ? (
+        <section class="full-text" id="full-text" aria-labelledby="full-text-heading">
+          <div class="section-head">
+            <h2 id="full-text-heading">FULL TEXT</h2>
+            <div class="full-text-actions">
+              <button class="action" type="button" data-copy-target="file-text">[ COPY ]</button>
+              <a class="action" href={file} download>[ DOWNLOAD ]</a>
+            </div>
+          </div>
+          <pre class="file-preview" tabindex="0"><code id="file-text">{fullText}</code></pre>
+        </section>
+      ) : (
+        <section class="full-text" aria-labelledby="full-text-heading">
+          <div class="section-head">
+            <h2 id="full-text-heading">FULL TEXT</h2>
+          </div>
+          <p>
+            This entry is an external reference.
+            {external ? <a href={external} rel="noopener">Open the source document</a> : 'No local mirror is available.'}
+          </p>
+        </section>
+      )}
+
+      {sha256 && (
+        <section class="verify-block" aria-labelledby="verify-heading">
+          <div class="section-head">
+            <h2 id="verify-heading">VERIFY SHA-256</h2>
+          </div>
+          <p class="verify-copy">
+            Download the file, then choose it here. The checksum is compared locally in your browser.
+          </p>
+          <p class="verify-expected"><span class="label">Expected</span> <code>{sha256}</code></p>
+          <div class="verify-controls">
+            <label class="file-input-label">
+              <span class="action">[ CHOOSE FILE ]</span>
+              <input type="file" id="verify-file" />
+            </label>
+            <button class="action" type="button" data-verify data-sha={sha256}>[ VERIFY ]</button>
+            <output id="verify-result" class="verify-result" aria-live="polite"></output>
+          </div>
+        </section>
+      )}
+
+      <section class="cite-block" aria-labelledby="cite-heading">
+        <div class="section-head">
+          <h2 id="cite-heading">CITE</h2>
+          <button class="action" type="button" data-copy-target="citation-text">[ COPY ]</button>
+        </div>
+        <code class="citation-text" id="citation-text">{citation}</code>
+      </section>
     </div>
 
     <aside class="meta-aside" aria-label="File metadata">
@@ -42,7 +126,7 @@ const { title, category, date, version, format, size, license, sha256, file, ext
         <div><dt>Date</dt><dd>{formatDate(date)}</dd></div>
         <div>
           <dt>Category</dt>
-          <dd><a href={`/files/?category=${encodeURIComponent(category)}`}>{category}</a></dd>
+          <dd><a href={`/files/category/${category.toLowerCase()}/`}>{category}</a></dd>
         </div>
         <div><dt>Version</dt><dd>{version}</dd></div>
         <div><dt>Format</dt><dd>{format}</dd></div>
@@ -55,13 +139,13 @@ const { title, category, date, version, format, size, license, sha256, file, ext
               {tags.map((tag, index) => (
                 <Fragment>
                   {index > 0 && ' · '}
-                  <a href={`/files/?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+                  <a href={`/files/tag/${slugify(tag)}/`}>{tag}</a>
                 </Fragment>
               ))}
             </dd>
           </div>
         )}
-        {sha256 && <div><dt>SHA-256</dt><dd>{sha256}</dd></div>}
+        {sha256 && <div><dt>SHA-256</dt><dd><code>{sha256}</code></dd></div>}
         {source && (
           <div>
             <dt>Source</dt>
@@ -69,8 +153,86 @@ const { title, category, date, version, format, size, license, sha256, file, ext
           </div>
         )}
       </dl>
+
+      {related.length > 0 && (
+        <section class="related-block" aria-labelledby="related-heading">
+          <h2 id="related-heading">Related</h2>
+          <ul class="related-list">
+            {related.map((item) => (
+              <li>
+                <a href={`/files/${item.id}/`}>{item.data.title}</a>
+                <span>{item.data.category}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </aside>
   </div>
 
   <p class="back" style="margin-top: 3rem;"><a href="/files/">← All files</a></p>
+
+  <script>
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const helper = document.createElement('textarea');
+      helper.value = text;
+      helper.setAttribute('readonly', '');
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand('copy');
+      helper.remove();
+    }
+
+    for (const button of document.querySelectorAll('[data-copy-target]')) {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        const label = button.textContent;
+        try {
+          await copyText(target.textContent || '');
+          button.textContent = '[ COPIED ]';
+          window.setTimeout(() => {
+            button.textContent = label;
+          }, 1400);
+        } catch {
+          button.textContent = '[ COPY FAILED ]';
+          window.setTimeout(() => {
+            button.textContent = label;
+          }, 1800);
+        }
+      });
+    }
+
+    const verifyButton = document.querySelector('[data-verify]');
+    const verifyInput = document.getElementById('verify-file');
+    const verifyResult = document.getElementById('verify-result');
+
+    verifyButton?.addEventListener('click', async () => {
+      const expected = verifyButton.dataset.sha;
+      const file = verifyInput?.files?.[0];
+      if (!file) {
+        verifyResult.textContent = 'Choose a file first.';
+        verifyResult.className = 'verify-result is-bad';
+        return;
+      }
+      verifyResult.textContent = 'Computing…';
+      verifyResult.className = 'verify-result';
+      try {
+        const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
+        const actual = [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+        const match = actual === expected;
+        verifyResult.textContent = match ? 'MATCH — the file is the published version.' : 'MISMATCH — this is not the published file.';
+        verifyResult.className = 'verify-result ' + (match ? 'is-good' : 'is-bad');
+      } catch {
+        verifyResult.textContent = 'Could not compute the checksum in this browser.';
+        verifyResult.className = 'verify-result is-bad';
+      }
+    });
+  </script>
 </BaseLayout>

@@ -21,12 +21,16 @@ export async function GET(context: APIContext) {
     `- [AGENTS.md](${new URL('/AGENTS.md', site).href}): onboarding, guarantees, and common tasks.`,
     `- [commands.json](${new URL('/cli/commands.json', site).href}): machine-readable command and endpoint manifest.`,
     `- [manifest.tsv](${new URL('/cli/manifest.tsv', site).href}): file inventory with checksums.`,
+    `- [manifest-sha256.txt](${new URL('/cli/manifest-sha256.txt', site).href}): checksum of the manifest itself.`,
     `- [resources.json](${new URL('/cli/resources.json', site).href}): resource inventory with official-source flags.`,
+    `- [llms-small.txt](${new URL('/llms-small.txt', site).href}): metadata for every file.`,
+    `- [llms-full.txt](${new URL('/llms-full.txt', site).href}): every file, in full.`,
+    `- [search](${new URL('/search/', site).href}): full-text search UI; the raw corpus is /search.json.`,
     '',
     '## Sections',
-    '- [STATUS](' + new URL('/status/', site).href + '): live checks for sites, GitHub projects, and services.',
-    '- [FILES](' + new URL('/files/', site).href + '): licenses, standards, snippets, headers, policies, governance, and agent templates.',
-    '- [UNIVERSE](' + new URL('/universe/', site).href + '): browser tools — checksums, JSON, and license comparison.',
+    '- [STATUS](' + new URL('/status/', site).href + '): build information, live checks for sites, GitHub projects, and services.',
+    '- [FILES](' + new URL('/files/', site).href + '): licenses, standards, snippets, headers, policies, governance, and agent templates; includes [kits](' + new URL('/files/kits/', site).href + '), [search](' + new URL('/search/', site).href + '), and [recent](' + new URL('/files/recent/', site).href + ').',
+    '- [UNIVERSE](' + new URL('/universe/', site).href + '): browser tools — checksums, JSON, license comparison, and a license chooser.',
     '- [ABOUT](' + new URL('/about/', site).href + '): what the site is and who maintains it.',
     '- [CLI](' + new URL('/cli/', site).href + '): terminal interface; run a command with ?cmd= (for example ?cmd=ls).',
     '',
@@ -34,6 +38,10 @@ export async function GET(context: APIContext) {
     `- [CHECKSUM](${new URL('/universe/checksum/', site).href}): SHA-256 checksums for local files.`,
     `- [JSON](${new URL('/universe/json/', site).href}): validate, format, and minify JSON.`,
     `- [LICENSE COMPARE](${new URL('/universe/license-compare/', site).href}): compare permissions, conditions, and limitations across sixteen common licenses.`,
+    `- [LICENSE CHOOSER](${new URL('/universe/license-chooser/', site).href}): four questions, three suggestions.`,
+    '',
+    '## Site policies',
+    `- [Privacy](${new URL('/privacy/', site).href}) · [Security](${new URL('/security/', site).href}) · [License](${new URL('/license/', site).href}) · [Accessibility](${new URL('/accessibility/', site).href})`,
     '',
     '## Files',
   ];
@@ -44,6 +52,7 @@ export async function GET(context: APIContext) {
     );
     if (entry.data.file) {
       lines.push(`  Download: ${new URL(entry.data.file, site).href}`);
+      lines.push(`  Markdown: ${new URL(`/files/${entry.id}.md`, site).href}`);
     }
   }
 
@@ -61,6 +70,9 @@ export async function GET(context: APIContext) {
     `- [cite](${new URL('/cli/cite/mit-license.txt', site).href}): citation line per file.`,
     `- [licenses.json](${new URL('/cli/licenses.json', site).href}): license feature matrix (16 common licenses).`,
     `- [resources.json](${new URL('/cli/resources.json', site).href}): every resource, grouped by category, with checksums and sources.`,
+    `- [kits/index.json](${new URL('/kits/index.json', site).href}): downloadable kit bundles with checksums.`,
+    `- [JSON Feed](${new URL('/feed.json', site).href}) · [JSON schemas](${new URL('/schemas/index.schema.json', site).href})`,
+    `- [llms-full.txt](${new URL('/llms-full.txt', site).href}) · [llms-small.txt](${new URL('/llms-small.txt', site).href})`,
     `- [security.txt](${new URL('/.well-known/security.txt', site).href}): report vulnerabilities to security@original.wales.`,
     '',
     '## CLI',
@@ -68,7 +80,7 @@ export async function GET(context: APIContext) {
     'Scripts and agents should use the static text endpoints above; they are rendered at build time.',
     '?cmd=<command> is a browser-only convenience and does not work without JavaScript.',
     'Commands: help, manual, agents, api, ls, cd, pwd, tree, files, cat, read, head, tail,',
-    'search, context, cite, related, verify, manifest, sitemap, licenses, resources, compare,',
+    'search, context, cite, related, verify, manifest, sitemap, licenses, resources, kits, compare,',
     'download, open, status, links, tools, contact, stats, about, date, whoami, source, history,',
     'clear, exit.',
     'Add --json for machine-readable output in the browser.',

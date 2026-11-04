@@ -16,6 +16,18 @@ export async function GET(context: APIContext) {
   for (const section of sections) {
     lines.push(`PAGE\t${url(section.path)}\t${section.name}\t${section.description}`);
   }
+  for (const page of [
+    ['/search/', 'SEARCH', 'Full-text search across every text file.'],
+    ['/files/kits/', 'KITS', 'Curated downloadable bundles.'],
+    ['/files/recent/', 'RECENT', 'Every file, newest first.'],
+    ['/feed.json', 'FEED', 'JSON Feed 1.1.'],
+    ['/privacy/', 'PRIVACY', 'Privacy policy.'],
+    ['/security/', 'SECURITY', 'Security policy.'],
+    ['/license/', 'LICENSE', 'Site license.'],
+    ['/accessibility/', 'ACCESSIBILITY', 'Accessibility statement.'],
+  ]) {
+    lines.push(`PAGE\t${url(page[0])}\t${page[1]}\t${page[2]}`);
+  }
 
   lines.push('');
   for (const tool of tools) {
@@ -41,6 +53,16 @@ export async function GET(context: APIContext) {
     '/cli/context/<id>.txt',
     '/cli/cite/<id>.txt',
     '/cli/manifest.tsv',
+    '/cli/manifest-sha256.txt',
+    '/kits/index.json',
+    '/feed.json',
+    '/files/<id>.md',
+    '/llms-full.txt',
+    '/llms-small.txt',
+    '/schemas/index.schema.json',
+    '/schemas/resources.schema.json',
+    '/schemas/search.schema.json',
+    '/schemas/licenses.schema.json',
     '/cli/sitemap.txt',
     '/cli/tools.txt',
     '/cli/links.txt',

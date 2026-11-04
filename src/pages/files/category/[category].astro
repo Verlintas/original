@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import Circle from '../../../components/Circle.astro';
+import FileTable from '../../../components/FileTable.astro';
+
+export async function getStaticPaths() {
+  const files = await getCollection('files');
+  const categories = [...new Set(files.map((entry) => entry.data.category))];
+  return categories.map((category) => ({
+    params: { category: category.toLowerCase() },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const files = (await getCollection('files'))
+  .filter((entry) => entry.data.category === category)
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout title={`${category} FILES`} description={`Every ${category.toLowerCase()} file on Original.`}>
+  <p class="back"><a href="/files/">← All files</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> {category}</h1>
+    <p class="lede">{files.length} files in this category, each with a checksum and source.</p>
+  </header>
+
+  <FileTable entries={files} showTags />
+
+  <p class="back" style="margin-top: 3rem;"><a href="/files/">← All files</a></p>
+</BaseLayout>

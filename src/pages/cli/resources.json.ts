@@ -52,6 +52,7 @@ export async function GET(context: APIContext) {
     .filter((category) => category.count > 0);
 
   const body = {
+    $schema: new URL('/schemas/resources.schema.json', site).href,
     generated: new Date().toISOString(),
     site: site.href,
     description:

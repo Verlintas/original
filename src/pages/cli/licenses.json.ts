@@ -36,6 +36,7 @@ export async function GET(context: APIContext) {
   });
 
   const body = {
+    $schema: new URL('/schemas/licenses.schema.json', site).href,
     generated: new Date().toISOString(),
     source: 'https://choosealicense.com/appendix/',
     note: 'Comparison aid, not legal advice. Read the full license text before use.',

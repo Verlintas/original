@@ -14,26 +14,43 @@
 | 路径 | 说明 |
 |---|---|
 | `/` | MAIN：hero + 统计 + 文件 + 工具 + 状态 + 关于摘要 |
-| `/status/` | STATUS：GitHub 平台状态、站点可达性、GitHub 项目动态、外链 |
-| `/files/` | FILES：许可证、官方标准、gitignore 片段、版权头、政策/治理模板（82 份；类别 chips + 标签 + 全文检索） |
-| `/files/<slug>/` | 文件详情：摘要、元数据、标签、SHA-256、下载 |
+| `/status/` | STATUS：本站构建信息（提交、时间、语料哈希）、GitHub 平台状态、站点可达性、GitHub 项目动态、外链 |
+| `/files/` | FILES：许可证、官方标准、gitignore 片段、版权头、政策/治理模板（86 份；类别 chips + 标签 + 元数据检索） |
+| `/files/<slug>/` | 文件详情：摘要、全文预览、复制/引用、SHA-256 校验、相关文件、分类/标签页 |
+| `/files/<slug>.md` | 文件的 Markdown 版本（元数据 + 正文 + 全文） |
+| `/files/kits/` | KITS：可直接下载的 ZIP 套件（开源起步、Agent 仓库、网站政策、许可证包） |
+| `/files/category/<name>/` | 静态分类页（LICENSES / STANDARDS / SNIPPETS / …） |
+| `/files/tag/<tag>/` | 静态标签页 |
+| `/files/recent/` | 全部文件，按更新时间倒序 |
+| `/search/` | 全文搜索页（`?q=`），匹配标题、摘要、标签和正文 |
 | `/universe/` | UNIVERSE：工具索引（每个工具独立子页面） |
 | `/universe/checksum/` | SHA-256 校验器 |
 | `/universe/json/` | JSON 校验/格式化/压缩 |
 | `/universe/license-compare/` | 16 种常见许可证特征比较（权限/条件/限制） |
+| `/universe/license-chooser/` | 4 个问题推荐 2–3 个许可证 |
 | `/about/` | ABOUT：站点、维护者、文件维护方式、FAQ |
+| `/privacy/` | 站点隐私说明 |
+| `/security/` | 站点安全报告范围 |
+| `/license/` | 站点版权与复用条款 |
+| `/accessibility/` | 无障碍目标与已知限制 |
 | `/cli/` | CLI：全屏终端（隐藏页；页脚与 ABOUT 有人类入口） |
 | `/AGENTS.md` | Agent 入门：端点、保障、常用任务 |
 | `/cli/manual.txt` | 完整 CLI / 静态 API 手册（面向 AI） |
 | `/cli/commands.json` | 命令与端点清单（机器可读） |
 | `/cli/manifest.tsv` | 文件清单（含校验值与下载地址） |
+| `/cli/manifest-sha256.txt` | manifest.tsv 的 SHA-256 |
+| `/kits/index.json` | KIT 清单（ZIP 地址、SHA-256、文件列表） |
 | `/cli/context/<id>.txt` | 单文件上下文包（元数据+引用+相关+全文） |
 | `/cli/cite/<id>.txt` | 单文件引用行 |
 | `/cli/licenses.json` | 16 种常见许可证特征矩阵 |
 | `/cli/resources.json` | 资源清单（按类别分组，含官方来源标记与校验值） |
 | `/404.html` | 自定义报错页（显示请求路径；`noindex`） |
-| `/index.json` | 全站机器可读索引（文件、链接、区块、工具） |
+| `/index.json` | 全站机器可读索引（文件、链接、区块、工具、KIT、构建信息） |
 | `/search.json` | 全文搜索索引 |
+| `/llms-full.txt` | 全部文件全文语料（约 800 KB） |
+| `/llms-small.txt` | 仅元数据语料 |
+| `/feed.json` | JSON Feed 1.1 |
+| `/schemas/*.schema.json` | `index/resources/search/licenses` 的 JSON Schema |
 | `/llms.txt` | llms.txt 标准描述，供 AI Agent 读取 |
 | `/rss.xml` | 文件更新订阅 |
 
@@ -41,10 +58,10 @@
 
 ## FILES 内容库
 
-当前 82 份，全部为纯文本，带真实大小与 SHA-256：
+当前 86 份：85 份本地纯文本（带真实大小与 SHA-256）+ 1 份外链规范（SPDX 2.3.1）：
 
 - **LICENSES（32）**：MIT、Apache-2.0、GPL-2.0、GPL-3.0、LGPL-3.0、AGPL-3.0、MPL-2.0、EPL-2.0、EUPL-1.2、ISC、0BSD、Zlib、BSL-1.0、BSD-3-Clause、Unlicense、CC0-1.0、Artistic-2.0、OSL-3.0、AFL-3.0、PostgreSQL、Python-2.0、MS-PL、MS-RL、ECL-2.0、UPL-1.0、NCSA，以及 CC BY / BY-SA / BY-NC / BY-ND / BY-NC-SA / BY-NC-ND 4.0
-- **STANDARDS（8）**：RFC 2119、RFC 8174、RFC 8259（JSON）、RFC 4180（CSV）、RFC 9116（security.txt）、Semantic Versioning 2.0.0、Conventional Commits 1.0.0、Keep a Changelog 1.1.0
+- **STANDARDS（12）**：RFC 2119、RFC 8174、RFC 8259（JSON）、RFC 4180（CSV）、RFC 9116（security.txt）、RFC 3339（时间戳）、RFC 3986（URI）、Semantic Versioning 2.0.0、Conventional Commits 1.0.0、Keep a Changelog 1.1.0、The Open Source Definition、SPDX Specification 2.3.1（外链）
 - **SNIPPETS（10）**：GitHub 官方 .gitignore 模板（Node、Python、macOS、Go、Rust、Java、C、C++、Ruby、Terraform）
 - **HEADERS（8）**：MIT、Apache、GPL、LGPL、AGPL、MPL、SPDX、短标识符合集
 - **POLICIES（10）**：网站/App 隐私政策、Cookie 政策、服务条款、EULA、可接受使用政策、无障碍声明、DMCA 通知、开源声明、security.txt
@@ -53,11 +70,12 @@
 
 检索与分类：
 
-- 搜索框：匹配标题、摘要、标签
+- 元数据搜索框：匹配标题、摘要、标签；全文搜索用 `/search/`
 - 类别 chips：All / Licenses / Standards / Snippets / Headers / Policies / Governance / Agents（数量实时更新）
-- 标签下拉：PERMISSIVE、COPYLEFT、WEAK COPYLEFT、PUBLIC DOMAIN、PRIVACY、TERMS、SECURITY、ACCESSIBILITY 等
+- 标签下拉：PERMISSIVE、COPYLEFT、WEAK COPYLEFT、PUBLIC DOMAIN、PRIVACY、TERMS、SECURITY、ACCESSIBILITY、OFFICIAL 等
 - URL 可分享：`/files/?q=privacy`、`/files/?category=LICENSES&tag=COPYLEFT`
-- 详情页的类别与每个标签都可点击回到筛选结果
+- 静态分类页与标签页，便于引用和搜索引擎收录
+- 详情页的类别与每个标签都可点击到对应静态页
 
 ## UNIVERSE 工具
 
@@ -66,6 +84,7 @@
 - **CHECKSUM**：Web Crypto 计算 SHA-256，本地处理
 - **JSON**：校验、格式化、压缩
 - **LICENSE COMPARE**：16 种常见许可证的特征矩阵；数据来自 [Choose a License](https://choosealicense.com/appendix/)，默认选 5 种，可切换任意组合；“Only differences” 隐藏相同项；选择状态写入 `?licenses=`，可分享/可被脚本读取。FILES 另收录 32 份许可证原文。
+- **LICENSE CHOOSER**：4 个问题（copyleft 范围、专利授权、简洁度、公共领域）推荐 2–3 个许可证，并链接到全文与对比表。
 
 新增工具：在 `src/pages/universe/` 建子页面，并在 `src/data/tools.ts` 增加条目（name/url/description）即可同步到首页、索引与机器接口。
 
@@ -73,8 +92,8 @@
 
 ```sh
 npm install          # 国内网络慢可加 --registry=https://registry.npmmirror.com
-npm run dev          # http://localhost:4321
-npm run build        # 构建到 dist/
+npm run dev          # 先生成 KIT ZIP，再启动 http://localhost:4321
+npm run build        # 先重建 KIT ZIP，再构建到 dist/
 npm run preview      # 预览构建产物
 ```
 
@@ -102,12 +121,13 @@ summary: 一句话摘要，用于列表、RSS、CLI、llms.txt。
 正文：使用说明、注意事项、来源链接。
 ```
 
-3. 提交并推送 `main`，Actions 自动构建部署；首页、FILES、RSS、CLI、`index.json`、`search.json`、`llms.txt` 全部自动更新。
+3. 提交并推送 `main`，Actions 自动构建部署；首页、FILES、RSS、CLI、`index.json`、`search.json`、`llms.txt`、`llms-full.txt` 全部自动更新。KIT ZIP 在构建前由 `scripts/build-kits.mjs` 重建。
 
 校验值：`shasum -a 256 文件名`；大小：`wc -c 文件名`。
 
 ## STATUS 页
 
+- 构建卡片：最近构建时间、提交、构建日志、语料 SHA-256、总字节数、manifest 校验入口
 - 每次打开页面在浏览器端实时检查：
   - GitHub 平台状态（`githubstatus.com` API，含 API/Actions/Pages/Git Operations 组件）
   - 站点可达性（`src/data/sites.ts` 中配置，`no-cors` 请求，显示延迟）
@@ -125,7 +145,7 @@ ls [-l] [path]           cd <path>             pwd                   tree
 files [category|tag]     cat <file>            read <file>           context <file>
 cite <file>              related <file>        search <term>         verify <file>
 manifest                 sitemap               licenses [id]         resources [category]
-compare <id...>          download <file>       open <section|file|url>
+kits                     compare <id...>       download <file>       open <section|file|url>
 status                   links                 tools                 contact
 stats                    about                 date                  whoami
 source                   history               clear                 exit
@@ -141,11 +161,13 @@ echo <text>
   - `/cli/help.txt`、`/cli/ls.txt`、`/cli/tree.txt`、`/cli/files.txt`、`/cli/files/agents.txt`
   - `/cli/files/{licenses,standards,snippets,headers,policies,governance,agents}.txt`
   - `/cli/cat/<id>.txt`（元数据+摘要）、`/cli/read/<id>.txt`（全文）
-  - `/cli/context/<id>.txt`、`/cli/cite/<id>.txt`、`/cli/manifest.tsv`、`/cli/sitemap.txt`
+  - `/cli/context/<id>.txt`、`/cli/cite/<id>.txt`、`/cli/manifest.tsv`、`/cli/manifest-sha256.txt`、`/cli/sitemap.txt`
   - `/cli/tools.txt`、`/cli/links.txt`、`/cli/stats.txt`、`/cli/about.txt`
   - `/AGENTS.md`、`/cli/manual.txt`、`/cli/commands.json`、`/cli/licenses.json`、`/cli/resources.json`
-- 机器索引：`/index.json`（`site` + `generated` + `bytes` + `tools` + `machine`）
-- 全文索引：`/search.json`
+  - `/llms.txt`、`/llms-small.txt`、`/llms-full.txt`、`/feed.json`、`/kits/index.json`
+  - `/files/<id>.md`（单文件 Markdown）、`/schemas/*.schema.json`
+- 机器索引：`/index.json`（`site` + `generated` + `build` + `bytes` + `tools` + `kits` + `machine`）
+- 全文索引：`/search.json`（约 840 KB，含外链条目的元数据）
 - JSON/文本接口在 GitHub Pages 上自动带 `Access-Control-Allow-Origin: *`（Pages 对静态资源统一添加）
 - 站点描述与机器端点目录：`/llms.txt`
 
@@ -160,7 +182,7 @@ echo <text>
 
 - **32 份许可证原文**：SPDX License List（`spdx/license-list-data`）与 Creative Commons 官方 legalcode，未改写正文
 - **Contributor Covenant 2.1** 取自 contributor-covenant.org（CC BY 4.0）；**DCO 1.1** 取自 developercertificate.org（逐字复制）
-- **官方标准**：RFC Editor（RFC 2119/8174/8259/4180/9116）、semver.org、conventionalcommits.org、keepachangelog.com
+- **官方标准**：RFC Editor（RFC 2119/8174/8259/4180/9116/3339/3986）、semver.org、conventionalcommits.org、keepachangelog.com、Open Source Initiative（OSD）、SPDX Specification 2.3.1（外链）
 - **gitignore 模板**：GitHub `github/gitignore`（CC0-1.0）
 - **许可证对比数据**取自 Choose a License（GitHub 官方项目）
 - **版权头**依据 Apache License 附录、MPL Exhibit A、GNU How-To、SPDX/REUSE 规范整理

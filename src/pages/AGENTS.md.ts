@@ -16,9 +16,11 @@ Machine command manifest: ${url('/cli/commands.json')}
 ## Start here
 
 1. ${url('/llms.txt')} — site description.
-2. ${url('/cli/manual.txt')} — complete CLI/API manual.
-3. ${url('/index.json')} — every file, link, tool, and section as JSON.
-4. ${url('/search.json')} — full text of every text file.
+2. ${url('/llms-small.txt')} — metadata for every file.
+3. ${url('/llms-full.txt')} — every file, in full.
+4. ${url('/cli/manual.txt')} — complete CLI/API manual.
+5. ${url('/index.json')} — every file, link, tool, and section as JSON.
+6. ${url('/search.json')} — full text of every text file.
 
 The interactive terminal at ${url('/cli/')} requires JavaScript.
 **Do not use ?cmd= as an API.** For scripts, use the static endpoints below.
@@ -33,9 +35,16 @@ The interactive terminal at ${url('/cli/')} requires JavaScript.
 | Site tree | /cli/tree.txt | text |
 | All files + checksums | /cli/files.txt | text |
 | File inventory | /cli/manifest.tsv | TSV |
+| Manifest checksum | /cli/manifest-sha256.txt | text |
 | Resource inventory (official flags) | /cli/resources.json | JSON |
+| Metadata corpus | /llms-small.txt | text |
+| Full corpus | /llms-full.txt | text |
+| Kits | /kits/index.json | JSON |
+| JSON Feed | /feed.json | JSON |
+| JSON schemas | /schemas/index.schema.json | JSON |
 | File metadata + summary | /cli/cat/<id>.txt | text |
 | Full file text | /cli/read/<id>.txt | text |
+| File Markdown | /files/<id>.md | markdown |
 | Context pack (metadata + citation + related + text) | /cli/context/<id>.txt | text |
 | Citation | /cli/cite/<id>.txt | text |
 | License feature matrix | /cli/licenses.json | JSON |
@@ -51,7 +60,8 @@ All links are relative to ${url('/')}.
 
 ## Content guarantees
 
-- Every file has a stable id, page, download, and SHA-256 checksum.
+- Every file has a stable id and page; local files also have a download and SHA-256 checksum.
+- Every local file has a Markdown version at /files/<id>.md.
 - License texts are canonical (SPDX, Creative Commons, and other primary sources), unmodified.
 - RFCs, SemVer, Conventional Commits, and Keep a Changelog are official texts with named sources.
 - Templates are CC0-1.0 unless the file says otherwise.
@@ -80,6 +90,17 @@ All links are relative to ${url('/')}.
 
     curl ${url('/cli/resources.json')}
 
+**Get a ready-made kit**
+
+    curl ${url('/kits/index.json')}
+    curl -O ${url('/kits/open-source-starter.zip')}
+
+**Validate JSON output**
+
+    curl ${url('/schemas/index.schema.json')}
+    curl ${url('/schemas/resources.schema.json')}
+    curl ${url('/schemas/search.schema.json')}
+
 **Search**
 
 There is no query endpoint. Fetch /search.json and search locally:
@@ -104,6 +125,8 @@ There is no query endpoint. Fetch /search.json and search locally:
 - Respect license terms; templates are starting points, not legal advice.
 - Be a polite client; content is cached and safe to retry.
 - Security reports: security@original.wales (see /.well-known/security.txt).
+- Full corpus: /llms-full.txt; metadata-only: /llms-small.txt.
+- Kits are generated at build time; verify the ZIP against /kits/index.json.
 
 Generated: ${new Date().toISOString()}
 `;

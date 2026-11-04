@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="SEARCH" description="Full-text search across every file on Original.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> SEARCH</h1>
+    <p class="lede">
+      Full-text search across every plain-text file. Results match titles, summaries, tags, and
+      the complete text of each document.
+    </p>
+  </header>
+
+  <form class="search-form" id="search-form" role="search">
+    <label class="label" for="search-query">Query</label>
+    <div class="search-controls">
+      <input
+        id="search-query"
+        type="search"
+        name="q"
+        placeholder="Try: indemn, patent, MUST, privacy, GPL"
+        autocomplete="off"
+        autofocus
+      />
+      <button class="action" type="submit">[ SEARCH ]</button>
+    </div>
+  </form>
+
+  <p class="search-status" id="search-status">Loading index…</p>
+  <div class="search-results" id="search-results"></div>
+
+  <noscript>
+    <p class="compare-legend">
+      Full-text search needs JavaScript. The raw corpus is at <a href="/search.json">/search.json</a>;
+      every file is also listed under <a href="/files/">FILES</a>.
+    </p>
+  </noscript>
+
+  <script>
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-query');
+    const status = document.getElementById('search-status');
+    const results = document.getElementById('search-results');
+    let docs = null;
+
+    function textNode(value) {
+      return document.createTextNode(value);
+    }
+
+    function snippet(text, term) {
+      const lower = text.toLowerCase();
+      const at = lower.indexOf(term);
+      if (at === -1) return null;
+      const start = Math.max(0, at - 120);
+      const end = Math.min(text.length, at + term.length + 180);
+      return {
+        before: (start > 0 ? '…' : '') + text.slice(start, at),
+        match: text.slice(at, at + term.length),
+        after: text.slice(at + term.length, end) + (end < text.length ? '…' : ''),
+      };
+    }
+
+    function makeResult(doc, term) {
+      const article = document.createElement('article');
+      article.className = 'search-result';
+
+      const heading = document.createElement('h2');
+      const link = document.createElement('a');
+      link.href = doc.url;
+      link.textContent = doc.title;
+      heading.appendChild(link);
+      article.appendChild(heading);
+
+      const meta = document.createElement('p');
+      meta.className = 'search-result-meta';
+      meta.textContent = [doc.category, doc.date, doc.size, doc.license].filter(Boolean).join(' · ');
+      article.appendChild(meta);
+
+      if (doc.summary) {
+        const summary = document.createElement('p');
+        summary.className = 'search-result-summary';
+        summary.textContent = doc.summary;
+        article.appendChild(summary);
+      }
+
+      const hit = snippet(doc.text || '', term);
+      if (hit) {
+        const pre = document.createElement('p');
+        pre.className = 'search-snippet';
+        pre.appendChild(textNode(hit.before));
+        const mark = document.createElement('mark');
+        mark.textContent = hit.match;
+        pre.appendChild(mark);
+        pre.appendChild(textNode(hit.after));
+        article.appendChild(pre);
+      }
+
+      const actions = document.createElement('p');
+      actions.className = 'search-result-actions';
+      const read = document.createElement('a');
+      read.className = 'action';
+      read.href = doc.url;
+      read.textContent = '[ READ ]';
+      actions.appendChild(read);
+      if (doc.download) {
+        const download = document.createElement('a');
+        download.className = 'action';
+        download.href = doc.download;
+        download.setAttribute('download', '');
+        download.textContent = '[ DOWNLOAD ]';
+        actions.appendChild(download);
+      }
+      article.appendChild(actions);
+      return article;
+    }
+
+    function run(query) {
+      const term = query.trim().toLowerCase();
+      results.replaceChildren();
+      if (!docs) return;
+      if (!term) {
+        const fullText = docs.filter((doc) => doc.text).length;
+        status.textContent =
+          docs.length + ' documents indexed (' + fullText + ' with full text). Enter a query to search.';
+        return;
+      }
+
+      const matches = [];
+      for (const doc of docs) {
+        const title = (doc.title || '').toLowerCase();
+        const summary = (doc.summary || '').toLowerCase();
+        const tags = (doc.tags || []).join(' ').toLowerCase();
+        const text = (doc.text || '').toLowerCase();
+        let score = 0;
+        if (title.includes(term)) score += 12;
+        if (summary.includes(term)) score += 5;
+        if (tags.includes(term)) score += 4;
+        if (text.includes(term)) score += 1;
+        if (score > 0) matches.push({ doc, score });
+      }
+
+      matches.sort((a, b) => b.score - a.score || a.doc.title.localeCompare(b.doc.title));
+      const shown = matches.slice(0, 60);
+      status.textContent =
+        matches.length === 0
+          ? 'No matches for “' + query.trim() + '”.'
+          : matches.length + (matches.length === 1 ? ' match' : ' matches') +
+            (matches.length > shown.length ? ' · showing the first ' + shown.length : '');
+
+      for (const { doc } of shown) results.appendChild(makeResult(doc, term));
+    }
+
+    function fromUrl() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('q')) input.value = params.get('q');
+      run(input.value);
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const params = new URLSearchParams();
+      if (input.value.trim()) params.set('q', input.value.trim());
+      history.replaceState(null, '', params.toString() ? '?' + params.toString() : location.pathname);
+      run(input.value);
+    });
+
+    let timer = null;
+    input.addEventListener('input', () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => run(input.value), 120);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === '/' && document.activeElement !== input) {
+        event.preventDefault();
+        input.focus();
+      }
+    });
+
+    fetch('/search.json', { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      })
+      .then((data) => {
+        docs = data.docs || [];
+        fromUrl();
+      })
+      .catch(() => {
+        status.textContent = 'Could not load the search index. Try /search.json directly.';
+      });
+  </script>
+</BaseLayout>

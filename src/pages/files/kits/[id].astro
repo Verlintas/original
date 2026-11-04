@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import Circle from '../../../components/Circle.astro';
+import kitData from '../../../data/kits.json';
+
+export async function getStaticPaths() {
+  return kitData.kits.map((kit) => ({ params: { id: kit.id }, props: { kit } }));
+}
+
+const { kit } = Astro.props;
+const files = await getCollection('files');
+const items = kit.files
+  .map((id) => files.find((entry) => entry.id === id))
+  .filter(Boolean);
+
+const manifest = [
+  `ORIGINAL — ${kit.name}`,
+  kit.summary,
+  '',
+  ...items.map(
+    (entry) =>
+      `${entry.data.title}\t${entry.id}\t${entry.data.sha256 ?? ''}\t${entry.data.file ?? ''}`,
+  ),
+].join('\n');
+---
+
+<BaseLayout title={kit.name} description={kit.summary} type="article">
+  <p class="back"><a href="/files/kits/">← All kits</a></p>
+
+  <header class="file-head">
+    <h1 class="page-title"><Circle /> {kit.name}</h1>
+    <p class="lede">{kit.summary}</p>
+    <p class="actions">
+      <a class="action" href={`/kits/${kit.id}.zip`} download>[ DOWNLOAD KIT (.ZIP) ]</a>
+      <button class="action" type="button" data-copy-target="kit-manifest">[ COPY MANIFEST ]</button>
+      <a class="action" href="/kits/index.json">[ KIT INDEX ]</a>
+    </p>
+  </header>
+
+  <div class="detail-grid">
+    <div class="prose">
+      <p>{kit.description}</p>
+
+      <h2>FILES</h2>
+      <ul class="kit-file-list">
+        {
+          items.map((entry) => (
+            <li>
+              <div>
+                <a href={`/files/${entry.id}/`}>{entry.data.title}</a>
+                <span class="kit-file-meta">
+                  {entry.data.category} · {entry.data.size} · {entry.data.license}
+                </span>
+              </div>
+              <div class="kit-file-actions">
+                <a class="action" href={entry.data.file} download>[ DOWNLOAD ]</a>
+                <a class="action" href={`/files/${entry.id}/`}>[ READ ]</a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2>NOTES</h2>
+      <ul>
+        {kit.notes.map((note) => <li>{note}</li>)}
+      </ul>
+
+      <h2>MANIFEST</h2>
+      <pre class="file-preview kit-manifest" tabindex="0"><code id="kit-manifest">{manifest}</code></pre>
+    </div>
+
+    <aside class="meta-aside" aria-label="Kit metadata">
+      <h2>Metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Files</dt><dd>{items.length} + KIT.txt</dd></div>
+        <div><dt>Format</dt><dd>ZIP + TXT</dd></div>
+        <div><dt>Download</dt><dd><a href={`/kits/${kit.id}.zip`} download>.zip</a></dd></div>
+        <div><dt>Kit index</dt><dd><a href="/kits/index.json">index.json</a></dd></div>
+      </dl>
+      <p class="kit-note">
+        Generated at build time. See <a href="/license/">LICENSE</a> and each file's page for terms.
+      </p>
+    </aside>
+  </div>
+
+  <p class="back" style="margin-top: 3rem;"><a href="/files/kits/">← All kits</a></p>
+
+  <script>
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const helper = document.createElement('textarea');
+      helper.value = text;
+      helper.setAttribute('readonly', '');
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand('copy');
+      helper.remove();
+    }
+
+    for (const button of document.querySelectorAll('[data-copy-target]')) {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        const label = button.textContent;
+        try {
+          await copyText(target.textContent || '');
+          button.textContent = '[ COPIED ]';
+          window.setTimeout(() => {
+            button.textContent = label;
+          }, 1400);
+        } catch {
+          button.textContent = '[ COPY FAILED ]';
+          window.setTimeout(() => {
+            button.textContent = label;
+          }, 1800);
+        }
+      });
+    }
+  </script>
+</BaseLayout>

@@ -40,6 +40,10 @@ const categoryCount = new Set(files.map((file) => file.data.category)).size;
       <a class="more-link" href="/files/">All files →</a>
     </div>
     <FileTable entries={latest} />
+    <p class="more">
+      <a class="more-link" href="/files/kits/">Kits →</a> ·{' '}
+      <a class="more-link" href="/search/">Search all text →</a>
+    </p>
   </section>
 
   <div class="home-columns">

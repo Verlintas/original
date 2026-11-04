@@ -53,7 +53,7 @@ import BaseLayout from '../components/BaseLayout.astro';
     const COMMANDS = [
       'help', 'manual', 'agents', 'api', 'ls', 'cd', 'pwd', 'tree', 'files',
       'cat', 'read', 'head', 'tail', 'search', 'context', 'cite', 'related',
-      'verify', 'manifest', 'sitemap', 'licenses', 'resources', 'compare', 'download',
+      'verify', 'manifest', 'sitemap', 'licenses', 'resources', 'kits', 'compare', 'download',
       'open', 'status', 'links', 'tools', 'contact', 'stats', 'about',
       'date', 'whoami', 'source', 'history', 'clear', 'exit', 'echo',
     ];
@@ -81,6 +81,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       sitemap: 'sitemap — print the plain-text site map. Static: /cli/sitemap.txt',
       licenses: 'licenses [id] — print the license feature matrix, or one license. Static: /cli/licenses.json',
       resources: 'resources [category] — print the official resource inventory. Static: /cli/resources.json',
+      kits: 'kits — list downloadable kit bundles. Static: /kits/index.json',
       compare: 'compare <id...> — compare 2-6 licenses in text, for example: compare mit gpl-3.0 mpl-2.0',
       download: 'download <file> — start a download.',
       open: 'open <section|file|url> — open a page, file, or external URL.',
@@ -282,9 +283,14 @@ import BaseLayout from '../components/BaseLayout.astro';
           print('      ' + (entry.download ? basename(entry.download) : entry.id));
         }
       }
+      print('    kits/');
+      print('  search/');
       print('  index.json');
       print('  search.json');
+      print('  feed.json');
       print('  llms.txt');
+      print('  llms-small.txt');
+      print('  llms-full.txt');
       print('  rss.xml');
     }
 
@@ -640,7 +646,7 @@ import BaseLayout from '../components/BaseLayout.astro';
       const command = (tokens[0] || '').toLowerCase();
       const args = tokens.slice(1);
 
-      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'resources', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
+      const offlineSafe = ['help', 'man', 'manual', 'agents', 'api', 'manifest', 'sitemap', 'licenses', 'resources', 'kits', 'compare', 'date', 'whoami', 'source', 'clear', 'cls', 'exit', 'quit', 'echo'];
       if (!index && !offlineSafe.includes(command)) {
         return printMuted('The index is not loaded. Try refreshing the page.');
       }
@@ -802,6 +808,21 @@ import BaseLayout from '../components/BaseLayout.astro';
           printResources(data, args[0]);
         } catch (error) {
           printMuted('Could not load resources: ' + error.message);
+        }
+      } else if (command === 'kits') {
+        try {
+          const data = await fetchJsonFile('/kits/index.json');
+          if (wantsJson) return jsonOut(data);
+          print('KITS (' + data.kits.length + ')');
+          for (const kit of data.kits) {
+            print('  ◯ ' + kit.name + '  [' + kit.id + ']');
+            print('    ' + kit.files.length + ' files + KIT.txt · ' + kit.bytes + ' bytes · ' + kit.download);
+            print('    ' + kit.page);
+          }
+          print('');
+          printMuted('open <kit page> · download <zip> · static: /kits/index.json');
+        } catch (error) {
+          printMuted('Could not load kits: ' + error.message);
         }
       } else if (command === 'compare') {
         try {

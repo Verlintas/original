@@ -1,23 +1,84 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 import Circle from '../components/Circle.astro';
+import { getCollection } from 'astro:content';
+import { createHash } from 'node:crypto';
+import { stat } from 'node:fs/promises';
+import path from 'node:path';
 import { links } from '../data/links';
 import { sites } from '../data/sites';
+import { buildInfo } from '../data/build-info';
+
+const files = await getCollection('files');
+let totalBytes = 0;
+for (const entry of files) {
+  if (!entry.data.file) continue;
+  try {
+    totalBytes += (await stat(path.join(process.cwd(), 'public', entry.data.file))).size;
+  } catch {
+    /* ignore missing files */
+  }
+}
+const corpusHash = createHash('sha256')
+  .update(
+    files
+      .map((entry) => entry.data.sha256 ?? '')
+      .sort()
+      .join('\n'),
+  )
+  .digest('hex');
+const buildDate = new Date(buildInfo.generated).toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
 ---
 
 <BaseLayout
   title="STATUS"
-  description="Live checks for this site, its maintainer's projects, and the services they depend on."
+  description="Build information and live checks for this site, its maintainer's projects, and the services they depend on."
 >
   <header class="page-head">
     <h1 class="page-title"><Circle /> STATUS</h1>
     <p class="lede">
-      Live checks for this site, its maintainer's projects, and the services they depend on.
-      Checks run in the browser when this page loads.
+      Build information for this site, plus live checks for its projects and the services they
+      depend on. The build card is static; the live checks run in the browser when this page loads.
     </p>
   </header>
 
   <div class="status-grid">
+    <section class="panel panel-full" aria-labelledby="build-heading">
+      <div class="section-head">
+        <h2 id="build-heading" class="label">This site</h2>
+        <span class="section-count">{files.length} files</span>
+      </div>
+      <div class="status-rows">
+        <div class="status-row">
+          <span class="status-name">Last build</span>
+          <span class="status-state up"><span class="glyph">●</span> {buildDate}</span>
+        </div>
+        <div class="status-row">
+          <span class="status-name">Commit</span>
+          <span class="status-sub">
+            {buildInfo.commit ? (
+              <a href={buildInfo.commitUrl ?? '#'} rel="noopener">{buildInfo.commit}</a>
+            ) : (
+              'local build'
+            )}
+            {buildInfo.runUrl && <> · <a href={buildInfo.runUrl} rel="noopener">build log</a></>}
+          </span>
+        </div>
+        <div class="status-row">
+          <span class="status-name">Corpus SHA-256</span>
+          <span class="status-sub status-hash"><code>{corpusHash}</code></span>
+        </div>
+        <div class="status-row">
+          <span class="status-name">Total bytes</span>
+          <span class="status-sub">{totalBytes.toLocaleString('en-US')}</span>
+        </div>
+        <div class="status-row">
+          <span class="status-name">Manifest hash</span>
+          <span class="status-sub"><a href="/cli/manifest-sha256.txt">/cli/manifest-sha256.txt</a> · <a href="/cli/manifest.tsv">manifest.tsv</a></span>
+        </div>
+      </div>
+    </section>
+
     <section class="panel" aria-labelledby="services-heading">
       <div class="section-head">
         <h2 id="services-heading" class="label">Services</h2>

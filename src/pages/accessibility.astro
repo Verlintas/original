@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout title="ACCESSIBILITY" description="Accessibility commitments and known limitations for Original.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> ACCESSIBILITY</h1>
+    <p class="lede">The target, what is implemented, and how to report a barrier. Last updated 2026-11-04.</p>
+  </header>
+
+  <div class="prose legal-prose">
+    <p>
+      Original is a text-first site. The target is WCAG 2.2 Level AA for the public pages, with
+      the understanding that a small static site cannot guarantee conformance for every browser,
+      assistive technology, or external link.
+    </p>
+
+    <h2>WHAT IS IMPLEMENTED</h2>
+    <ul>
+      <li>Semantic headings, landmarks, lists, tables, and form labels.</li>
+      <li>A visible skip link and a visible keyboard focus indicator.</li>
+      <li>Text and controls that remain usable at 200% zoom and on narrow screens.</li>
+      <li>No autoplaying media, no decorative animation, and no color-only status labels.</li>
+      <li>Red on white with contrast chosen for body text and controls.</li>
+      <li>ARIA labels on icon-only or stateful controls where the text alone is not enough.</li>
+    </ul>
+
+    <h2>KNOWN LIMITATIONS</h2>
+    <ul>
+      <li>The site has not been tested with every screen reader and browser combination.</li>
+      <li>Some third-party links and embedded external pages are outside this site's control.</li>
+      <li>The full-screen CLI is a specialist interface; its static text endpoints are the accessible alternative.</li>
+      <li>Very long checksums and source URLs may wrap awkwardly at narrow widths.</li>
+    </ul>
+
+    <h2>REPORT A BARRIER</h2>
+    <p>
+      If a page or tool is difficult to use, write to
+      <a href="mailto:contact@original.wales">contact@original.wales</a> with the URL, the assistive
+      technology you use, and what happened. Reports are used to fix the site, not published
+      without permission.
+    </p>
+  </div>
+</BaseLayout>

@@ -7,6 +7,8 @@ import { sites } from '../data/sites';
 import { tools } from '../data/tools';
 import { sections } from '../data/sections';
 import { formatDate } from '../utils/format';
+import { buildInfo } from '../data/build-info';
+import kitData from '../data/kits.json';
 
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://original.wales');
@@ -47,11 +49,13 @@ export async function GET(context: APIContext) {
   );
 
   const body = {
+    $schema: new URL('/schemas/index.schema.json', site).href,
     name: 'Original',
     contact: 'contact@original.wales',
     site: site.href,
     description: 'A cornerstone for files, references, and tools.',
     generated: new Date().toISOString(),
+    build: buildInfo,
     sections,
     sites: sites.map((entry) => ({ name: entry.name, url: entry.url, note: entry.note })),
     tools: tools.map((tool) => ({
@@ -62,6 +66,14 @@ export async function GET(context: APIContext) {
     })),
     files: filesWithBytes,
     links: links.map((link) => ({ name: link.name, url: link.url, note: link.note })),
+    kits: kitData.kits.map((kit) => ({
+      id: kit.id,
+      name: kit.name,
+      summary: kit.summary,
+      page: `/files/kits/${kit.id}/`,
+      download: `/kits/${kit.id}.zip`,
+      files: kit.files,
+    })),
     machine: {
       cli: '/cli/',
       cliHelp: '/cli/help.txt',
@@ -78,6 +90,15 @@ export async function GET(context: APIContext) {
       cite: '/cli/cite/<id>.txt',
       licenses: '/cli/licenses.json',
       resources: '/cli/resources.json',
+      manifestHash: '/cli/manifest-sha256.txt',
+      kits: '/kits/index.json',
+      kitsPage: '/files/kits/',
+      searchPage: '/search/',
+      recent: '/files/recent/',
+      feed: '/feed.json',
+      llmsFull: '/llms-full.txt',
+      llmsSmall: '/llms-small.txt',
+      schemas: '/schemas/index.schema.json',
       index: '/index.json',
       search: '/search.json',
       compare: '/universe/license-compare/',

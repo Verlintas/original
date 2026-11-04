@@ -10,6 +10,15 @@ export async function GET(context: APIContext) {
   }
   lines.push(
     '',
+    'PAGES',
+    `  ${new URL('/search/', site).href} full-text search`,
+    `  ${new URL('/files/kits/', site).href} kit bundles`,
+    `  ${new URL('/files/recent/', site).href} all files, newest first`,
+    `  ${new URL('/privacy/', site).href} privacy`,
+    `  ${new URL('/security/', site).href} security`,
+    `  ${new URL('/license/', site).href} license`,
+    `  ${new URL('/accessibility/', site).href} accessibility`,
+    '',
     'MACHINE',
     `  ${new URL('/cli/manual.txt', site).href} manual for agents`,
     `  ${new URL('/AGENTS.md', site).href}       agent onboarding`,
@@ -18,6 +27,12 @@ export async function GET(context: APIContext) {
     `  ${new URL('/cli/resources.json', site).href} resource inventory`,
     `  ${new URL('/index.json', site).href}     JSON index`,
     `  ${new URL('/search.json', site).href}    full-text search data`,
+    `  ${new URL('/llms-full.txt', site).href} full corpus`,
+    `  ${new URL('/llms-small.txt', site).href} metadata corpus`,
+    `  ${new URL('/kits/index.json', site).href} kit bundles`,
+    `  ${new URL('/cli/manifest-sha256.txt', site).href} manifest checksum`,
+    `  ${new URL('/schemas/index.schema.json', site).href} JSON schemas`,
+    `  ${new URL('/feed.json', site).href}    JSON Feed`,
   );
   return textResponse(lines);
 }

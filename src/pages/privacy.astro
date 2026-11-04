@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout title="PRIVACY" description="How Original handles data: no accounts, no tracking, no cookies.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> PRIVACY</h1>
+    <p class="lede">What this site does and does not collect. Last updated 2026-11-04.</p>
+  </header>
+
+  <div class="prose legal-prose">
+    <p>
+      Original is a static website. It has no accounts, no comment system, no advertising, and no
+      analytics or tracking scripts. Reading the site does not require a cookie.
+    </p>
+
+    <h2>SERVER LOGS</h2>
+    <p>
+      The site is hosted on GitHub Pages. GitHub may process standard request data — such as IP
+      address, user agent, requested URL, and timestamps — to deliver the site and protect its
+      infrastructure. That processing is governed by GitHub's privacy statement, not by Original.
+    </p>
+
+    <h2>EMAIL</h2>
+    <p>
+      Messages sent to <a href="mailto:contact@original.wales">contact@original.wales</a> or
+      <a href="mailto:security@original.wales">security@original.wales</a> are forwarded to the
+      maintainer's mailbox through ImprovMX. The content of a message is used to answer it and is
+      not published without permission. Email providers process the message under their own terms.
+    </p>
+
+    <h2>TOOLS</h2>
+    <p>
+      The checksum, JSON, license comparison, and license chooser tools run in the browser. Files
+      and text entered into them are not uploaded to this site. The browser may still request
+      static assets from the same origin; those requests are ordinary web requests.
+    </p>
+
+    <h2>EXTERNAL LINKS</h2>
+    <p>
+      Following an external link takes you to a site with its own privacy practices. Original does
+      not control those sites and does not receive data from them.
+    </p>
+
+    <h2>CONTACT</h2>
+    <p>
+      Questions about this page: <a href="mailto:contact@original.wales">contact@original.wales</a>.
+    </p>
+  </div>
+</BaseLayout>

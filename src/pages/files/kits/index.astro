@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../components/BaseLayout.astro';
+import Circle from '../../../components/Circle.astro';
+import kitData from '../../../data/kits.json';
+
+const { kits } = kitData;
+const files = await getCollection('files');
+const countFor = (kit) => kit.files.filter((id) => files.some((entry) => entry.id === id)).length;
+---
+
+<BaseLayout title="KITS" description="Curated bundles of files for starting a repository, a website, or an agent-ready project.">
+  <p class="back"><a href="/files/">← All files</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> KITS</h1>
+    <p class="lede">
+      Curated bundles for common jobs. Each kit downloads as one ZIP with a manifest, checksums,
+      and the original plain-text files.
+    </p>
+  </header>
+
+  <div class="kit-grid">
+    {
+      kits.map((kit) => (
+        <a class="kit-card" href={`/files/kits/${kit.id}/`}>
+          <span class="tool-index">{String(kits.indexOf(kit) + 1).padStart(2, '0')}</span>
+          <h2>{kit.name}</h2>
+          <p>{kit.summary}</p>
+          <span class="kit-meta">{countFor(kit)} files + manifest · ZIP</span>
+          <span class="tool-arrow">[ OPEN KIT ]</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Machine-readable kit index: <a href="/kits/index.json">/kits/index.json</a>.
+    Every bundled file keeps its own license and source.
+  </p>
+</BaseLayout>

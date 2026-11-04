@@ -6,12 +6,12 @@ export async function GET() {
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
   );
   const categories = ['licenses', 'standards', 'snippets', 'headers', 'policies', 'governance', 'agents'];
-  const lines = ['/'];
+  const lines = ['/', '  files/'];
 
   for (const category of categories) {
     const items = files.filter((entry) => entry.data.category.toLowerCase() === category);
     if (!items.length) continue;
-    lines.push(`  files/`, `    ${category}/`);
+    lines.push(`    ${category}/`);
     for (const entry of items) {
       const name = entry.data.file ? entry.data.file.split('/').pop() : entry.id;
       lines.push(`      ${name}`);
@@ -19,9 +19,14 @@ export async function GET() {
   }
 
   lines.push(
+    '    kits/',
+    '  search/',
     '  index.json',
     '  search.json',
+    '  feed.json',
     '  llms.txt',
+    '  llms-small.txt',
+    '  llms-full.txt',
     '  rss.xml',
     '',
     `TOTAL: ${files.length} files`,

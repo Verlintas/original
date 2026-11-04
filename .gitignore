@@ -12,3 +12,6 @@ npm-debug.log*
 
 # macOS
 .DS_Store
+
+# generated kit archives
+/public/kits/

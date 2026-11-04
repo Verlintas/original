@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import FileTable from '../../components/FileTable.astro';
+
+const files = (await getCollection('files')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title),
+);
+---
+
+<BaseLayout title="RECENT FILES" description="Every file on Original, newest first.">
+  <p class="back"><a href="/files/">← All files</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> RECENT FILES</h1>
+    <p class="lede">Every file on the site, newest first. The latest additions are also in the RSS feed.</p>
+  </header>
+
+  <FileTable entries={files} showTags />
+
+  <p class="back" style="margin-top: 3rem;"><a href="/files/">← All files</a></p>
+</BaseLayout>

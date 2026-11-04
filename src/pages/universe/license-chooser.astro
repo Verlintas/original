@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { licenseFeatures } from '../../data/license-features';
+
+const licenses = Object.fromEntries(licenseFeatures.map((license) => [license.id, license]));
+---
+
+<BaseLayout
+  title="LICENSE CHOOSER"
+  description="Answer four questions and get a short list of open-source licenses that fit."
+>
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> LICENSE CHOOSER</h1>
+    <p class="lede">
+      Four questions, three suggestions. This is a starting point for a conversation, not legal
+      advice; read the full texts before choosing.
+    </p>
+  </header>
+
+  <form class="chooser" id="license-chooser">
+    <fieldset class="chooser-step">
+      <legend><span class="label">01</span> How much copyleft do you need?</legend>
+      <div class="choice-grid">
+        <label class="choice">
+          <input type="radio" name="scope" value="permissive" checked />
+          <span><strong>None</strong><small>Permissive: others may keep modifications closed.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="scope" value="file" />
+          <span><strong>File-level</strong><small>Modified files stay open; larger works may not.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="scope" value="project" />
+          <span><strong>Project-level</strong><small>Derivative works distributed to others stay open.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="scope" value="network" />
+          <span><strong>Network use</strong><small>Software offered over a network must also stay open.</small></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="chooser-step">
+      <legend><span class="label">02</span> Do you need an explicit patent grant?</legend>
+      <div class="choice-grid choice-grid-3">
+        <label class="choice">
+          <input type="radio" name="patent" value="required" />
+          <span><strong>Required</strong><small>Contributors grant patent rights explicitly.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="patent" value="preferred" checked />
+          <span><strong>Preferred</strong><small>Nice to have, not a deal breaker.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="patent" value="none" />
+          <span><strong>Not needed</strong><small>Keep the license as short as possible.</small></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="chooser-step">
+      <legend><span class="label">03</span> What matters more: simplicity or completeness?</legend>
+      <div class="choice-grid choice-grid-3">
+        <label class="choice">
+          <input type="radio" name="simplicity" value="simple" checked />
+          <span><strong>Simplest</strong><small>A short license most people can read.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="simplicity" value="balanced" />
+          <span><strong>Balanced</strong><small>Clear terms with useful protections.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="simplicity" value="comprehensive" />
+          <span><strong>Comprehensive</strong><small>Patents, notices, and explicit terms.</small></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="chooser-step">
+      <legend><span class="label">04</span> Is a public-domain dedication acceptable?</legend>
+      <div class="choice-grid choice-grid-2">
+        <label class="choice">
+          <input type="radio" name="publicDomain" value="yes" />
+          <span><strong>Yes</strong><small>No attribution requirement is acceptable.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="publicDomain" value="no" checked />
+          <span><strong>No</strong><small>Keep attribution and a license notice.</small></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="chooser-actions">
+      <button class="action" type="submit">[ RECOMMEND ]</button>
+      <span class="chooser-hint">No data leaves the page.</span>
+    </div>
+  </form>
+
+  <noscript>
+    <p class="compare-legend">
+      The chooser needs JavaScript. Use the <a href="/universe/license-compare/">comparison table</a>
+      or read the licenses under <a href="/files/">FILES</a>.
+    </p>
+  </noscript>
+
+  <section class="chooser-results" id="chooser-results" aria-live="polite" hidden>
+    <div class="section-head">
+      <h2 class="label">Shortlist</h2>
+      <span class="section-count" id="chooser-count"></span>
+    </div>
+    <div class="chooser-result-grid" id="chooser-result-grid"></div>
+    <p class="compare-legend">
+      Compare features in <a href="/universe/license-compare/">LICENSE COMPARE</a>, or read the
+      full texts under <a href="/files/">FILES</a>. Not legal advice.
+    </p>
+  </section>
+
+  <script>
+    const form = document.getElementById('license-chooser');
+    const results = document.getElementById('chooser-results');
+    const resultGrid = document.getElementById('chooser-result-grid');
+    const resultCount = document.getElementById('chooser-count');
+
+    const data = {
+      mit: { name: 'MIT', spdx: 'MIT', slug: 'mit-license', reason: 'short, permissive, and compatible with almost everything.' },
+      isc: { name: 'ISC', spdx: 'ISC', slug: 'isc-license', reason: 'the shortest permissive option with a simple notice requirement.' },
+      '0bsd': { name: '0BSD', spdx: '0BSD', slug: '0bsd-license', reason: 'permissive with no attribution requirement.' },
+      'bsd-3-clause': { name: 'BSD 3-CLAUSE', spdx: 'BSD-3-Clause', slug: 'bsd-3-clause', reason: 'permissive with a no-endorsement clause.' },
+      'apache-2.0': { name: 'APACHE 2.0', spdx: 'Apache-2.0', slug: 'apache-license-2-0', reason: 'permissive with an explicit patent grant and notice rules.' },
+      'mpl-2.0': { name: 'MPL 2.0', spdx: 'MPL-2.0', slug: 'mpl-2-0', reason: 'file-level copyleft that still allows larger works under other terms.' },
+      'epl-2.0': { name: 'EPL 2.0', spdx: 'EPL-2.0', slug: 'epl-2-0', reason: 'file-level copyleft with a patent grant and commercial-friendly terms.' },
+      'lgpl-3.0': { name: 'LGPL 3.0', spdx: 'LGPL-3.0', slug: 'lgpl-3-0', reason: 'library copyleft: linking is allowed, changes to the library stay open.' },
+      'gpl-3.0': { name: 'GPL 3.0', spdx: 'GPL-3.0', slug: 'gpl-3-0', reason: 'strong project-level copyleft with an explicit patent grant.' },
+      'gpl-2.0': { name: 'GPL 2.0', spdx: 'GPL-2.0', slug: 'gpl-2-0', reason: 'the older strong copyleft license, still common in existing projects.' },
+      'agpl-3.0': { name: 'AGPL 3.0', spdx: 'AGPL-3.0', slug: 'agpl-3-0', reason: 'network copyleft: modifications must stay open even when offered as a service.' },
+      'cc0-1.0': { name: 'CC0 1.0', spdx: 'CC0-1.0', slug: 'cc0-1-0', reason: 'a public-domain dedication with a fallback license.' },
+      unlicense: { name: 'UNLICENSE', spdx: 'Unlicense', slug: 'unlicense', reason: 'a public-domain dedication intended for software.' },
+    };
+
+    function unique(ids) {
+      return [...new Set(ids)].slice(0, 3);
+    }
+
+    function recommend() {
+      const scope = form.elements.scope.value;
+      const patent = form.elements.patent.value;
+      const simplicity = form.elements.simplicity.value;
+      const publicDomain = form.elements.publicDomain.value;
+
+      let ids;
+      if (scope === 'network') {
+        ids = ['agpl-3.0', 'gpl-3.0', 'mpl-2.0'];
+      } else if (scope === 'project') {
+        ids = patent === 'required' ? ['gpl-3.0', 'agpl-3.0', 'gpl-2.0'] : ['gpl-3.0', 'gpl-2.0', 'mpl-2.0'];
+      } else if (scope === 'file') {
+        ids = patent === 'required' ? ['mpl-2.0', 'epl-2.0', 'lgpl-3.0'] : ['mpl-2.0', 'lgpl-3.0', 'epl-2.0'];
+      } else if (publicDomain === 'yes') {
+        ids = ['cc0-1.0', 'unlicense', 'mit'];
+      } else if (patent === 'required') {
+        ids = ['apache-2.0', 'mpl-2.0', 'mit'];
+      } else if (simplicity === 'simple') {
+        ids = ['mit', 'isc', '0bsd'];
+      } else {
+        ids = ['mit', 'apache-2.0', 'bsd-3-clause'];
+      }
+
+      ids = unique(ids);
+      resultGrid.replaceChildren();
+      for (const id of ids) {
+        const license = data[id];
+        if (!license) continue;
+        const card = document.createElement('article');
+        card.className = 'chooser-result';
+
+        const heading = document.createElement('h3');
+        const link = document.createElement('a');
+        link.href = `/files/${license.slug}/`;
+        link.textContent = license.name;
+        heading.appendChild(link);
+        card.appendChild(heading);
+
+        const spdx = document.createElement('p');
+        spdx.className = 'chooser-spdx';
+        spdx.textContent = license.spdx;
+        card.appendChild(spdx);
+
+        const reason = document.createElement('p');
+        reason.textContent = license.reason;
+        card.appendChild(reason);
+
+        const actions = document.createElement('p');
+        actions.className = 'chooser-card-actions';
+        const read = document.createElement('a');
+        read.className = 'action';
+        read.href = `/files/${license.slug}/`;
+        read.textContent = '[ READ ]';
+        actions.appendChild(read);
+        const compare = document.createElement('a');
+        compare.className = 'action';
+        compare.href = `/universe/license-compare/?licenses=${encodeURIComponent(id)}`;
+        compare.textContent = '[ COMPARE ]';
+        actions.appendChild(compare);
+        card.appendChild(actions);
+
+        resultGrid.appendChild(card);
+      }
+      resultCount.textContent = ids.length + ' suggestions';
+      results.hidden = false;
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      recommend();
+    });
+  </script>
+</BaseLayout>

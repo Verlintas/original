@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+---
+
+<BaseLayout title="SECURITY" description="How to report a security issue in Original.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> SECURITY</h1>
+    <p class="lede">Reporting, scope, and the limits of a static site. Last updated 2026-11-04.</p>
+  </header>
+
+  <div class="prose legal-prose">
+    <p>
+      Original is a static site served by GitHub Pages. There is no login, no database, no write
+      API, and no server-side application code. The main security surface is the published
+      content, the client-side tools, and the links between them.
+    </p>
+
+    <h2>REPORTING</h2>
+    <p>
+      Send reports to <a href="mailto:security@original.wales">security@original.wales</a>.
+      The machine-readable contact is in
+      <a href="/.well-known/security.txt">/.well-known/security.txt</a> (RFC 9116).
+    </p>
+    <p>
+      Please include the URL, a description of the issue, reproduction steps, and any relevant
+      browser or platform details. Do not open a public issue for a vulnerability.
+    </p>
+
+    <h2>SCOPE</h2>
+    <ul>
+      <li>Content or files that could mislead users or distribute malware.</li>
+      <li>Cross-site scripting or injection in the site's own pages and tools.</li>
+      <li>Broken access controls or exposed secrets in the public repository.</li>
+      <li>Dependency vulnerabilities that affect the built site.</li>
+    </ul>
+    <p>
+      Out of scope: denial-of-service testing, social engineering, physical attacks, and testing
+      third-party services linked from the site. Do not access data that is not yours, disrupt the
+      site, or attempt to bypass GitHub's platform controls.
+    </p>
+
+    <h2>GOOD-FAITH RESEARCH</h2>
+    <p>
+      Good-faith research that respects this scope is welcome. There is no bug bounty. Reports are
+      read and answered when they are specific and reproducible. This page is not a legal
+      safe-harbor statement and does not authorize activity that would otherwise be unlawful.
+    </p>
+
+    <h2>DEPENDENCIES</h2>
+    <p>
+      The site is built with Astro and deployed through GitHub Actions. Dependency and platform
+      issues should be reported to the relevant upstream project as well as to this site if the
+      published output is affected.
+    </p>
+  </div>
+</BaseLayout>
