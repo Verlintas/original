@@ -39,6 +39,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="alternate" type="application/rss+xml" title="Original" href="/rss.xml" />
     <link rel="alternate" type="application/feed+json" title="Original JSON Feed" href="/feed.json" />
     <link rel="search" type="application/opensearchdescription+xml" title="Original" href="/opensearch.xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Original",
+      url: canonical.href,
+      description,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: new URL("/search/?q={search_term_string}", Astro.site).href,
+        "query-input": "required name=search_term_string",
+      },
+    })} />
     <meta name="generator" content={Astro.generator} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={pageTitle} />
@@ -64,6 +77,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         </>
       )
     }
+    <script is:inline>
+      if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('is-embed');
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      }
+    </script>
     <style>
       .skip-link:focus {
         position: fixed;

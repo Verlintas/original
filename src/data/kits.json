@@ -81,6 +81,105 @@
         "Keep the copyright notice and license text with every distribution.",
         "Use the SPDX identifiers in source headers where the project supports them."
       ]
+    },
+    {
+      "id": "small-organization",
+      "name": "SMALL ORGANIZATION PACK",
+      "summary": "Privacy, accessibility, security, conduct, acceptable use, DMCA, and issue templates for a small organization.",
+      "description": "A public-interest starting pack for a small nonprofit, club, cooperative, or community organization. Adapt every document to the jurisdiction and the actual data flow.",
+      "files": [
+        "website-privacy-policy",
+        "accessibility-statement",
+        "security-policy",
+        "code-of-conduct",
+        "acceptable-use-policy",
+        "dmca-notice",
+        "security-txt",
+        "issue-pr-templates"
+      ],
+      "notes": [
+        "Remove sections that do not describe your organization.",
+        "Have the final documents reviewed before relying on them.",
+        "security.txt belongs at /.well-known/security.txt."
+      ]
+    },
+    {
+      "id": "community-group",
+      "name": "COMMUNITY GROUP PACK",
+      "summary": "Conduct, privacy, accessibility, security, and moderation documents for a community group.",
+      "description": "A starting pack for forums, local groups, online communities, and volunteer projects. Keep the rules short enough that people actually read them.",
+      "files": [
+        "code-of-conduct",
+        "accessibility-statement",
+        "website-privacy-policy",
+        "security-policy",
+        "acceptable-use-policy",
+        "issue-pr-templates",
+        "dmca-notice"
+      ],
+      "notes": [
+        "State how reports are handled and who decides.",
+        "Do not publish a contact address nobody monitors.",
+        "Review the pack when the group changes platforms."
+      ]
+    },
+    {
+      "id": "school",
+      "name": "SCHOOL PACK",
+      "summary": "Accessibility, privacy, open licensing, and conduct documents for a class or school project.",
+      "description": "A small pack for teachers, students, and school projects that publish work on the web. It includes the public-interest policies and the two most common content licenses.",
+      "files": [
+        "accessibility-statement",
+        "website-privacy-policy",
+        "open-source-notices",
+        "cc-by-4-0",
+        "cc0-1-0",
+        "security-policy",
+        "code-of-conduct"
+      ],
+      "notes": [
+        "Check the school or district policy before publishing student work.",
+        "Do not publish personal data about minors.",
+        "CC BY requires attribution; CC0 does not."
+      ]
+    },
+    {
+      "id": "library",
+      "name": "LIBRARY PACK",
+      "summary": "Public-domain, open-licensing, privacy, accessibility, and security documents for a library or archive.",
+      "description": "A starting pack for a small library, archive, reading room, or digitization project. It pairs rights statements with the public-interest policies a public service needs.",
+      "files": [
+        "cc0-1-0",
+        "cc-by-4-0",
+        "open-source-notices",
+        "accessibility-statement",
+        "website-privacy-policy",
+        "security-txt",
+        "open-source-definition"
+      ],
+      "notes": [
+        "Verify the rights status of each item before digitizing it.",
+        "Record provenance and the date of the rights decision.",
+        "Use security.txt for a monitored security contact."
+      ]
+    },
+    {
+      "id": "public-domain",
+      "name": "PUBLIC DOMAIN PACK",
+      "summary": "Public-domain dedications, the Open Source Definition, and notices for releasing work without restrictions.",
+      "description": "A compact pack for creators and institutions that want to release work as openly as possible. Read the difference between a public-domain dedication and a permissive license before choosing.",
+      "files": [
+        "cc0-1-0",
+        "unlicense",
+        "open-source-definition",
+        "cc-by-4-0",
+        "open-source-notices"
+      ],
+      "notes": [
+        "CC0 is designed for all works; Unlicense is written for software.",
+        "A public-domain dedication may not be effective in every jurisdiction.",
+        "Keep provenance and attribution even when it is not legally required."
+      ]
     }
   ]
 }

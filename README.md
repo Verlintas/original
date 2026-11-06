@@ -22,8 +22,12 @@
 | `/guides/letters/` | 数据请求、DMCA、无障碍反馈、安全报告等信件模板与填写器 |
 | `/guides/directory/` | 公共来源目录（公共领域、标准、开放数据、无障碍、隐私、档案、独立网站） |
 | `/guides/transparency/` | 编辑政策、来源验证、更正记录 |
-| `/data/` | DATA：5 个公共数据集，JSON + CSV + 页面 |
+| `/guides/public-domain-shelf/` | 公共领域书架：书籍、图像、音频、数据、官方文本 |
+| `/guides/translations/` | 翻译状态与贡献流程 |
+| `/data/` | DATA：8 个公共数据集，JSON + CSV + 页面 |
 | `/downloads/` | 全库 ZIP、按类别 ZIP、CSV/Markdown 目录 |
+| `/embed/` | 可嵌入工具（iframe + `?embed=1`） |
+| `/status/sources/` | 来源健康检查结果 |
 | `/contribute/` | 如何提交来源、纠错、翻译、镜像 |
 | `/files/<slug>/` | 文件详情：摘要、全文预览、复制/引用、SHA-256 校验、相关文件、分类/标签页 |
 | `/files/<slug>.md` | 文件的 Markdown 版本（元数据 + 正文 + 全文） |
@@ -55,11 +59,13 @@
 | `/cli/resources.json` | 资源清单（按类别分组，含官方来源标记与校验值） |
 | `/404.html` | 自定义报错页（显示请求路径；`noindex`） |
 | `/index.json` | 全站机器可读索引（文件、指南、数据、链接、区块、工具、KIT、构建信息） |
-| `/search.json` | 全文搜索索引（文件 + 指南） |
+| `/search.json` | 全文搜索索引（文件 + 指南 + 数据集） |
 | `/llms-full.txt` | 全部文件与指南全文语料 |
 | `/llms-small.txt` | 文件与指南的元数据语料 |
 | `/feed.json` | JSON Feed 1.1（文件 + 指南） |
 | `/opensearch.xml` | OpenSearch 搜索描述 |
+| `/openapi.json` | 静态端点 OpenAPI 描述 |
+| `/manifest.webmanifest` | PWA manifest |
 | `/guides.json` | 指南元数据 |
 | `/data/index.json` | 公共数据集索引 |
 | `/downloads/index.json` | 下载包与校验值 |
@@ -85,8 +91,9 @@
 公共层：
 
 - **GUIDES（10）**：选许可证、理解许可证、隐私政策、无障碍声明、security.txt、验证下载、公共领域、CC 署名、安全报告、上线小站
-- **DATA（5）**：HTTP 状态码（62）、MIME 类型（41）、文件签名（30）、ISO 4217 货币（162）、IANA 时区（418）
+- **DATA（8）**：HTTP 状态码（62）、MIME 类型（41）、文件签名（30）、ISO 4217 货币（162）、IANA 时区（418）、ISO 639 语言（32）、常见端口（27）、RFC 索引（15）
 - **DOWNLOADS（8）**：全库 + 7 个分类 ZIP，带 catalog.csv / catalog.md / SHA-256
+- **KITS（9）**：开源起步、Agent 仓库、网站政策、许可证包，以及小组织、社区、学校、图书馆、公共领域包
 - **LETTERS（6）**：数据访问、数据删除、DMCA 删除、DMCA 反通知、无障碍反馈、安全报告
 - **DIRECTORY（37）**：公共领域、标准、开放数据、无障碍、隐私安全、档案、独立网站
 
@@ -101,12 +108,21 @@
 
 ## UNIVERSE 工具
 
-每个工具独立页面，索引数据在 `src/data/tools.ts`（首页、UNIVERSE、CLI、`index.json` 共用）：
+当前 13 个工具，每个独立页面；索引数据在 `src/data/tools.ts`（首页、UNIVERSE、CLI、`index.json` 共用）：
 
 - **CHECKSUM**：Web Crypto 计算 SHA-256，本地处理
 - **JSON**：校验、格式化、压缩
 - **LICENSE COMPARE**：16 种常见许可证的特征矩阵；数据来自 [Choose a License](https://choosealicense.com/appendix/)，默认选 5 种，可切换任意组合；“Only differences” 隐藏相同项；选择状态写入 `?licenses=`，可分享/可被脚本读取。FILES 另收录 32 份许可证原文。
-- **LICENSE CHOOSER**：4 个问题（copyleft 范围、专利授权、简洁度、公共领域）推荐 2–3 个许可证，并链接到全文与对比表。
+- **LICENSE CHOOSER**：4 个问题推荐 2–3 个许可证
+- **PRIVACY POLICY**：按实际数据流生成隐私政策草稿
+- **ACCESSIBILITY STATEMENT**：生成无障碍声明
+- **SECURITY.TXT**：生成 RFC 9116 security.txt
+- **EXIF REMOVER**：浏览器内清除照片元数据
+- **COLOR CONTRAST**：WCAG 对比度检查
+- **READABILITY**：Flesch 阅读难度估算
+- **TIMESTAMP**：RFC 3339 / Unix 时间转换
+- **TEXT DIFF**：逐行文本比较
+- **SPDX EXPRESSION**：SPDX 表达式语法检查
 
 新增工具：在 `src/pages/universe/` 建子页面，并在 `src/data/tools.ts` 增加条目（name/url/description）即可同步到首页、索引与机器接口。
 
@@ -117,6 +133,8 @@ npm install          # 国内网络慢可加 --registry=https://registry.npmmirr
 npm run dev          # 先生成 KIT ZIP，再启动 http://localhost:4321
 npm run build        # 先重建 KIT、全库 ZIP、分类 ZIP 和目录，再构建 dist/
 npm run preview      # 预览构建产物
+npm run check        # 构建 + 链接/哈希/数据/下载包检查
+npm run check:sources # 更新 public/status/sources.json
 ```
 
 ## 新增一个文件
@@ -187,6 +205,7 @@ echo <text>
   - `/cli/context/<id>.txt`、`/cli/cite/<id>.txt`、`/cli/manifest.tsv`、`/cli/manifest-sha256.txt`、`/cli/sitemap.txt`
   - `/cli/tools.txt`、`/cli/links.txt`、`/cli/stats.txt`、`/cli/about.txt`
   - `/AGENTS.md`、`/cli/manual.txt`、`/cli/commands.json`、`/cli/licenses.json`、`/cli/resources.json`
+  - `/status/sources.json`、`/openapi.json`、`/manifest.webmanifest`、`/embed/`
   - `/llms.txt`、`/llms-small.txt`、`/llms-full.txt`、`/feed.json`、`/kits/index.json`
   - `/guides.json`、`/data/index.json`、`/downloads/index.json`、`/guides/directory.json`、`/guides/letters.json`、`/guides/checklists.json`、`/corrections.json`、`/opensearch.xml`
   - `/files/<id>.md`（单文件 Markdown）、`/schemas/*.schema.json`
@@ -194,6 +213,8 @@ echo <text>
 - 全文索引：`/search.json`（约 840 KB，含外链条目的元数据）
 - JSON/文本接口在 GitHub Pages 上自动带 `Access-Control-Allow-Origin: *`（Pages 对静态资源统一添加）
 - 站点描述与机器端点目录：`/llms.txt`
+- 质量检查：`npm run check`（构建后检查链接、哈希、数据行数、下载包）；`npm run check:sources` 生成来源健康数据
+- CI：`.github/workflows/quality.yml` 每次 push/PR 运行质量检查；`sources.yml` 每周更新来源健康
 
 ## 联系与版权
 

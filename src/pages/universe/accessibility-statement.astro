@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="ACCESSIBILITY STATEMENT" description="Generate an honest accessibility statement with a feedback route.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> ACCESSIBILITY STATEMENT</h1>
+    <p class="lede">
+      A statement is a promise plus a feedback route. Do not claim conformance you have not tested.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <div class="tool-form-grid">
+        <label class="tool-form-field">Site or product<input id="as-name" value="Example" /></label>
+        <label class="tool-form-field">URL<input id="as-url" value="https://example.com" /></label>
+        <label class="tool-form-field">Contact email<input id="as-contact" value="access@example.com" /></label>
+        <label class="tool-form-field">Target standard<input id="as-standard" value="WCAG 2.2 Level AA" /></label>
+        <label class="tool-form-field">Last reviewed<input id="as-date" type="date" value="2026-11-06" /></label>
+        <label class="tool-form-field full">Known limitations<textarea id="as-limits" rows="3">Some third-party content is outside our control.</textarea></label>
+      </div>
+      <div class="tool-actions">
+        <button class="action" type="button" id="as-build">[ BUILD ]</button>
+        <button class="action" type="button" id="as-copy">[ COPY ]</button>
+        <button class="action" type="button" id="as-download">[ DOWNLOAD .TXT ]</button>
+      </div>
+      <p class="tool-note">This is a template, not a claim of conformance. Test before publishing.</p>
+      <pre class="tool-output" id="as-output" tabindex="0"></pre>
+    </div>
+  </div>
+
+  <script>
+    const val = (id) => document.getElementById(id).value.trim();
+    const output = document.getElementById('as-output');
+    function build() {
+      output.textContent = [
+        `ACCESSIBILITY STATEMENT — ${val('as-name')}`,
+        '',
+        `${val('as-name')} wants ${val('as-url')} to be usable by as many people as possible.`,
+        '',
+        'TARGET',
+        `The site aims to meet ${val('as-standard')}. This is a target, not a claim that every page has been tested against every assistive technology.`,
+        '',
+        'WHAT WE HAVE DONE',
+        '- Semantic headings, landmarks, lists, and form labels.',
+        '- A visible keyboard focus indicator and a skip link.',
+        '- Layouts that remain usable at 200% zoom and on narrow screens.',
+        '- Text and controls with contrast chosen for readability.',
+        '- No autoplaying media and no decorative animation.',
+        '',
+        'KNOWN LIMITATIONS',
+        val('as-limits') || 'No specific limitations are listed yet.',
+        '',
+        'FEEDBACK',
+        `If something is difficult to use, email ${val('as-contact')}. Include the page, what happened, and the browser or assistive technology you used.`,
+        '',
+        'REVIEW',
+        `Last reviewed: ${val('as-date')}.`,
+        '',
+        'This template is not a certification or legal advice.',
+      ].join('\n');
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+      const h = document.createElement('textarea');
+      h.value = text; h.style.position = 'fixed'; h.style.opacity = '0';
+      document.body.appendChild(h); h.select(); document.execCommand('copy'); h.remove();
+    }
+    document.getElementById('as-build').addEventListener('click', build);
+    document.getElementById('as-copy').addEventListener('click', () => copyText(output.textContent || ''));
+    document.getElementById('as-download').addEventListener('click', () => {
+      const blob = new Blob([output.textContent || ''], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'accessibility-statement.txt'; a.click(); URL.revokeObjectURL(a.href);
+    });
+    build();
+  </script>
+</BaseLayout>

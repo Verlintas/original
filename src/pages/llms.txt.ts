@@ -1,6 +1,7 @@
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
 import { publicData } from '../data/public-data';
+import { tools } from '../data/tools';
 
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('https://original.wales');
@@ -41,10 +42,7 @@ export async function GET(context: APIContext) {
     '- [CLI](' + new URL('/cli/', site).href + '): terminal interface; run a command with ?cmd= (for example ?cmd=ls).',
     '',
     '## Tools',
-    `- [CHECKSUM](${new URL('/universe/checksum/', site).href}): SHA-256 checksums for local files.`,
-    `- [JSON](${new URL('/universe/json/', site).href}): validate, format, and minify JSON.`,
-    `- [LICENSE COMPARE](${new URL('/universe/license-compare/', site).href}): compare permissions, conditions, and limitations across sixteen common licenses.`,
-    `- [LICENSE CHOOSER](${new URL('/universe/license-chooser/', site).href}): four questions, three suggestions.`,
+    ...tools.map((tool) => `- [${tool.name}](${new URL(tool.url, site).href}): ${tool.description}`),
     '',
     '## Guides',
     ...guides.map((guide) => `- [${guide.data.title}](${new URL(`/guides/${guide.id}/`, site).href}): ${guide.data.summary}`),
@@ -53,7 +51,8 @@ export async function GET(context: APIContext) {
     ...publicData.map((dataset) => `- [${dataset.title}](${new URL(`/data/${dataset.id}/`, site).href}): ${dataset.rows.length} rows. ${dataset.summary}`),
     '',
     '## Public pages',
-    `- [Learning paths](${new URL('/guides/paths/', site).href}) · [Checklists](${new URL('/guides/checklists/', site).href}) · [Letters](${new URL('/guides/letters/', site).href}) · [Directory](${new URL('/guides/directory/', site).href}) · [Transparency](${new URL('/guides/transparency/', site).href}) · [Contribute](${new URL('/contribute/', site).href})`,
+    `- [Learning paths](${new URL('/guides/paths/', site).href}) · [Checklists](${new URL('/guides/checklists/', site).href}) · [Letters](${new URL('/guides/letters/', site).href}) · [Directory](${new URL('/guides/directory/', site).href}) · [Public domain shelf](${new URL('/guides/public-domain-shelf/', site).href}) · [Translations](${new URL('/guides/translations/', site).href})`,
+    `- [Transparency](${new URL('/guides/transparency/', site).href}) · [Downloads](${new URL('/downloads/', site).href}) · [Embed](${new URL('/embed/', site).href}) · [Contribute](${new URL('/contribute/', site).href})`,
     '',
     '## Site policies',
     `- [Privacy](${new URL('/privacy/', site).href}) · [Security](${new URL('/security/', site).href}) · [License](${new URL('/license/', site).href}) · [Accessibility](${new URL('/accessibility/', site).href})`,
@@ -89,6 +88,7 @@ export async function GET(context: APIContext) {
     `- [JSON Feed](${new URL('/feed.json', site).href}) · [OpenSearch](${new URL('/opensearch.xml', site).href}) · [JSON schemas](${new URL('/schemas/index.schema.json', site).href})`,
     `- [guides.json](${new URL('/guides.json', site).href}) · [data/index.json](${new URL('/data/index.json', site).href}) · [directory.json](${new URL('/guides/directory.json', site).href}) · [letters.json](${new URL('/guides/letters.json', site).href})`,
     `- [downloads/index.json](${new URL('/downloads/index.json', site).href}) · [corrections.json](${new URL('/corrections.json', site).href})`,
+    `- [status/sources.json](${new URL('/status/sources.json', site).href}) · [openapi.json](${new URL('/openapi.json', site).href})`,
     `- [llms-full.txt](${new URL('/llms-full.txt', site).href}) · [llms-small.txt](${new URL('/llms-small.txt', site).href})`,
     `- [security.txt](${new URL('/.well-known/security.txt', site).href}): report vulnerabilities to security@original.wales.`,
     '',

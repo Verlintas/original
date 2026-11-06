@@ -1,0 +1,47 @@
+name: Suggest a source
+description: Propose an official or clearly licensed public source for Original.
+title: "[Source] "
+labels: ["source"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Source name
+      placeholder: "RFC 9457 — Problem Details for HTTP APIs"
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Official URL
+      placeholder: "https://www.rfc-editor.org/rfc/rfc9457.html"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - License
+        - Standard or specification
+        - Policy or governance text
+        - Public data
+        - Public-domain or open-culture source
+        - Guide or reference
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it belongs here
+      description: Who is it for, and what task does it help with?
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License or rights statement
+      placeholder: "CC BY 4.0, public domain, official text, ..."
+    validations:
+      required: true

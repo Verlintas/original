@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="TIMESTAMP" description="Convert between RFC 3339, Unix seconds, UTC, and local time.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> TIMESTAMP</h1>
+    <p class="lede">
+      Convert an RFC 3339 date-time or a Unix timestamp. The output is shown in several common
+      forms so you can copy the one you need.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <label class="tool-form-field">RFC 3339 or Unix timestamp
+        <input id="ts-input" value="2026-11-06T00:00:00Z" />
+      </label>
+      <div class="tool-actions">
+        <button class="action" type="button" id="ts-run">[ CONVERT ]</button>
+        <button class="action" type="button" id="ts-now">[ NOW ]</button>
+      </div>
+      <p class="tool-note" id="ts-error"></p>
+      <pre class="tool-output" id="ts-output" tabindex="0"></pre>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('ts-input');
+    const output = document.getElementById('ts-output');
+    const error = document.getElementById('ts-error');
+
+    function convert() {
+      const raw = input.value.trim();
+      let date;
+      if (/^-?\d+(\.\d+)?$/.test(raw)) {
+        const number = Number(raw);
+        date = new Date(Math.abs(number) > 100000000000 ? number : number * 1000);
+      } else {
+        date = new Date(raw);
+      }
+      if (Number.isNaN(date.getTime())) {
+        error.textContent = 'Could not parse that value.';
+        output.textContent = '';
+        return;
+      }
+      error.textContent = '';
+      output.textContent = [
+        'ISO 8601 / RFC 3339: ' + date.toISOString(),
+        'UTC:               ' + date.toUTCString(),
+        'Local:             ' + date.toString(),
+        'Unix seconds:      ' + Math.floor(date.getTime() / 1000),
+        'Unix milliseconds: ' + date.getTime(),
+        'Date only:         ' + date.toISOString().slice(0, 10),
+      ].join('\n');
+    }
+
+    document.getElementById('ts-run').addEventListener('click', convert);
+    document.getElementById('ts-now').addEventListener('click', () => {
+      input.value = new Date().toISOString();
+      convert();
+    });
+    convert();
+  </script>
+</BaseLayout>

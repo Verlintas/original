@@ -49,6 +49,17 @@ if (file) {
 ---
 
 <BaseLayout title={title} description={summary} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: title,
+    description: summary,
+    url: new URL(`/files/${entry.id}/`, site).href,
+    dateModified: formatDate(date),
+    license: source ?? undefined,
+    identifier: sha256 ?? undefined,
+    isPartOf: { "@type": "CollectionPage", name: "Original — FILES", url: new URL("/files/", site).href },
+  })} />
   <p class="back"><a href="/files/">← All files</a></p>
 
   <header class="file-head">

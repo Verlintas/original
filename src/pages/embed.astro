@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import Circle from '../components/Circle.astro';
+
+const embeds = [
+  { title: 'LICENSE CHOOSER', path: '/universe/license-chooser/', height: 760 },
+  { title: 'PRIVACY POLICY', path: '/universe/privacy-policy/', height: 820 },
+  { title: 'SECURITY.TXT', path: '/universe/security-txt/', height: 620 },
+  { title: 'COLOR CONTRAST', path: '/universe/contrast/', height: 560 },
+  { title: 'TIMESTAMP', path: '/universe/timestamp/', height: 560 },
+  { title: 'TEXT DIFF', path: '/universe/diff/', height: 700 },
+];
+---
+
+<BaseLayout title="EMBED" description="Embed Original's public tools in another site with a plain iframe.">
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> EMBED</h1>
+    <p class="lede">
+      Any tool can be embedded with a plain iframe. Add <code>?embed=1</code> to hide the site
+      header, footer, and back link. No script, account, or tracking is required.
+    </p>
+  </header>
+
+  <div class="prose">
+    <h2>HOW IT WORKS</h2>
+    <p>
+      Use the public URL with <code>?embed=1</code>. The embedded page still loads its own CSS and
+      JavaScript from Original; nothing is injected into the host page.
+    </p>
+    <pre><code>{`<iframe
+  src="https://original.wales/universe/license-chooser/?embed=1"
+  title="License chooser"
+  width="100%"
+  height="760"
+  loading="lazy"
+  style="border:0"
+></iframe>`}</code></pre>
+  </div>
+
+  <div class="guide-grid" style="margin-top: 2rem;">
+    {
+      embeds.map((embed) => (
+        <article class="guide-card">
+          <span class="guide-meta">iframe · {embed.height}px</span>
+          <h2>{embed.title}</h2>
+          <p><code>{embed.path}?embed=1</code></p>
+          <p class="actions">
+            <a class="action" href={`${embed.path}?embed=1`}>[ OPEN EMBED ]</a>
+            <a class="action" href={embed.path}>[ FULL PAGE ]</a>
+          </p>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    Prefer a link over an embed? Every tool is also a normal page under
+    <a href="/universe/">UNIVERSE</a>. Machine-readable endpoint list:
+    <a href="/cli/commands.json">/cli/commands.json</a>.
+  </p>
+</BaseLayout>

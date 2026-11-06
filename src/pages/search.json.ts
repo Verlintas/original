@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { formatDate } from '../utils/format';
+import { publicData } from '../data/public-data';
 
 export async function GET(context: APIContext) {
   const files = await getCollection('files');
@@ -34,6 +35,24 @@ export async function GET(context: APIContext) {
       download: entry.data.file,
       source: entry.data.source ?? null,
       text,
+    });
+  }
+
+  for (const dataset of publicData) {
+    docs.push({
+      id: 'data-' + dataset.id,
+      title: dataset.title,
+      category: 'DATA',
+      date: dataset.updated,
+      size: dataset.rows.length + ' rows',
+      license: dataset.license,
+      sha256: null,
+      tags: ['DATA', ...dataset.columns],
+      summary: dataset.summary,
+      url: `/data/${dataset.id}/`,
+      download: `/data/${dataset.id}.json`,
+      source: dataset.source,
+      text: [dataset.title, dataset.summary, ...dataset.columns, ...dataset.rows.map((row) => row.join(' '))].join('\n'),
     });
   }
 

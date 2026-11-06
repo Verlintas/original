@@ -1,0 +1,94 @@
+---
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+
+let data = { generated: null, total: 0, ok: 0, error: 0, sources: [] };
+try {
+  data = JSON.parse(
+    await readFile(path.join(process.cwd(), 'public/status/sources.json'), 'utf8'),
+  );
+} catch {
+  /* the source check is run separately */
+}
+const problems = data.sources.filter((item) => item.status !== 'ok');
+const ok = data.sources.filter((item) => item.status === 'ok');
+---
+
+<BaseLayout title="SOURCE HEALTH" description="The result of the latest check of every upstream source linked from Original.">
+  <p class="back"><a href="/status/">← Status</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> SOURCE HEALTH</h1>
+    <p class="lede">
+      Every official source is checked for reachability. A failure here means the link needs
+      attention; it does not necessarily mean the source has disappeared.
+    </p>
+  </header>
+
+  <dl class="hero-stats" style="max-width: 42rem;">
+    <div><dt>Sources</dt><dd>{data.total}</dd></div>
+    <div><dt>Reachable</dt><dd>{data.ok}</dd></div>
+    <div><dt>Problems</dt><dd>{data.error}</dd></div>
+    <div><dt>Checked</dt><dd>{data.generated ? data.generated.slice(0, 10) : 'not yet'}</dd></div>
+  </dl>
+
+  <p class="status-note">
+    Machine-readable: <a href="/status/sources.json">/status/sources.json</a>.
+    The check uses HEAD, falls back to GET, and does not treat a 403 as proof that a source is gone.
+  </p>
+
+  {problems.length > 0 && (
+    <section style="margin-top: 2.5rem;">
+      <div class="section-head">
+        <h2 class="label">Needs attention</h2>
+        <span class="section-count">{problems.length}</span>
+      </div>
+      <table class="data-table sources-table">
+        <caption>Sources that did not return a successful response</caption>
+        <thead>
+          <tr><th scope="col">Status</th><th scope="col">Source</th><th scope="col">Category</th><th scope="col">URL</th></tr>
+        </thead>
+        <tbody>
+          {problems.map((item) => (
+            <tr>
+              <td>{item.status}{item.httpStatus ? ' · ' + item.httpStatus : ''}</td>
+              <td><a href={`/files/${item.id}/`}>{item.title}</a></td>
+              <td>{item.category}</td>
+              <td><a href={item.url} rel="noopener">{item.url.replace(/^https?:\/\//, '')}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  )}
+
+  <section style="margin-top: 2.5rem;">
+    <div class="section-head">
+      <h2 class="label">All checked sources</h2>
+      <span class="section-count">{ok.length} reachable</span>
+    </div>
+    <table class="data-table sources-table">
+      <caption>All sources that returned a successful response</caption>
+      <thead>
+        <tr><th scope="col">Status</th><th scope="col">Source</th><th scope="col">Category</th><th scope="col">Code</th></tr>
+      </thead>
+      <tbody>
+        {ok.map((item) => (
+          <tr>
+            <td>{item.status}</td>
+            <td><a href={`/files/${item.id}/`}>{item.title}</a></td>
+            <td>{item.category}</td>
+            <td>{item.httpStatus ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <p class="compare-legend" style="margin-top: 2rem;">
+    The check is run by <code>scripts/check-sources.mjs</code>. It writes only status data; it does
+    not modify a source or a mirrored file.
+  </p>
+</BaseLayout>

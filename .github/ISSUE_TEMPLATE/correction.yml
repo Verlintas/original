@@ -1,0 +1,32 @@
+name: Report a correction
+description: Report a broken link, wrong version, bad checksum, or unclear explanation.
+title: "[Correction] "
+labels: ["correction"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      placeholder: "https://original.wales/guides/choose-a-license/"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or source
+      description: A link, a checksum, or the correct text.
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: This affects a download or checksum.
+        - label: This affects a guide or explanation.
+        - label: This affects a public dataset.
+        - label: This is a security issue (please email security@original.wales instead).

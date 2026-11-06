@@ -16,6 +16,8 @@ export async function GET(context: APIContext) {
     `  ${new URL('/data/', site).href} public data`,
     `  ${new URL('/downloads/', site).href} downloads`,
     `  ${new URL('/contribute/', site).href} contribute`,
+    `  ${new URL('/embed/', site).href} embeddable tools`,
+    `  ${new URL('/status/sources/', site).href} source health`,
     `  ${new URL('/files/kits/', site).href} kit bundles`,
     `  ${new URL('/files/recent/', site).href} all files, newest first`,
     `  ${new URL('/privacy/', site).href} privacy`,

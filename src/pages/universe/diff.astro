@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="TEXT DIFF" description="Compare two texts line by line in the browser.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> TEXT DIFF</h1>
+    <p class="lede">
+      Compare two versions of a text, a policy, or a license. The diff is computed locally; nothing
+      is uploaded.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <div class="tool-form-grid">
+        <label class="tool-form-field full">Original<textarea class="tool-textarea" id="diff-a" spellcheck="false">line one
+line two
+line three</textarea></label>
+        <label class="tool-form-field full">Changed<textarea class="tool-textarea" id="diff-b" spellcheck="false">line one
+line two changed
+line three
+line four</textarea></label>
+      </div>
+      <div class="tool-actions">
+        <button class="action" type="button" id="diff-run">[ COMPARE ]</button>
+      </div>
+      <p class="hash-file" id="diff-stats">—</p>
+      <pre class="diff-output" id="diff-output" tabindex="0"></pre>
+    </div>
+  </div>
+
+  <script>
+    const a = document.getElementById('diff-a');
+    const b = document.getElementById('diff-b');
+    const output = document.getElementById('diff-output');
+    const stats = document.getElementById('diff-stats');
+
+    function diffLines(left, right) {
+      const n = left.length;
+      const m = right.length;
+      const table = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
+      for (let i = n - 1; i >= 0; i -= 1) {
+        for (let j = m - 1; j >= 0; j -= 1) {
+          table[i][j] = left[i] === right[j] ? table[i + 1][j + 1] + 1 : Math.max(table[i + 1][j], table[i][j + 1]);
+        }
+      }
+      const result = [];
+      let i = 0;
+      let j = 0;
+      while (i < n && j < m) {
+        if (left[i] === right[j]) {
+          result.push([' ', left[i]]);
+          i += 1;
+          j += 1;
+        } else if (table[i + 1][j] >= table[i][j + 1]) {
+          result.push(['-', left[i]]);
+          i += 1;
+        } else {
+          result.push(['+', right[j]]);
+          j += 1;
+        }
+      }
+      while (i < n) result.push(['-', left[i++]]);
+      while (j < m) result.push(['+', right[j++]]);
+      return result;
+    }
+
+    function run() {
+      const left = a.value.split('\n');
+      const right = b.value.split('\n');
+      const result = diffLines(left, right);
+      let added = 0;
+      let removed = 0;
+      const fragment = document.createDocumentFragment();
+      for (const [kind, line] of result) {
+        if (kind === '+') added += 1;
+        if (kind === '-') removed += 1;
+        const span = document.createElement('span');
+        span.className = kind === '+' ? 'diff-add' : kind === '-' ? 'diff-remove' : '';
+        span.textContent = kind + ' ' + line + '\n';
+        fragment.appendChild(span);
+      }
+      output.replaceChildren(fragment);
+      stats.textContent = result.length + ' lines · ' + added + ' added · ' + removed + ' removed';
+    }
+
+    document.getElementById('diff-run').addEventListener('click', run);
+    run();
+  </script>
+</BaseLayout>

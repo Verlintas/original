@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+import { licenseFeatures } from '../../data/license-features';
+
+const known = [...new Set([
+  ...licenseFeatures.map((license) => license.spdx),
+  'GPL-2.0-only',
+  'GPL-2.0-or-later',
+  'GPL-3.0-only',
+  'GPL-3.0-or-later',
+  'LGPL-2.1-only',
+  'LGPL-2.1-or-later',
+  'LGPL-3.0-only',
+  'LGPL-3.0-or-later',
+  'Apache-2.0',
+  'MIT',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  'MPL-2.0',
+  'EPL-2.0',
+  'AGPL-3.0-only',
+  'AGPL-3.0-or-later',
+])];
+---
+
+<BaseLayout title="SPDX EXPRESSION" description="Check the syntax of an SPDX license expression.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> SPDX EXPRESSION</h1>
+    <p class="lede">
+      Check the syntax of expressions such as <code>MIT OR Apache-2.0</code>. Known identifiers
+      are checked against a local list; unknown identifiers are reported, not rejected.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <label class="tool-form-field">SPDX expression
+        <input id="spdx-input" value="MIT OR Apache-2.0" />
+      </label>
+      <div class="tool-actions">
+        <button class="action" type="button" id="spdx-run">[ CHECK ]</button>
+      </div>
+      <p class="contrast-ratio" id="spdx-status">—</p>
+      <p class="tool-note" id="spdx-note"></p>
+      <pre class="tool-output" id="spdx-output" tabindex="0"></pre>
+    </div>
+  </div>
+
+  <script define:vars={{ known }}>
+    const knownSet = new Set(known);
+    const input = document.getElementById('spdx-input');
+    const status = document.getElementById('spdx-status');
+    const note = document.getElementById('spdx-note');
+    const output = document.getElementById('spdx-output');
+
+    function tokenize(value) {
+      const tokens = [];
+      const re = /\s*(\(|\)|AND|OR|WITH|\+|[A-Za-z0-9.\-]+)/gy;
+      let match;
+      let last = 0;
+      while ((match = re.exec(value))) {
+        last = re.lastIndex;
+        tokens.push(match[1]);
+      }
+      if (value.slice(last).trim()) throw new Error('Unexpected character near: ' + value.slice(last).trim().slice(0, 20));
+      return tokens;
+    }
+
+    function parse(tokens) {
+      let index = 0;
+      const unknown = new Set();
+      function peek() { return tokens[index]; }
+      function take(value) {
+        if (peek() !== value) throw new Error('Expected ' + value + (peek() ? ' near ' + peek() : ''));
+        index += 1;
+      }
+      function factor() {
+        if (peek() === '(') {
+          take('(');
+          expr();
+          take(')');
+          return;
+        }
+        const id = peek();
+        if (!id || ['AND', 'OR', 'WITH', ')', '('].includes(id)) throw new Error('Expected a license identifier');
+        index += 1;
+        if (!knownSet.has(id) && !knownSet.has(id.replace(/-or-later$/, '').replace(/-only$/, ''))) unknown.add(id);
+        if (peek() === '+') index += 1;
+        if (peek() === 'WITH') {
+          index += 1;
+          const exception = peek();
+          if (!exception) throw new Error('Expected an exception after WITH');
+          index += 1;
+        }
+      }
+      function term() {
+        factor();
+        while (peek() === 'AND') { index += 1; factor(); }
+      }
+      function expr() {
+        term();
+        while (peek() === 'OR') { index += 1; term(); }
+      }
+      expr();
+      if (index !== tokens.length) throw new Error('Unexpected token: ' + peek());
+      return unknown;
+    }
+
+    function check() {
+      try {
+        const unknown = parse(tokenize(input.value));
+        status.textContent = 'VALID SYNTAX';
+        status.style.color = 'var(--red)';
+        note.textContent = unknown.size ? 'Unknown identifiers: ' + [...unknown].join(', ') : 'All identifiers are in the local known list.';
+        output.textContent = 'Expression: ' + input.value.trim() + '\nKnown IDs: ' + knownSet.size + '\nUnknown IDs: ' + (unknown.size || 0);
+      } catch (error) {
+        status.textContent = 'INVALID';
+        status.style.color = 'var(--red-deep)';
+        note.textContent = error.message;
+        output.textContent = '';
+      }
+    }
+    document.getElementById('spdx-run').addEventListener('click', check);
+    input.addEventListener('keydown', (event) => { if (event.key === 'Enter') check(); });
+    check();
+  </script>
+</BaseLayout>

@@ -52,6 +52,9 @@ The interactive terminal at ${url('/cli/')} requires JavaScript.
 | Downloads | /downloads/index.json | JSON |
 | Corrections | /corrections.json | JSON |
 | OpenSearch | /opensearch.xml | XML |
+| Source health | /status/sources.json | JSON |
+| OpenAPI | /openapi.json | JSON |
+| Embeddable tools | /embed/ | HTML |
 | File metadata + summary | /cli/cat/<id>.txt | text |
 | Full file text | /cli/read/<id>.txt | text |
 | File Markdown | /files/<id>.md | markdown |

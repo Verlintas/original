@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="PRIVACY POLICY" description="Build a plain-text privacy policy from the data your small site actually handles.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> PRIVACY POLICY</h1>
+    <p class="lede">
+      Answer the questions, then edit the result until every sentence is true. A policy is a
+      description of your data practices, not a substitute for them.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <div class="tool-form-grid">
+        <label class="tool-form-field">Site or product name<input id="pp-name" value="Example" /></label>
+        <label class="tool-form-field">Site URL<input id="pp-url" value="https://example.com" /></label>
+        <label class="tool-form-field">Contact email<input id="pp-contact" value="contact@example.com" /></label>
+        <label class="tool-form-field">Hosting provider<input id="pp-host" value="GitHub Pages" /></label>
+        <label class="tool-form-field">Effective date<input id="pp-date" type="date" value="2026-11-06" /></label>
+        <label class="tool-form-field">Analytics
+          <select id="pp-analytics">
+            <option value="none">None</option>
+            <option value="self">Self-hosted, no cookies</option>
+            <option value="third">Third-party analytics</option>
+          </select>
+        </label>
+        <label class="tool-form-field">Cookies
+          <select id="pp-cookies">
+            <option value="none">None</option>
+            <option value="essential">Essential only</option>
+            <option value="analytics">Analytics / preferences</option>
+          </select>
+        </label>
+        <label class="tool-form-field">Accounts
+          <select id="pp-accounts">
+            <option value="no">No accounts</option>
+            <option value="yes">Accounts exist</option>
+          </select>
+        </label>
+        <label class="tool-form-field">Payments
+          <select id="pp-payments">
+            <option value="no">No payments</option>
+            <option value="yes">Payments or donations</option>
+          </select>
+        </label>
+        <label class="tool-form-field">Newsletter
+          <select id="pp-newsletter">
+            <option value="no">No newsletter</option>
+            <option value="yes">Newsletter or mailing list</option>
+          </select>
+        </label>
+      </div>
+      <div class="tool-actions">
+        <button class="action" type="button" id="pp-build">[ BUILD ]</button>
+        <button class="action" type="button" id="pp-copy">[ COPY ]</button>
+        <button class="action" type="button" id="pp-download">[ DOWNLOAD .TXT ]</button>
+      </div>
+      <p class="tool-note">This is a template, not legal advice. Remove anything that is not true.</p>
+      <pre class="tool-output" id="pp-output" tabindex="0"></pre>
+    </div>
+  </div>
+
+  <script>
+    const value = (id) => document.getElementById(id).value.trim();
+    const output = document.getElementById('pp-output');
+
+    function build() {
+      const analytics = value('pp-analytics');
+      const cookies = value('pp-cookies');
+      const accounts = value('pp-accounts');
+      const payments = value('pp-payments');
+      const newsletter = value('pp-newsletter');
+
+      const lines = [
+        `PRIVACY POLICY — ${value('pp-name')}`,
+        '',
+        `Effective: ${value('pp-date')}`,
+        `Site: ${value('pp-url')}`,
+        '',
+        'WHO WE ARE',
+        `${value('pp-name')} operates ${value('pp-url')}. This policy explains what data is handled and why.`,
+        '',
+        'WHAT WE COLLECT',
+        `- The hosting provider (${value('pp-host')}) may process standard request data such as IP address, user agent, requested URL, and timestamps to deliver the site and protect its infrastructure.`,
+      ];
+
+      if (analytics === 'self') lines.push('- Self-hosted analytics may record aggregate page views without cookies or cross-site identifiers.');
+      if (analytics === 'third') lines.push('- A third-party analytics provider may collect usage data. Name the provider, the data, and the retention period before publishing this policy.');
+      if (cookies === 'essential') lines.push('- Essential cookies may be used to remember a session or a security state.');
+      if (cookies === 'analytics') lines.push('- Cookies may be used for analytics or preferences. List each cookie, its purpose, and its duration.');
+      if (accounts === 'yes') lines.push('- Account data may include an email address, profile details, and authentication records. Describe exactly what is stored.');
+      if (payments === 'yes') lines.push('- Payment data may be processed by a payment provider. Describe the provider and the data shared with it.');
+      if (newsletter === 'yes') lines.push('- Newsletter data may include an email address and subscription status. Describe the provider and how to unsubscribe.');
+
+      lines.push(
+        '',
+        'HOW WE USE DATA',
+        '- To deliver the site and respond to messages.',
+        '- To maintain security and prevent abuse.',
+        '- To understand aggregate usage, where analytics is enabled.',
+        '',
+        'SHARING',
+        'Data is shared only with the hosting, email, analytics, or payment providers needed to operate the site. Name them and link their privacy policies.',
+        '',
+        'RETENTION',
+        'Keep data only as long as needed for the purpose described above. State the actual retention period; do not write “forever” by accident.',
+        '',
+        'YOUR RIGHTS',
+        'Depending on your jurisdiction, you may have rights to access, correct, delete, or object to the processing of your data. Contact us to exercise them.',
+        '',
+        'CONTACT',
+        value('pp-contact'),
+        '',
+        'CHANGES',
+        'When this policy changes, update the effective date and describe the change.',
+        '',
+        'This template is not legal advice.',
+      );
+      output.textContent = lines.join('\n');
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+      const helper = document.createElement('textarea');
+      helper.value = text;
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand('copy');
+      helper.remove();
+    }
+
+    document.getElementById('pp-build').addEventListener('click', build);
+    document.getElementById('pp-copy').addEventListener('click', async () => {
+      await copyText(output.textContent || '');
+    });
+    document.getElementById('pp-download').addEventListener('click', () => {
+      const blob = new Blob([output.textContent || ''], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'privacy-policy.txt';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+    build();
+  </script>
+</BaseLayout>

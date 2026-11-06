@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "predev": "node scripts/build-kits.mjs",
-    "prebuild": "node scripts/build-kits.mjs"
+    "prebuild": "node scripts/build-kits.mjs",
+    "check": "npm run build && node scripts/check-quality.mjs",
+    "check:sources": "node scripts/check-sources.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

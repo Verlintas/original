@@ -20,6 +20,15 @@ const next = index >= 0 && index < all.length - 1 ? all[index + 1] : null;
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.summary} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: entry.data.title,
+    description: entry.data.summary,
+    dateModified: formatDate(entry.data.updated),
+    author: { "@type": "Organization", name: "Original" },
+    mainEntityOfPage: new URL(`/guides/${entry.id}/`, Astro.site ?? new URL('https://original.wales')).href,
+  })} />
   <p class="back"><a href="/guides/">← All guides</a></p>
 
   <header class="file-head">

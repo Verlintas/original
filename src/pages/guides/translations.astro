@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+
+const languages = [
+  { language: 'English', code: 'en', status: 'Source language', note: 'All guides, checklists, letters, and data pages.' },
+  { language: 'Chinese (Simplified)', code: 'zh-Hans', status: 'Planned', note: 'Core guides and checklists first.' },
+  { language: 'Spanish', code: 'es', status: 'Planned', note: 'Volunteer translation.' },
+  { language: 'French', code: 'fr', status: 'Planned', note: 'Volunteer translation.' },
+];
+---
+
+<BaseLayout title="TRANSLATIONS" description="Translation status and contribution process for Original's public guides.">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> TRANSLATIONS</h1>
+    <p class="lede">
+      The English source is canonical. Translations are welcome, but they must keep the English
+      link and the legal disclaimer.
+    </p>
+  </header>
+
+  <table class="data-table">
+    <caption>Translation status</caption>
+    <thead>
+      <tr><th scope="col">Language</th><th scope="col">Code</th><th scope="col">Status</th><th scope="col">Notes</th></tr>
+    </thead>
+    <tbody>
+      {languages.map((language) => (
+        <tr>
+          <td>{language.language}</td>
+          <td>{language.code}</td>
+          <td>{language.status}</td>
+          <td>{language.note}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <div class="prose" style="margin-top: 2.5rem;">
+    <h2>HOW TO CONTRIBUTE</h2>
+    <ol>
+      <li>Pick a guide, checklist, or letter that is useful to your community.</li>
+      <li>Translate the meaning, not just the words; keep the technical terms precise.</li>
+      <li>Keep the English source linked at the top or bottom.</li>
+      <li>Keep the “not legal advice” disclaimer and any source links.</li>
+      <li>Send the translation to <a href="mailto:contact@original.wales">contact@original.wales</a> or open a translation issue on GitHub.</li>
+    </ol>
+    <p>
+      Open a <a href="https://github.com/Verlintas/original/issues/new?template=translation.yml">translation issue</a>
+      with the content and target language. A plain-text or Markdown file is ideal.
+    </p>
+    <h2>WHAT NOT TO DO</h2>
+    <ul>
+      <li>Do not remove attribution or source links.</li>
+      <li>Do not present a translation as legal advice.</li>
+      <li>Do not change the meaning of a license or policy without saying so.</li>
+      <li>Do not publish a translation without linking the English original.</li>
+    </ul>
+  </div>
+</BaseLayout>

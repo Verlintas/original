@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="EXIF REMOVER" description="Re-encode a photo in the browser to remove GPS and camera metadata.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> EXIF REMOVER</h1>
+    <p class="lede">
+      Re-encode an image in your browser to strip GPS, camera, and other metadata. The file never
+      leaves the page.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <label class="drop-zone" id="exif-drop">
+        <input type="file" id="exif-input" accept="image/*" />
+        <p>Choose a photo, or drop it here.</p>
+        <span class="label">JPEG, PNG, WebP · processed locally</span>
+      </label>
+      <p class="hash-file" id="exif-file">No file selected</p>
+      <div class="tool-actions">
+        <button class="action" type="button" id="exif-run" disabled>[ STRIP METADATA ]</button>
+        <a class="action" id="exif-download" hidden download>[ DOWNLOAD CLEAN IMAGE ]</a>
+      </div>
+      <p class="tool-note" id="exif-note"></p>
+      <div id="exif-preview"></div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('exif-input');
+    const drop = document.getElementById('exif-drop');
+    const fileLabel = document.getElementById('exif-file');
+    const run = document.getElementById('exif-run');
+    const download = document.getElementById('exif-download');
+    const note = document.getElementById('exif-note');
+    const preview = document.getElementById('exif-preview');
+    let selected = null;
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+    }
+
+    function choose(file) {
+      if (!file) return;
+      selected = file;
+      fileLabel.textContent = file.name + ' · ' + formatSize(file.size);
+      run.disabled = false;
+      download.hidden = true;
+      note.textContent = 'Ready. Re-encoding changes the image bytes and removes metadata.';
+      preview.replaceChildren();
+      const img = new Image();
+      img.alt = 'Selected image preview';
+      img.style.maxWidth = '100%';
+      img.style.marginTop = '1rem';
+      img.style.borderRadius = '10px';
+      img.onload = () => preview.appendChild(img);
+      img.src = URL.createObjectURL(file);
+    }
+
+    input.addEventListener('change', () => choose(input.files && input.files[0]));
+    for (const event of ['dragenter', 'dragover']) {
+      drop.addEventListener(event, (e) => { e.preventDefault(); drop.classList.add('dragover'); });
+    }
+    for (const event of ['dragleave', 'drop']) {
+      drop.addEventListener(event, (e) => { e.preventDefault(); drop.classList.remove('dragover'); });
+    }
+    drop.addEventListener('drop', (e) => choose(e.dataTransfer.files && e.dataTransfer.files[0]));
+
+    run.addEventListener('click', () => {
+      if (!selected) return;
+      const image = new Image();
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0);
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          download.href = url;
+          download.hidden = false;
+          download.download = 'original-stripped.' + (selected.type === 'image/png' ? 'png' : 'jpg');
+          note.textContent =
+            'Clean file: ' + formatSize(blob.size) + ' (was ' + formatSize(selected.size) + '). ' +
+            'Re-encoding removes most metadata, but it is not a forensic guarantee.';
+        }, selected.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.92);
+      };
+      image.src = URL.createObjectURL(selected);
+    });
+  </script>
+</BaseLayout>

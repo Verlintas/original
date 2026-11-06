@@ -11,6 +11,17 @@ const { dataset } = Astro.props;
 ---
 
 <BaseLayout title={dataset.title} description={dataset.summary} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: dataset.title,
+    description: dataset.summary,
+    url: new URL(`/data/${dataset.id}/`, Astro.site ?? new URL('https://original.wales')).href,
+    license: dataset.license,
+    creator: { "@type": "Organization", name: "Original" },
+    isBasedOn: dataset.source,
+    dateModified: dataset.updated,
+  })} />
   <p class="back"><a href="/data/">← All data</a></p>
 
   <header class="file-head">

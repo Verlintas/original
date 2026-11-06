@@ -88,6 +88,8 @@ export async function GET(context: APIContext) {
     '  /downloads/index.json',
     '  /corrections.json',
     '  /opensearch.xml',
+    '  /status/sources.json',
+    '  /openapi.json',
     '  /llms-full.txt',
     '  /llms-small.txt',
     '  /schemas/<name>.schema.json',

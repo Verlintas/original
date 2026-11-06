@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="COLOR CONTRAST" description="Check WCAG contrast ratios for text and background colors.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> COLOR CONTRAST</h1>
+    <p class="lede">
+      Enter a text color and a background color. The checker uses the WCAG relative luminance
+      formula and reports AA/AAA thresholds.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <div class="tool-form-grid">
+        <label class="tool-form-field">Text color<input id="ct-text" type="color" value="#c00000" /></label>
+        <label class="tool-form-field">Background<input id="ct-bg" type="color" value="#ffffff" /></label>
+      </div>
+      <div class="contrast-preview" id="ct-preview">The quick brown fox jumps over the lazy dog.</div>
+      <p class="contrast-ratio" id="ct-ratio">—</p>
+      <div class="contrast-checks" id="ct-checks"></div>
+      <p class="tool-note">WCAG 2.2 thresholds: normal text AA 4.5:1, AAA 7:1; large text AA 3:1, AAA 4.5:1.</p>
+    </div>
+  </div>
+
+  <script>
+    const text = document.getElementById('ct-text');
+    const bg = document.getElementById('ct-bg');
+    const preview = document.getElementById('ct-preview');
+    const ratioEl = document.getElementById('ct-ratio');
+    const checks = document.getElementById('ct-checks');
+
+    function luminance(hex) {
+      const value = hex.replace('#', '');
+      const channels = [0, 2, 4].map((offset) => parseInt(value.slice(offset, offset + 2), 16) / 255);
+      const linear = channels.map((channel) => channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4));
+      return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+    }
+
+    function check() {
+      const l1 = luminance(text.value);
+      const l2 = luminance(bg.value);
+      const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      preview.style.color = text.value;
+      preview.style.background = bg.value;
+      ratioEl.textContent = ratio.toFixed(2) + ':1';
+      const items = [
+        ['AA normal', ratio >= 4.5],
+        ['AAA normal', ratio >= 7],
+        ['AA large', ratio >= 3],
+        ['AAA large', ratio >= 4.5],
+      ];
+      checks.replaceChildren(...items.map(([label, pass]) => {
+        const span = document.createElement('span');
+        span.textContent = (pass ? 'PASS' : 'FAIL') + ' · ' + label;
+        span.style.color = pass ? 'var(--red)' : 'var(--red-deep)';
+        return span;
+      }));
+    }
+    text.addEventListener('input', check);
+    bg.addEventListener('input', check);
+    check();
+  </script>
+</BaseLayout>

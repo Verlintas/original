@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="READABILITY" description="Estimate reading ease and grade level for a piece of text.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> READABILITY</h1>
+    <p class="lede">
+      A rough Flesch reading-ease estimate. It is useful for spotting overlong sentences, not for
+      judging whether a document is accurate.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <textarea class="tool-textarea" id="rd-text" spellcheck="false" placeholder="Paste a paragraph or a page of text."></textarea>
+      <div class="tool-actions">
+        <button class="action" type="button" id="rd-run">[ ANALYZE ]</button>
+        <button class="action" type="button" id="rd-clear">[ CLEAR ]</button>
+      </div>
+      <p class="hash-file" id="rd-stats">—</p>
+      <p class="contrast-ratio" id="rd-score">—</p>
+      <p class="tool-note" id="rd-note"></p>
+    </div>
+  </div>
+
+  <script>
+    const text = document.getElementById('rd-text');
+    const stats = document.getElementById('rd-stats');
+    const score = document.getElementById('rd-score');
+    const note = document.getElementById('rd-note');
+
+    function syllables(word) {
+      const clean = word.toLowerCase().replace(/[^a-z]/g, '');
+      if (clean.length <= 3) return 1;
+      const groups = clean.replace(/e$/, '').match(/[aeiouy]+/g);
+      return Math.max(1, groups ? groups.length : 1);
+    }
+
+    function analyze() {
+      const raw = text.value.trim();
+      if (!raw) {
+        stats.textContent = '—';
+        score.textContent = '—';
+        note.textContent = '';
+        return;
+      }
+      const words = raw.match(/\b[\w'-]+\b/g) || [];
+      const sentences = raw.split(/[.!?]+/).filter((part) => part.trim().length > 0).length || 1;
+      const syllableCount = words.reduce((total, word) => total + syllables(word), 0);
+      const wps = words.length / sentences;
+      const spw = syllableCount / Math.max(1, words.length);
+      const ease = 206.835 - 1.015 * wps - 84.6 * spw;
+      stats.textContent = words.length + ' words · ' + sentences + ' sentences · ' + Math.round(wps) + ' words/sentence';
+      score.textContent = ease.toFixed(1) + ' / 100';
+      note.textContent =
+        ease >= 70 ? 'Fairly easy. Good for a general audience.' :
+        ease >= 50 ? 'Moderately difficult. Consider shorter sentences.' :
+        'Difficult. Edit for a general audience.';
+    }
+
+    document.getElementById('rd-run').addEventListener('click', analyze);
+    document.getElementById('rd-clear').addEventListener('click', () => {
+      text.value = '';
+      analyze();
+    });
+    analyze();
+  </script>
+</BaseLayout>

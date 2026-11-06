@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import Circle from '../../components/Circle.astro';
+---
+
+<BaseLayout title="SECURITY.TXT" description="Generate a valid RFC 9116 security.txt for your site.">
+  <p class="back"><a href="/universe/">← Universe</a></p>
+
+  <header class="page-head">
+    <h1 class="page-title"><Circle /> SECURITY.TXT</h1>
+    <p class="lede">
+      A machine-readable contact file at <code>/.well-known/security.txt</code>. Contact and Expires
+      are required.
+    </p>
+  </header>
+
+  <div class="tool-single">
+    <div class="tool-pane">
+      <div class="tool-form-grid">
+        <label class="tool-form-field">Contact (mailto: or https:)<input id="st-contact" value="mailto:security@example.com" /></label>
+        <label class="tool-form-field">Expires (ISO date)<input id="st-expires" type="date" value="2027-12-31" /></label>
+        <label class="tool-form-field">Canonical URL<input id="st-canonical" value="https://example.com/.well-known/security.txt" /></label>
+        <label class="tool-form-field">Preferred languages<input id="st-languages" value="en" /></label>
+        <label class="tool-form-field full">Policy URL (optional)<input id="st-policy" value="https://example.com/security/" /></label>
+        <label class="tool-form-field full">Encryption key URL (optional)<input id="st-encryption" placeholder="https://example.com/pgp-key.txt" /></label>
+      </div>
+      <div class="tool-actions">
+        <button class="action" type="button" id="st-build">[ BUILD ]</button>
+        <button class="action" type="button" id="st-copy">[ COPY ]</button>
+        <button class="action" type="button" id="st-download">[ DOWNLOAD .TXT ]</button>
+      </div>
+      <p class="tool-note" id="st-warning"></p>
+      <pre class="tool-output" id="st-output" tabindex="0"></pre>
+    </div>
+  </div>
+
+  <script>
+    const val = (id) => document.getElementById(id).value.trim();
+    const output = document.getElementById('st-output');
+    const warning = document.getElementById('st-warning');
+    function build() {
+      const contact = val('st-contact');
+      const expires = val('st-expires');
+      const lines = [`Contact: ${contact}`];
+      if (expires) lines.push(`Expires: ${new Date(expires + 'T00:00:00Z').toISOString()}`);
+      if (val('st-canonical')) lines.push(`Canonical: ${val('st-canonical')}`);
+      if (val('st-languages')) lines.push(`Preferred-Languages: ${val('st-languages')}`);
+      if (val('st-policy')) lines.push(`Policy: ${val('st-policy')}`);
+      if (val('st-encryption')) lines.push(`Encryption: ${val('st-encryption')}`);
+      output.textContent = lines.join('\n') + '\n';
+      const problems = [];
+      if (!contact) problems.push('Contact is required.');
+      if (!/^(mailto:|https:)/.test(contact)) problems.push('Contact should start with mailto: or https:.');
+      if (!expires) problems.push('Expires is required.');
+      if (expires && new Date(expires + 'T00:00:00Z') <= new Date()) problems.push('Expires must be in the future.');
+      warning.textContent = problems.length ? problems.join(' ') : 'Looks structurally valid. Publish it at /.well-known/security.txt.';
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+      const h = document.createElement('textarea'); h.value = text; h.style.position = 'fixed'; h.style.opacity = '0';
+      document.body.appendChild(h); h.select(); document.execCommand('copy'); h.remove();
+    }
+    document.getElementById('st-build').addEventListener('click', build);
+    document.getElementById('st-copy').addEventListener('click', () => copyText(output.textContent || ''));
+    document.getElementById('st-download').addEventListener('click', () => {
+      const blob = new Blob([output.textContent || ''], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'security.txt'; a.click(); URL.revokeObjectURL(a.href);
+    });
+    build();
+  </script>
+</BaseLayout>

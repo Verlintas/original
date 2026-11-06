@@ -1,0 +1,31 @@
+name: Source health
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check sources
+        run: node scripts/check-sources.mjs
+
+      - name: Commit the result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/status/sources.json public/status/sources.txt
+          if git diff --cached --quiet; then
+            echo "No source changes."
+          else
+            git commit -m "Update source health"
+            git push
+          fi
