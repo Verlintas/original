@@ -1,16 +1,16 @@
 ORIGINAL — SOURCE HEALTH
 
-Generated: 2026-11-06T12:33:09.433Z
+Generated: 2026-11-09T16:32:24.474Z
 Total: 81
-OK: 75
-Problems: 6
+OK: 76
+Problems: 5
 
 OK       200  eval-checklist — https://www.nist.gov/itl/ai-risk-management-framework
 OK       200  agents-md — https://agents.md/
 OK       200  mcp-config — https://modelcontextprotocol.io/
-ERROR    403  tool-definition — https://platform.openai.com/docs/guides/function-calling
+OK       200  tool-definition — https://platform.openai.com/docs/guides/function-calling
 OK       200  ai-contribution-policy — https://www.linuxfoundation.org/
-ERROR    -    code-review-policy — https://google.github.io/eng-practices/review/
+OK       200  code-review-policy — https://google.github.io/eng-practices/review/
 OK       200  contributing — https://opensource.guide/how-to-contribute/
 OK       200  code-of-conduct — https://www.contributor-covenant.org/version/2/1/code_of_conduct/
 OK       200  dco-1-1 — https://developercertificate.org/
@@ -19,7 +19,7 @@ OK       200  issue-pr-templates — https://docs.github.com/communities/using-t
 OK       200  governance — https://opensource.guide/leadership-and-governance/
 OK       200  release-policy — https://semver.org/
 OK       200  security-policy — https://docs.github.com/code-security
-OK       200  lgpl-header — https://www.gnu.org/licenses/gpl-howto.html
+ERROR    -    lgpl-header — https://www.gnu.org/licenses/gpl-howto.html
 OK       200  mpl-header — https://www.mozilla.org/MPL/2.0/
 OK       200  spdx-header — https://spdx.dev/learn/handling-license-info/
 OK       200  afl-3-0 — https://spdx.org/licenses/AFL-3.0.html
@@ -39,7 +39,7 @@ OK       200  ecl-2-0 — https://spdx.org/licenses/ECL-2.0.html
 OK       200  eupl-1-2 — https://spdx.org/licenses/EUPL-1.2.html
 OK       200  agpl-3-0 — https://spdx.org/licenses/AGPL-3.0-only.html
 OK       200  gpl-2-0 — https://spdx.org/licenses/GPL-2.0-only.html
-OK       200  gpl-3-0 — https://www.gnu.org/licenses/gpl-3.0.txt
+ERROR    -    gpl-3-0 — https://www.gnu.org/licenses/gpl-3.0.txt
 OK       200  lgpl-3-0 — https://spdx.org/licenses/LGPL-3.0-only.html
 OK       200  isc-license — https://spdx.org/licenses/ISC.html
 OK       200  ms-pl — https://spdx.org/licenses/MS-PL.html
@@ -54,12 +54,12 @@ OK       200  upl-1-0 — https://spdx.org/licenses/UPL-1.0.html
 OK       200  ncsa-license — https://spdx.org/licenses/NCSA.html
 OK       200  0bsd-license — https://spdx.org/licenses/0BSD.html
 OK       200  zlib-license — https://spdx.org/licenses/Zlib.html
-OK       202  acceptable-use-policy — https://www.legislation.gov.uk/ukpga/1990/18
+OK       200  acceptable-use-policy — https://www.legislation.gov.uk/ukpga/1990/18
 OK       200  accessibility-statement — https://www.w3.org/WAI/planning/statements/
-ERROR    -    app-privacy-policy — https://support.google.com/googleplay/android-developer/answer/9859455
+ERROR    404  app-privacy-policy — https://support.google.com/googleplay/android-developer/answer/9859455
 ERROR    403  cookie-policy — https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/
 OK       200  dmca-notice — https://www.copyright.gov/dmca/
-ERROR    -    eula — https://developer.apple.com/support/terms/
+OK       200  eula — https://developer.apple.com/support/terms/
 OK       200  open-source-notices — https://spdx.org/licenses/
 OK       200  security-txt — https://www.rfc-editor.org/rfc/rfc9116
 OK       202  terms-of-service — https://eur-lex.europa.eu/eli/dir/2011/83/oj
