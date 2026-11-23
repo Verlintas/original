@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T15:58:13.438Z",
+  "generated": "2026-11-23T18:22:18.967Z",
   "total": 81,
   "ok": 80,
   "error": 1,
@@ -12,9 +12,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.nist.gov/itl/ai-risk-management-framework",
-      "ms": 157,
+      "ms": 132,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.956Z"
+      "checkedAt": "2026-11-23T18:22:14.380Z"
     },
     {
       "id": "agents-md",
@@ -24,9 +24,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://agents.md/",
-      "ms": 398,
+      "ms": 427,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.744Z"
+      "checkedAt": "2026-11-23T18:22:13.107Z"
     },
     {
       "id": "mcp-config",
@@ -36,9 +36,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro",
-      "ms": 574,
+      "ms": 1576,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.618Z"
+      "checkedAt": "2026-11-23T18:22:16.857Z"
     },
     {
       "id": "tool-definition",
@@ -48,9 +48,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://developers.openai.com/api/docs/guides/function-calling",
-      "ms": 254,
+      "ms": 236,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.959Z"
+      "checkedAt": "2026-11-23T18:22:16.913Z"
     },
     {
       "id": "ai-contribution-policy",
@@ -60,9 +60,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.linuxfoundation.org/",
-      "ms": 240,
+      "ms": 270,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.904Z"
+      "checkedAt": "2026-11-23T18:22:13.375Z"
     },
     {
       "id": "code-review-policy",
@@ -72,9 +72,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://google.github.io/eng-practices/review/",
-      "ms": 70,
+      "ms": 118,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.404Z"
+      "checkedAt": "2026-11-23T18:22:13.747Z"
     },
     {
       "id": "contributing",
@@ -84,9 +84,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://opensource.guide/how-to-contribute/",
-      "ms": 166,
+      "ms": 82,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.518Z"
+      "checkedAt": "2026-11-23T18:22:13.720Z"
     },
     {
       "id": "code-of-conduct",
@@ -96,9 +96,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.contributor-covenant.org/version/2/1/code_of_conduct/",
-      "ms": 277,
+      "ms": 269,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.546Z"
+      "checkedAt": "2026-11-23T18:22:13.889Z"
     },
     {
       "id": "dco-1-1",
@@ -108,9 +108,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://developercertificate.org/",
-      "ms": 883,
+      "ms": 562,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.401Z"
+      "checkedAt": "2026-11-23T18:22:14.309Z"
     },
     {
       "id": "cla-individual",
@@ -120,9 +120,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.apache.org/licenses/icla.pdf",
-      "ms": 175,
+      "ms": 203,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.357Z"
+      "checkedAt": "2026-11-23T18:22:13.809Z"
     },
     {
       "id": "issue-pr-templates",
@@ -132,9 +132,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests",
-      "ms": 2055,
+      "ms": 518,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.909Z"
+      "checkedAt": "2026-11-23T18:22:15.704Z"
     },
     {
       "id": "governance",
@@ -144,9 +144,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://opensource.guide/leadership-and-governance/",
-      "ms": 143,
+      "ms": 133,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.764Z"
+      "checkedAt": "2026-11-23T18:22:15.086Z"
     },
     {
       "id": "release-policy",
@@ -156,9 +156,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://semver.org/",
-      "ms": 170,
+      "ms": 191,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.358Z"
+      "checkedAt": "2026-11-23T18:22:16.243Z"
     },
     {
       "id": "security-policy",
@@ -168,9 +168,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://docs.github.com/en/code-security",
-      "ms": 188,
+      "ms": 2407,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.705Z"
+      "checkedAt": "2026-11-23T18:22:18.840Z"
     },
     {
       "id": "lgpl-header",
@@ -180,9 +180,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.gnu.org/licenses/gpl-howto.html",
-      "ms": 322,
+      "ms": 196,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.797Z"
+      "checkedAt": "2026-11-23T18:22:13.253Z"
     },
     {
       "id": "mpl-header",
@@ -192,9 +192,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.mozilla.org/en-US/MPL/2.0/",
-      "ms": 222,
+      "ms": 387,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.494Z"
+      "checkedAt": "2026-11-23T18:22:15.879Z"
     },
     {
       "id": "spdx-header",
@@ -204,9 +204,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.dev/learn/handling-license-info/",
-      "ms": 366,
+      "ms": 246,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.952Z"
+      "checkedAt": "2026-11-23T18:22:16.806Z"
     },
     {
       "id": "afl-3-0",
@@ -216,9 +216,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/AFL-3.0.html",
-      "ms": 581,
+      "ms": 616,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.926Z"
+      "checkedAt": "2026-11-23T18:22:13.296Z"
     },
     {
       "id": "apache-license-2-0",
@@ -228,9 +228,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.apache.org/licenses/LICENSE-2.0",
-      "ms": 208,
+      "ms": 78,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.952Z"
+      "checkedAt": "2026-11-23T18:22:13.185Z"
     },
     {
       "id": "artistic-2-0",
@@ -240,9 +240,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/Artistic-2.0.html",
-      "ms": 445,
+      "ms": 465,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.334Z"
+      "checkedAt": "2026-11-23T18:22:13.718Z"
     },
     {
       "id": "bsl-1-0",
@@ -252,9 +252,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/BSL-1.0.html",
-      "ms": 626,
+      "ms": 343,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.552Z"
+      "checkedAt": "2026-11-23T18:22:13.629Z"
     },
     {
       "id": "bsd-3-clause",
@@ -264,9 +264,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/BSD-3-Clause.html",
-      "ms": 448,
+      "ms": 335,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.352Z"
+      "checkedAt": "2026-11-23T18:22:13.620Z"
     },
     {
       "id": "cc0-1-0",
@@ -276,9 +276,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/CC0-1.0.html",
-      "ms": 429,
+      "ms": 354,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.594Z"
+      "checkedAt": "2026-11-23T18:22:13.928Z"
     },
     {
       "id": "cc-by-4-0",
@@ -288,9 +288,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://creativecommons.org/licenses/by/4.0/legalcode.en",
-      "ms": 47,
+      "ms": 184,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.975Z"
+      "checkedAt": "2026-11-23T18:22:13.480Z"
     },
     {
       "id": "cc-by-nd-4-0",
@@ -300,9 +300,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://creativecommons.org/licenses/by-nd/4.0/legalcode.en",
-      "ms": 203,
+      "ms": 126,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.182Z"
+      "checkedAt": "2026-11-23T18:22:13.606Z"
     },
     {
       "id": "cc-by-nc-4-0",
@@ -312,9 +312,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://creativecommons.org/licenses/by-nc/4.0/legalcode.en",
-      "ms": 42,
+      "ms": 155,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.979Z"
+      "checkedAt": "2026-11-23T18:22:13.453Z"
     },
     {
       "id": "cc-by-nc-nd-4-0",
@@ -324,9 +324,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.en",
-      "ms": 213,
+      "ms": 127,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.165Z"
+      "checkedAt": "2026-11-23T18:22:13.502Z"
     },
     {
       "id": "cc-by-nc-sa-4-0",
@@ -336,9 +336,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
-      "ms": 33,
+      "ms": 121,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.008Z"
+      "checkedAt": "2026-11-23T18:22:13.574Z"
     },
     {
       "id": "cc-by-sa-4-0",
@@ -348,9 +348,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en",
-      "ms": 261,
+      "ms": 135,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.269Z"
+      "checkedAt": "2026-11-23T18:22:13.637Z"
     },
     {
       "id": "epl-2-0",
@@ -360,9 +360,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/EPL-2.0.html",
-      "ms": 445,
+      "ms": 326,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.039Z"
+      "checkedAt": "2026-11-23T18:22:14.254Z"
     },
     {
       "id": "ecl-2-0",
@@ -372,9 +372,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/ECL-2.0.html",
-      "ms": 479,
+      "ms": 361,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.031Z"
+      "checkedAt": "2026-11-23T18:22:14.250Z"
     },
     {
       "id": "eupl-1-2",
@@ -384,9 +384,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/EUPL-1.2.html",
-      "ms": 457,
+      "ms": 328,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.132Z"
+      "checkedAt": "2026-11-23T18:22:14.330Z"
     },
     {
       "id": "agpl-3-0",
@@ -396,9 +396,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/AGPL-3.0-only.html",
-      "ms": 590,
+      "ms": 605,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.937Z"
+      "checkedAt": "2026-11-23T18:22:13.286Z"
     },
     {
       "id": "gpl-2-0",
@@ -408,9 +408,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/GPL-2.0-only.html",
-      "ms": 437,
+      "ms": 353,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.201Z"
+      "checkedAt": "2026-11-23T18:22:15.439Z"
     },
     {
       "id": "gpl-3-0",
@@ -420,9 +420,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.gnu.org/licenses/gpl-3.0.txt",
-      "ms": 242,
+      "ms": 151,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.044Z"
+      "checkedAt": "2026-11-23T18:22:15.281Z"
     },
     {
       "id": "lgpl-3-0",
@@ -432,9 +432,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/LGPL-3.0-only.html",
-      "ms": 462,
+      "ms": 350,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.459Z"
+      "checkedAt": "2026-11-23T18:22:15.580Z"
     },
     {
       "id": "isc-license",
@@ -444,9 +444,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/ISC.html",
-      "ms": 428,
+      "ms": 331,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.272Z"
+      "checkedAt": "2026-11-23T18:22:15.492Z"
     },
     {
       "id": "ms-pl",
@@ -456,9 +456,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/MS-PL.html",
-      "ms": 426,
+      "ms": 326,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.885Z"
+      "checkedAt": "2026-11-23T18:22:15.906Z"
     },
     {
       "id": "ms-rl",
@@ -468,9 +468,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/MS-RL.html",
-      "ms": 450,
+      "ms": 348,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.944Z"
+      "checkedAt": "2026-11-23T18:22:16.052Z"
     },
     {
       "id": "mit-license",
@@ -480,9 +480,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/MIT.html",
-      "ms": 445,
+      "ms": 343,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.646Z"
+      "checkedAt": "2026-11-23T18:22:15.715Z"
     },
     {
       "id": "mpl-2-0",
@@ -492,9 +492,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/MPL-2.0.html",
-      "ms": 461,
+      "ms": 350,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.664Z"
+      "checkedAt": "2026-11-23T18:22:15.789Z"
     },
     {
       "id": "osl-3-0",
@@ -504,9 +504,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/OSL-3.0.html",
-      "ms": 562,
+      "ms": 324,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.405Z"
+      "checkedAt": "2026-11-23T18:22:16.230Z"
     },
     {
       "id": "postgresql-license",
@@ -516,9 +516,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/PostgreSQL.html",
-      "ms": 432,
+      "ms": 338,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.317Z"
+      "checkedAt": "2026-11-23T18:22:16.258Z"
     },
     {
       "id": "python-2-0",
@@ -528,9 +528,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/Python-2.0.html",
-      "ms": 460,
+      "ms": 365,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.404Z"
+      "checkedAt": "2026-11-23T18:22:16.416Z"
     },
     {
       "id": "unlicense",
@@ -540,9 +540,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/Unlicense.html",
-      "ms": 451,
+      "ms": 581,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:13.180Z"
+      "checkedAt": "2026-11-23T18:22:17.299Z"
     },
     {
       "id": "upl-1-0",
@@ -552,9 +552,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/UPL-1.0.html",
-      "ms": 559,
+      "ms": 341,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:13.303Z"
+      "checkedAt": "2026-11-23T18:22:17.147Z"
     },
     {
       "id": "ncsa-license",
@@ -564,9 +564,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/NCSA.html",
-      "ms": 570,
+      "ms": 336,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.188Z"
+      "checkedAt": "2026-11-23T18:22:16.051Z"
     },
     {
       "id": "0bsd-license",
@@ -576,9 +576,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/0BSD.html",
-      "ms": 656,
+      "ms": 931,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.928Z"
+      "checkedAt": "2026-11-23T18:22:13.285Z"
     },
     {
       "id": "zlib-license",
@@ -588,9 +588,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/Zlib.html",
-      "ms": 469,
+      "ms": 344,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:13.421Z"
+      "checkedAt": "2026-11-23T18:22:17.201Z"
     },
     {
       "id": "acceptable-use-policy",
@@ -600,9 +600,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.legislation.gov.uk/ukpga/1990/18",
-      "ms": 322,
+      "ms": 427,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.664Z"
+      "checkedAt": "2026-11-23T18:22:13.105Z"
     },
     {
       "id": "accessibility-statement",
@@ -612,9 +612,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.w3.org/WAI/planning/statements/",
-      "ms": 124,
+      "ms": 289,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:08.468Z"
+      "checkedAt": "2026-11-23T18:22:12.968Z"
     },
     {
       "id": "app-privacy-policy",
@@ -624,9 +624,9 @@
       "status": "error",
       "httpStatus": 404,
       "finalUrl": "https://support.google.com/googleplay/android-developer/answer/9859455",
-      "ms": 92,
+      "ms": 113,
       "error": "HTTP 404",
-      "checkedAt": "2026-11-16T15:58:08.889Z"
+      "checkedAt": "2026-11-23T18:22:13.298Z"
     },
     {
       "id": "cookie-policy",
@@ -636,9 +636,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/",
-      "ms": 576,
+      "ms": 817,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.980Z"
+      "checkedAt": "2026-11-23T18:22:14.538Z"
     },
     {
       "id": "dmca-notice",
@@ -648,9 +648,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.copyright.gov/dmca/",
-      "ms": 129,
+      "ms": 193,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.675Z"
+      "checkedAt": "2026-11-23T18:22:14.002Z"
     },
     {
       "id": "eula",
@@ -660,9 +660,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://developer.apple.com/support/terms/",
-      "ms": 133,
+      "ms": 274,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.799Z"
+      "checkedAt": "2026-11-23T18:22:14.248Z"
     },
     {
       "id": "open-source-notices",
@@ -672,9 +672,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.org/licenses/",
-      "ms": 655,
+      "ms": 513,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.319Z"
+      "checkedAt": "2026-11-23T18:22:16.393Z"
     },
     {
       "id": "security-txt",
@@ -684,9 +684,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/info/rfc9116/",
-      "ms": 701,
+      "ms": 155,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:13.234Z"
+      "checkedAt": "2026-11-23T18:22:16.677Z"
     },
     {
       "id": "terms-of-service",
@@ -696,9 +696,9 @@
       "status": "ok",
       "httpStatus": 202,
       "finalUrl": "https://eur-lex.europa.eu/eli/dir/2011/83/oj",
-      "ms": 117,
+      "ms": 239,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.742Z"
+      "checkedAt": "2026-11-23T18:22:16.829Z"
     },
     {
       "id": "website-privacy-policy",
@@ -708,9 +708,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/",
-      "ms": 188,
+      "ms": 184,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:13.097Z"
+      "checkedAt": "2026-11-23T18:22:17.013Z"
     },
     {
       "id": "gitignore-c",
@@ -720,9 +720,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/C.gitignore",
-      "ms": 551,
+      "ms": 455,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.507Z"
+      "checkedAt": "2026-11-23T18:22:14.705Z"
     },
     {
       "id": "gitignore-cpp",
@@ -732,9 +732,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/C++.gitignore",
-      "ms": 413,
+      "ms": 907,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.393Z"
+      "checkedAt": "2026-11-23T18:22:15.161Z"
     },
     {
       "id": "gitignore-go",
@@ -744,9 +744,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Go.gitignore",
-      "ms": 474,
+      "ms": 404,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.505Z"
+      "checkedAt": "2026-11-23T18:22:14.713Z"
     },
     {
       "id": "gitignore-java",
@@ -756,9 +756,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Java.gitignore",
-      "ms": 379,
+      "ms": 471,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.418Z"
+      "checkedAt": "2026-11-23T18:22:14.801Z"
     },
     {
       "id": "gitignore-macos",
@@ -768,9 +768,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Global/macOS.gitignore",
-      "ms": 489,
+      "ms": 391,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.621Z"
+      "checkedAt": "2026-11-23T18:22:14.771Z"
     },
     {
       "id": "gitignore-node",
@@ -780,9 +780,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Node.gitignore",
-      "ms": 506,
+      "ms": 415,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.899Z"
+      "checkedAt": "2026-11-23T18:22:14.953Z"
     },
     {
       "id": "gitignore-python",
@@ -792,9 +792,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Python.gitignore",
-      "ms": 401,
+      "ms": 425,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.802Z"
+      "checkedAt": "2026-11-23T18:22:15.130Z"
     },
     {
       "id": "gitignore-ruby",
@@ -804,9 +804,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Ruby.gitignore",
-      "ms": 426,
+      "ms": 473,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.844Z"
+      "checkedAt": "2026-11-23T18:22:15.186Z"
     },
     {
       "id": "gitignore-rust",
@@ -816,9 +816,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Rust.gitignore",
-      "ms": 349,
+      "ms": 459,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.854Z"
+      "checkedAt": "2026-11-23T18:22:15.230Z"
     },
     {
       "id": "gitignore-terraform",
@@ -828,9 +828,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://github.com/github/gitignore/blob/main/Terraform.gitignore",
-      "ms": 490,
+      "ms": 400,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:10.997Z"
+      "checkedAt": "2026-11-23T18:22:15.201Z"
     },
     {
       "id": "conventional-commits-1-0-0",
@@ -840,9 +840,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.conventionalcommits.org/en/v1.0.0/",
-      "ms": 309,
+      "ms": 256,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:09.666Z"
+      "checkedAt": "2026-11-23T18:22:13.974Z"
     },
     {
       "id": "keep-a-changelog-1-1-0",
@@ -852,9 +852,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://keepachangelog.com/en/1.1.0/",
-      "ms": 304,
+      "ms": 171,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.203Z"
+      "checkedAt": "2026-11-23T18:22:15.372Z"
     },
     {
       "id": "rfc-2119",
@@ -864,9 +864,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc2119.txt",
-      "ms": 200,
+      "ms": 161,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.517Z"
+      "checkedAt": "2026-11-23T18:22:16.391Z"
     },
     {
       "id": "rfc-3339",
@@ -876,9 +876,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc3339.txt",
-      "ms": 149,
+      "ms": 190,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.468Z"
+      "checkedAt": "2026-11-23T18:22:16.433Z"
     },
     {
       "id": "rfc-3986",
@@ -888,9 +888,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc3986.txt",
-      "ms": 140,
+      "ms": 159,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.498Z"
+      "checkedAt": "2026-11-23T18:22:16.417Z"
     },
     {
       "id": "rfc-4180",
@@ -900,9 +900,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc4180.txt",
-      "ms": 161,
+      "ms": 131,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.565Z"
+      "checkedAt": "2026-11-23T18:22:16.522Z"
     },
     {
       "id": "rfc-8174",
@@ -912,9 +912,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc8174.txt",
-      "ms": 128,
+      "ms": 145,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.533Z"
+      "checkedAt": "2026-11-23T18:22:16.538Z"
     },
     {
       "id": "rfc-8259",
@@ -924,9 +924,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc8259.txt",
-      "ms": 126,
+      "ms": 146,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.594Z"
+      "checkedAt": "2026-11-23T18:22:16.562Z"
     },
     {
       "id": "rfc-9116",
@@ -936,9 +936,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://www.rfc-editor.org/rfc/rfc9116.txt",
-      "ms": 127,
+      "ms": 143,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.625Z"
+      "checkedAt": "2026-11-23T18:22:16.560Z"
     },
     {
       "id": "semver-2-0-0",
@@ -948,9 +948,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://semver.org/spec/v2.0.0.html",
-      "ms": 21,
+      "ms": 52,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.586Z"
+      "checkedAt": "2026-11-23T18:22:16.590Z"
     },
     {
       "id": "spdx-spec-2-3-1",
@@ -960,9 +960,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://spdx.github.io/spdx-spec/v2.3.1/",
-      "ms": 135,
+      "ms": 156,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:12.729Z"
+      "checkedAt": "2026-11-23T18:22:16.718Z"
     },
     {
       "id": "open-source-definition",
@@ -972,9 +972,9 @@
       "status": "ok",
       "httpStatus": 200,
       "finalUrl": "https://opensource.org/osd",
-      "ms": 197,
+      "ms": 131,
       "error": null,
-      "checkedAt": "2026-11-16T15:58:11.843Z"
+      "checkedAt": "2026-11-23T18:22:15.920Z"
     }
   ]
 }
